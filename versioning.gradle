@@ -1,0 +1,31 @@
+ext {
+    buildVersionCode = {
+        def (major, minor, patch) = mosaicVersion.toLowerCase().replaceAll('-', '').tokenize('.').collect {
+            it.toInteger()
+        }
+
+        def screenVersion = supportedScreenSize.toInteger()
+
+        def resultVersionCode = (min_sdk_version * 10000000) + (screenVersion * 100000) + (major * 10000) + (minor * 100) + (patch * 1)
+
+        println("versionCode = ${resultVersionCode}")
+
+        resultVersionCode
+    }
+
+    buildVersionName = { versionName, buildNumber ->
+        def resultVersionName = "${versionName}.${buildNumber}"
+
+        println("versionName = ${resultVersionName}")
+
+        resultVersionName
+    }
+
+    getApkName = { versionName, buildType, buildNumber ->
+        def resultApkName = "mosaic-${versionName}.${buildNumber}-${buildType}.apk"
+
+        println("apkName = ${resultApkName}")
+
+        resultApkName
+    }
+}
