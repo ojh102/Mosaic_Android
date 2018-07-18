@@ -17,14 +17,14 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Singleton
 
 @Module(includes = [ApplicationModule.ProvideModule::class])
-abstract class ApplicationModule {
+interface ApplicationModule {
     @Binds
     @Singleton
-    abstract fun bindContext(application: Application): Context
+    fun bindContext(application: Application): Context
 
     @Binds
     @Singleton
-    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+    fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
     @Module
     class ProvideModule {
