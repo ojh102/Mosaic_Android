@@ -7,7 +7,10 @@ import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityMainBinding
 import com.teamnexters.mosaic.ui.main.home.HomeFragment
+import com.teamnexters.mosaic.ui.main.mypage.MyPageFragment
 import com.teamnexters.mosaic.utils.extension.addFragment
+import com.teamnexters.mosaic.utils.extension.hideFragment
+import com.teamnexters.mosaic.utils.extension.showFragment
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -28,12 +31,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BottomN
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.navigation_home -> {
+                hideFragment(MyPageFragment.TAG)
+                showFragment(HomeFragment.TAG)
+
                 true
             }
             R.id.navigation_upload -> {
                 false
             }
             R.id.navigation_mypage -> {
+                hideFragment(HomeFragment.TAG)
+                showFragment(MyPageFragment.TAG)
+
                 true
             }
             else -> {
@@ -61,6 +70,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BottomN
 
     private fun initializeFragments() {
         addFragment(R.id.container_fragment, HomeFragment.newInstance(), HomeFragment.TAG)
+        addFragment(R.id.container_fragment, MyPageFragment.newInstance(), MyPageFragment.TAG)
+
+        hideFragment(MyPageFragment.TAG)
     }
 
 }

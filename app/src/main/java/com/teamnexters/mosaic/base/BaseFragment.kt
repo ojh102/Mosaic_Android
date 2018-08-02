@@ -11,10 +11,13 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
+import com.teamnexters.mosaic.di.qualifier.RxMainScheduler
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
+import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -26,6 +29,14 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : ViewModel> : Fragment(), 
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    @field:RxIOScheduler
+    lateinit var ioScheduler: Scheduler
+
+    @Inject
+    @field:RxMainScheduler
+    lateinit var mainScheduler: Scheduler
 
     lateinit var binding: VB
     lateinit var viewModel: VM

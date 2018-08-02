@@ -9,11 +9,14 @@ import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
+import com.teamnexters.mosaic.di.qualifier.RxMainScheduler
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasFragmentInjector
 import dagger.android.support.HasSupportFragmentInjector
+import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -29,6 +32,14 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    @field:RxIOScheduler
+    lateinit var ioScheduler: Scheduler
+
+    @Inject
+    @field:RxMainScheduler
+    lateinit var mainScheduler: Scheduler
 
     lateinit var binding: VB
     lateinit var viewModel: VM
