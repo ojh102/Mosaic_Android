@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivitySplashBinding
+import com.teamnexters.mosaic.utils.Navigator
 import io.reactivex.rxkotlin.subscribeBy
 
 class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
@@ -20,6 +21,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
                         .subscribeBy(
                                 onSuccess = {
                                     binding.text = it
+
+                                    Navigator.navigateToMain(this)
+                                    finish()
                                 }
                         )
         )

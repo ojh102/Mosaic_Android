@@ -4,6 +4,7 @@ import android.app.Application
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.preference.PreferenceManager
 import com.teamnexters.mosaic.base.ViewModelFactory
 import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
@@ -28,6 +29,12 @@ interface ApplicationModule {
 
     @Module
     class ProvideModule {
+        @Provides
+        @Singleton
+        fun provideResources(context: Context): Resources {
+            return context.resources
+        }
+
         @Provides
         @Singleton
         @RxIOScheduler

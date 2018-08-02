@@ -1,8 +1,8 @@
 package com.teamnexters.mosaic.base
 
 import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -24,7 +25,8 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : ViewModel> : Fragment(), 
     lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModelFactory: ViewModelFactory
+
     lateinit var binding: VB
     lateinit var viewModel: VM
 
@@ -35,6 +37,11 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : ViewModel> : Fragment(), 
 
     private val compositeDisposable by lazy {
         CompositeDisposable()
+    }
+
+    override fun onAttach(context: Context?) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
