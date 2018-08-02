@@ -1,8 +1,8 @@
 package com.teamnexters.mosaic.ui.splash
 
 import android.arch.lifecycle.ViewModel
-import com.teamnexters.mosaic.anotation.ActivityScope
-import com.teamnexters.mosaic.anotation.ViewModelKey
+import com.teamnexters.mosaic.di.anotation.ActivityScope
+import com.teamnexters.mosaic.di.anotation.ViewModelKey
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

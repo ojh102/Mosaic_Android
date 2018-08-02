@@ -5,7 +5,7 @@ import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 object RealmSchedulers {
-    private val REALM_HANDLER_THREAD: HandlerThread = createAndStart("DiaryRealm")
+    private val REALM_HANDLER_THREAD: HandlerThread = createAndStart("MosaicRealm")
     private val realmIO: Scheduler = AndroidSchedulers.from(REALM_HANDLER_THREAD.looper)
 
     private fun createAndStart(name: String): HandlerThread {

@@ -28,7 +28,7 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideCapsuleRetrofit(
+    fun provideMosaicRetrofit(
             client: OkHttpClient,
             converterFactory: Converter.Factory,
             callAdapterFactory: CallAdapter.Factory

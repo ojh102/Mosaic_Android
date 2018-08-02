@@ -1,4 +1,4 @@
-package com.teamnexters.mosaic.anotation
+package com.teamnexters.mosaic.di.anotation
 
 import android.arch.lifecycle.ViewModel
 import dagger.MapKey

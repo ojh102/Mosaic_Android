@@ -1,6 +1,6 @@
 package com.teamnexters.mosaic.di
 
-import com.teamnexters.mosaic.anotation.ActivityScope
+import com.teamnexters.mosaic.di.anotation.ActivityScope
 import com.teamnexters.mosaic.ui.splash.SplashActivity
 import com.teamnexters.mosaic.ui.splash.SplashActivityModule
 import dagger.Module

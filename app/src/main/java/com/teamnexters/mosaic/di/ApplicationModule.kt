@@ -38,7 +38,7 @@ interface ApplicationModule {
         @Provides
         @Singleton
         @RxMainScheduler
-        fun provideRxMainSceheduler(): Scheduler {
+        fun provideRxMainScheduler(): Scheduler {
             return AndroidSchedulers.mainThread()
         }
 
