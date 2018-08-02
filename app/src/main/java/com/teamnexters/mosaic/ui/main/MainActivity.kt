@@ -8,6 +8,7 @@ import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityMainBinding
 import com.teamnexters.mosaic.ui.main.home.HomeFragment
 import com.teamnexters.mosaic.ui.main.mypage.MyPageFragment
+import com.teamnexters.mosaic.utils.Navigator
 import com.teamnexters.mosaic.utils.extension.addFragment
 import com.teamnexters.mosaic.utils.extension.hideFragment
 import com.teamnexters.mosaic.utils.extension.showFragment
@@ -37,6 +38,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BottomN
                 true
             }
             R.id.navigation_upload -> {
+                Navigator.navigateToWrite(this)
+
                 false
             }
             R.id.navigation_mypage -> {

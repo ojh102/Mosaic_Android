@@ -25,6 +25,9 @@
             android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.write.WriteActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
