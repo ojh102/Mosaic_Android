@@ -2,11 +2,11 @@
 <font-family xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <font
-        android:font="@font/NanumSquareEB"
+        android:font="@font/nanum_square_eb"
         android:fontStyle="normal"
         android:fontWeight="700"
 
-        app:font="@font/NanumSquareEB"
+        app:font="@font/nanum_square_eb"
         app:fontStyle="normal"
         app:fontWeight="700"/>
 </font-family>
