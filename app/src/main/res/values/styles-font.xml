@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppFont" parent="TextAppearance.AppCompat" />
+
+    <style name="AppFont.R">
+        <item name="android:fontFamily">@font/nanum_square_regular</item>
+    </style>
+
+    <style name="AppFont.B">
+        <item name="android:fontFamily">@font/nanum_square_bold</item>
+    </style>
+
+    <style name="AppFont.EB">
+        <item name="android:fontFamily">@font/nanum_square_extra_bold</item>
+    </style>
+
+
+</resources>

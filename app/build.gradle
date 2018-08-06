@@ -116,6 +116,9 @@ dependencies {
     implementation "com.android.support:support-annotations:$rootProject.support_library_version"
     implementation "com.android.support:design:$rootProject.support_library_version"
     implementation "com.android.support:recyclerview-v7:$rootProject.support_library_version"
+    implementation "com.android.support:support-emoji:$rootProject.support_library_version"
+    implementation "com.android.support:support-emoji-appcompat:$rootProject.support_library_version"
+    implementation "com.android.support:support-emoji-bundled:$rootProject.support_library_version"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraint_layout_version"
     kapt "com.android.databinding:compiler:$rootProject.android_gradle_version"
 

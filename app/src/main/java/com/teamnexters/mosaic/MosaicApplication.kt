@@ -3,6 +3,8 @@ package com.teamnexters.mosaic
 import android.app.Activity
 import android.app.Application
 import android.app.Service
+import android.support.text.emoji.EmojiCompat
+import android.support.text.emoji.bundled.BundledEmojiCompatConfig
 import android.support.v4.app.Fragment
 import com.facebook.stetho.Stetho
 import com.teamnexters.mosaic.di.DaggerApplicationComponent
@@ -25,7 +27,6 @@ class MosaicApplication : Application(), HasActivityInjector, HasSupportFragment
     @Inject
     lateinit var serviceInjector: DispatchingAndroidInjector<Service>
 
-
     override fun onCreate() {
         super.onCreate()
 
@@ -33,6 +34,8 @@ class MosaicApplication : Application(), HasActivityInjector, HasSupportFragment
                 .application(this)
                 .build()
                 .inject(this)
+
+        EmojiCompat.init(BundledEmojiCompatConfig(this))
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
