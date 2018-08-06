@@ -26,6 +26,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_my"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -45,6 +46,7 @@
                 app:srcCompat="@drawable/ic_logotype" />
 
             <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"

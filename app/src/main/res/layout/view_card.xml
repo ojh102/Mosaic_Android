@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/bg_card"
+        tools:layout_height="400dp"
+        tools:layout_weight="344dp">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:textAppearance="@style/B12Grey"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="오후 3시 20분" />
+
+        <android.support.text.emoji.widget.EmojiAppCompatTextView
+            android:id="@+id/tv_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textAppearance="@style/EB16Black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date"
+            tools:text="공모전🏆" />
+
+        <android.support.text.emoji.widget.EmojiAppCompatTextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="4sp"
+            android:maxLines="6"
+            app:layout_constraintBottom_toTopOf="@+id/container_image"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_theme"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="올해 하반기에 열리는 전국 비보이
+댄스대회에 함께 할 팀원을 구합니다. 올해로
+4회째 수상하고 있습니다. 체계적인 연습과
+끈끈한 팀워크로 대학 동안 즐거운 추억을
+만드실 여러분들의 연락 기다립니다.
+올해도 수상 가즈아 🔥" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/container_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/container_bottom"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content"
+            app:layout_goneMarginBottom="32dp">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="6dp"
+                app:srcCompat="@color/colorPrimary" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="6dp"
+                app:srcCompat="@color/colorPrimary" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:srcCompat="@color/colorPrimary" />
+
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/container_bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="#ebebeb"
+                app:layout_constraintBottom_toTopOf="@+id/btn_univ"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_univ"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="60dp"
+                android:background="color/colorAccent"
+                app:layout_constraintBottom_toTopOf="@+id/tv_univ"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:srcCompat="@color/colorAccent" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_univ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:textAppearance="@style/B10Grey"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/btn_univ"
+                app:layout_constraintRight_toRightOf="@+id/btn_univ"
+                tools:text="SOGANG2039" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_comment"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/selector_comment"
+                app:layout_constraintBottom_toTopOf="@+id/tv_comment"
+                app:layout_constraintLeft_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="parent"
+                app:srcCompat="@drawable/ic_comment" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:textAppearance="@style/B10Grey"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/btn_comment"
+                app:layout_constraintRight_toRightOf="@+id/btn_comment"
+                tools:text="댓글 24" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_scarp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="60dp"
+                android:background="@drawable/selector_scrap"
+                app:layout_constraintBottom_toTopOf="@+id/tv_scrap"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@drawable/ic_scrap" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_scrap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:textAppearance="@style/B10Grey"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/btn_scarp"
+                app:layout_constraintRight_toRightOf="@+id/btn_scarp"
+                tools:text="스크랩" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
