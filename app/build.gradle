@@ -155,9 +155,6 @@ dependencies {
     // Lottie
     implementation "com.airbnb.android:lottie:$rootProject.lottie_version"
 
-    // Bottom Navigation Ex
-    implementation "com.github.ittianyu:BottomNavigationViewEx:$rootProject.bottom_navigation_ex"
-
     // Debug
     implementation "com.jakewharton.timber:timber:$rootProject.timber_version"
     implementation "com.facebook.stetho:stetho:$rootProject.stetho_version"

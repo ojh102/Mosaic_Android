@@ -1,12 +1,4 @@
 <resources>
     <string name="app_name">Mosaic</string>
 
-    <string name="main_home_issue_label">학교별 핫이슈</string>
-    <string name="main_home_issue_filter_distance">거리순</string>
-    <string name="main_home_issue_filter_popularity">인기순</string>
-    <string name="main_home_issue_filter_alphabet">가나다</string>
-
-    <string name="main_home_topic_label">오늘의 토픽</string>
-    <string name="topic_filter_competition_and_parttime">공모전/아르바이트</string>
-
 </resources>

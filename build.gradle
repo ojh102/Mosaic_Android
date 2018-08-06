@@ -25,7 +25,6 @@ buildscript {
         lifecycle_version = '1.1.1'
         paging_version = '1.0.1'
         lottie_version = '2.5.5'
-        bottom_navigation_ex = "1.2.4"
 
         timber_version = '4.5.1'
         stetho_version = '1.5.0'
