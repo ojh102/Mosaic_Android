@@ -1,11 +1,16 @@
 package com.teamnexters.mosaic.ui.main
 
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+
+    @Inject lateinit var cardAdapter: CardAdapter
 
     override fun getLayoutRes() = R.layout.activity_main
 
@@ -16,11 +21,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         binding.viewModel = viewModel
 
-        initializeToolbar()
+        initializeRecyclerView()
     }
 
-    private fun initializeToolbar() {
-
+    private fun initializeRecyclerView() {
+        rv_card.run {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = cardAdapter
+        }
     }
 
 }

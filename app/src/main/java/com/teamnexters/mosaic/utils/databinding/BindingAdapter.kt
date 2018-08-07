@@ -5,11 +5,19 @@ import android.support.annotation.StringRes
 import android.support.annotation.StyleRes
 import android.support.v4.widget.TextViewCompat
 import android.support.v7.content.res.AppCompatResources
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.teamnexters.mosaic.utils.extension.hasResource
 
 class BindingAdapter {
     companion object {
+//        @JvmStatic
+//        @BindingAdapter("selected")
+//        fun setSelected(view: View, selected: Boolean) {
+//            view.isSelected = selected
+//        }
+
         @JvmStatic
         @BindingAdapter("android:text")
         fun setText(textView: TextView, @StringRes resId: Int) {
@@ -40,6 +48,12 @@ class BindingAdapter {
             }
 
             TextViewCompat.setTextAppearance(textView, resId)
+        }
+
+        @JvmStatic
+        @BindingAdapter("srcCompat")
+        fun setSrcCompat(imageView: ImageView, url: String) {
+            Glide.with(imageView).load(url).into(imageView)
         }
     }
 }

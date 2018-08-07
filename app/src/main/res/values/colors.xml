@@ -11,4 +11,6 @@
     <color name="colorScrapSelected">#FF573D</color>
     <color name="colorUnSelected">#CDCFD1</color>
 
+    <color name="white">#FFFFFF</color>
+
 </resources>

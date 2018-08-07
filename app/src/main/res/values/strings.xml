@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Mosaic</string>
 
+    <string name="format_card_last_image">+$1%d</string>
+    <string name="format_card_comment">댓글 $1%d</string>
+    <string name="scarp">스크랩</string>
+
 </resources>
