@@ -12,11 +12,6 @@ import com.teamnexters.mosaic.utils.extension.hasResource
 
 class BindingAdapter {
     companion object {
-//        @JvmStatic
-//        @BindingAdapter("selected")
-//        fun setSelected(view: View, selected: Boolean) {
-//            view.isSelected = selected
-//        }
 
         @JvmStatic
         @BindingAdapter("android:text")
@@ -52,7 +47,7 @@ class BindingAdapter {
 
         @JvmStatic
         @BindingAdapter("srcCompat")
-        fun setSrcCompat(imageView: ImageView, url: String) {
+        fun setSrcCompat(imageView: ImageView, url: String?) {
             Glide.with(imageView).load(url).into(imageView)
         }
     }

@@ -82,28 +82,28 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="6dp"
-                android:visibility="@{card.imageUrlList.get(0) == null}"
-                app:srcCompat="@{card.imageUrlList.get(0) == null ? null : card.imageUrlList.get(0)}"
+                android:visibility="@{card.imageUrlList.size() >= 1}"
+                app:srcCompat="@{card.imageUrlList.size() >= 1 ? card.imageUrlList.get(0) : null}"
                 tools:srcCompat="@color/colorPrimary" />
 
             <android.support.v7.widget.AppCompatImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="6dp"
-                android:visibility="@{card.imageUrlList.get(1) == null}"
-                app:srcCompat="@{card.imageUrlList.get(1) == null ? null : card.imageUrlList.get(1)}"
+                android:visibility="@{card.imageUrlList.size() >= 2}"
+                app:srcCompat="@{card.imageUrlList.size() >= 2 ? card.imageUrlList.get(1) : null}"
                 tools:srcCompat="@color/colorPrimary" />
 
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{card.imageUrlList.get(2) == null}">
+                android:visibility="@{card.imageUrlList.size() >= 3}">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:visibility="@{card.imageUrlList.get(2) == null}"
-                    app:srcCompat="@{card.imageUrlList.get(2) == null ? null : card.imageUrlList.get(2)}"
+                    android:visibility="@{card.imageUrlList.size() >= 3}"
+                    app:srcCompat="@{card.imageUrlList.size() >= 3 ? card.imageUrlList.get(2) : null}"
                     tools:srcCompat="@color/colorPrimary" />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -167,7 +167,7 @@
                 android:layout_height="32dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/selector_comment"
-                android:selected="@{card.nonEmptyComment}"
+                android:selected="@{card.commentCount > 0}"
                 app:layout_constraintBottom_toTopOf="@+id/tv_comment"
                 app:layout_constraintLeft_toRightOf="parent"
                 app:layout_constraintRight_toLeftOf="parent"

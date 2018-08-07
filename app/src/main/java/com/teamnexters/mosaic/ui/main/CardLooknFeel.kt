@@ -5,7 +5,7 @@ data class CardLooknFeel(
         val theme: String,
         val content: String,
         val imageUrlList: List<String>,
-        val nonEmptyComment: Boolean,
+        val univName: String,
         val commentCount: Int,
         val scarped: Boolean
 )

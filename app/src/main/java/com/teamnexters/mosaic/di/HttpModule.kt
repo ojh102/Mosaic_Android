@@ -5,9 +5,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.teamnexters.mosaic.BuildConfig
 import com.teamnexters.mosaic.di.qualifier.HttpLogging
-import com.teamnexters.mosaic.di.qualifier.Stetho
-import dagger.Binds
-import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -21,10 +18,6 @@ interface HttpModule {
     companion object {
         const val TIMEOUT = 10L
     }
-
-    @Binds
-    @Stetho
-    fun bindStethoInterceptor(stethoInterceptor: StethoInterceptor): Interceptor
 
     @Module
     class ProvideModule {
@@ -47,9 +40,7 @@ interface HttpModule {
         @Provides
         @Singleton
         fun provideOkHttpClient(
-                @Stetho stethoInterceptor: Lazy<Interceptor>,
                 @HttpLogging httpLoggingInterceptor: Interceptor
-
         ): OkHttpClient {
             val okHttpClientBuilder = OkHttpClient.Builder()
                     .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
@@ -58,7 +49,7 @@ interface HttpModule {
                     .addNetworkInterceptor(httpLoggingInterceptor)
 
             if (BuildConfig.DEBUG) {
-                okHttpClientBuilder.addNetworkInterceptor(stethoInterceptor.get())
+                okHttpClientBuilder.addNetworkInterceptor(StethoInterceptor())
             }
 
             return okHttpClientBuilder.build()
