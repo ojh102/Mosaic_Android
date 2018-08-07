@@ -1,7 +1,7 @@
 package com.teamnexters.mosaic.ui.main
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityMainBinding
@@ -18,6 +18,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun getViewModelClass() = MainViewModel::class.java
 
+    private var datas = mutableListOf<CardLooknFeel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,7 +33,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         .observeOn(mainScheduler)
                         .subscribeBy(
                                 onNext = {
-                                    cardAdapter.setItems(it)
+                                    datas.addAll(it)
+                                    cardAdapter.addItems(it)
                                 }
                         )
         )
@@ -39,9 +42,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     private fun initializeRecyclerView() {
         rv_card.run {
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = OverLayCardLayoutManager()
             adapter = cardAdapter
         }
+
+        CardConfig.initConfig(this)
+
+        val callback = PrimerCallback(rv_card, cardAdapter, datas)
+        val itemTouchHelper = ItemTouchHelper(callback)
+
+        itemTouchHelper.attachToRecyclerView(rv_card)
     }
 
 }

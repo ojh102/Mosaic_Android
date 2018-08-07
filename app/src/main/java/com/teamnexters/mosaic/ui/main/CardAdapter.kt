@@ -35,6 +35,21 @@ class CardAdapter : RecyclerView.Adapter<CardViewHolder>() {
         notifyItemInserted(insertPosition)
     }
 
+    fun addItem(position: Int, cardLooknFeel: CardLooknFeel) {
+        this.items.add(position, cardLooknFeel)
+        notifyDataSetChanged()
+    }
+
+    fun addItem(cardLooknFeel: CardLooknFeel) {
+        this.items.add(cardLooknFeel)
+        notifyDataSetChanged()
+    }
+
+    fun removeAt(position: Int) {
+        this.items.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     fun clear() {
         this.items.clear()
         notifyDataSetChanged()
