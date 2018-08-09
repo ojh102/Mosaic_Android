@@ -1,6 +1,7 @@
 package com.teamnexters.mosaic.ui.main
 
 import android.arch.lifecycle.ViewModel
+import android.content.Context
 import com.teamnexters.mosaic.di.anotation.ActivityScope
 import com.teamnexters.mosaic.di.anotation.ViewModelKey
 import dagger.Binds
@@ -14,8 +15,8 @@ interface MainActivityModule {
     class ProvideModule {
         @Provides
         @ActivityScope
-        fun provideCardAdapter(): CardAdapter {
-            return CardAdapter()
+        fun provideMosaicStackAdapter(context: Context): MosaicStackAdapter {
+            return MosaicStackAdapter(context)
         }
     }
 

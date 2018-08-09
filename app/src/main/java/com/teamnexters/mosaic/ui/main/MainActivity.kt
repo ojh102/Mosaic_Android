@@ -1,31 +1,30 @@
 package com.teamnexters.mosaic.ui.main
 
 import android.os.Bundle
-import android.support.v7.widget.helper.ItemTouchHelper
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityMainBinding
+import com.teamnexters.mosaic.ui.main.stack.CardStackView
+import com.teamnexters.mosaic.ui.main.stack.SwipeDirection
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
-    @Inject
-    lateinit var cardAdapter: CardAdapter
-
     override fun getLayoutRes() = R.layout.activity_main
 
     override fun getViewModelClass() = MainViewModel::class.java
 
-    private var datas = mutableListOf<CardLooknFeel>()
+    @Inject
+    lateinit var adapter: MosaicStackAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding.viewModel = viewModel
 
-        initializeRecyclerView()
+        initializeStack()
 
         bind(
                 viewModel.getCards()
@@ -33,25 +32,38 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         .observeOn(mainScheduler)
                         .subscribeBy(
                                 onNext = {
-                                    datas.addAll(it)
-                                    cardAdapter.addItems(it)
+                                    adapter.addAll(it)
                                 }
                         )
         )
     }
 
-    private fun initializeRecyclerView() {
-        rv_card.run {
-            layoutManager = OverLayCardLayoutManager()
-            adapter = cardAdapter
-        }
+    private fun initializeStack() {
 
-        CardConfig.initConfig(this)
+        stack_card.setCardEventListener(object : CardStackView.CardEventListener {
+            override fun onCardDragging(percentX: Float, percentY: Float) {
 
-        val callback = PrimerCallback(rv_card, cardAdapter, datas)
-        val itemTouchHelper = ItemTouchHelper(callback)
+            }
 
-        itemTouchHelper.attachToRecyclerView(rv_card)
+            override fun onCardSwiped(direction: SwipeDirection?) {
+
+            }
+
+            override fun onCardReversed() {
+
+            }
+
+            override fun onCardMovedToOrigin() {
+
+            }
+
+            override fun onCardClicked(index: Int) {
+
+            }
+
+        })
+
+        stack_card.setAdapter(adapter)
     }
 
 }
