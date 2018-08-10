@@ -279,16 +279,26 @@ public class CardStackView extends FrameLayout {
     }
 
     public void performReverse(Point point, View prevView, final Animator.AnimatorListener listener) {
-        reorderForReverse(prevView);
         CardContainerView topView = getTopView();
-        ViewCompat.setTranslationX(topView, point.x);
-        ViewCompat.setTranslationY(topView, -point.y);
-        topView.animate()
-                .translationX(topView.getViewOriginX())
-                .translationY(topView.getViewOriginY())
-                .setListener(listener)
-                .setDuration(400L)
-                .start();
+
+        topView.setScaleX(1f);
+        topView.setScaleY(1f);
+
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
+                topView,
+                "y",
+                -topView.getHeight(),
+                Util.toPx(getContext(), 116)
+        ).setDuration(250);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.addListener(listener);
+
+        animatorSet.playTogether(
+                objectAnimator
+        );
+
+        animatorSet.start();
     }
 
     public void performSwipe(Point point, final Animator.AnimatorListener listener) {
@@ -392,7 +402,20 @@ public class CardStackView extends FrameLayout {
         containers.getFirst().setContainerEventListener(containerEventListener);
     }
 
-    private void executePostReverseTask() {
+    private void executePostReverseTask(View prevView) {
+        CardContainerView bottomView = getBottomView();
+        CardStackView parent = (CardStackView) bottomView.getParent();
+
+        if (parent != null) {
+            parent.removeView(bottomView);
+            parent.addView(bottomView);
+
+            bottomView.getContentContainer().removeAllViews();
+            bottomView.getContentContainer().addView(prevView);
+            bottomView.setVisibility(View.VISIBLE);
+        }
+        containers.addFirst(containers.removeLast());
+
         initializeCardStackPosition();
 
         state.topIndex--;
@@ -544,7 +567,7 @@ public class CardStackView extends FrameLayout {
             performReverse(state.swipedItems.get(reverseIndex), prevView, new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animator) {
-                    executePostReverseTask();
+                    executePostReverseTask(prevView);
                 }
             });
         }
