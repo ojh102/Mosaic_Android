@@ -175,7 +175,17 @@ public class CardContainerView extends FrameLayout {
             if (direction == SwipeDirection.Left || direction == SwipeDirection.Right) {
                 percent = getPercentX();
             } else {
-                percent = getPercentY();
+                if(direction == SwipeDirection.Bottom && isMovedBottom) {
+                    final float calcTransitionY = (event.getRawY() - motionOriginY);
+
+                    percent = 2f * calcTransitionY / getHeight();
+                    if (percent > 1) {
+                        percent = 1;
+                    }
+
+                } else {
+                    percent = getPercentY();
+                }
             }
 
             if (Math.abs(percent) > option.swipeThreshold) {

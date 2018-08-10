@@ -109,6 +109,7 @@
             app:stackFrom="bottom"
             app:swipeDirection="vertical"
             app:translationDiff="24"
+            app:swipeThreshold="0.6"
             app:scaleDiff="0.05"
             app:visibleCount="3" />
 
