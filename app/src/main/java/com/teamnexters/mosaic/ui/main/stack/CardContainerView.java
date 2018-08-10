@@ -27,6 +27,11 @@ public class CardContainerView extends FrameLayout {
     private boolean isDragging = false;
     private boolean isDraggable = true;
 
+
+    private boolean isMovedBottom = false;
+    private boolean initializedIsMovedBottom = false;
+
+
     private ViewGroup contentContainer = null;
     private ViewGroup overlayContainer = null;
     private View leftOverlayView = null;
@@ -48,8 +53,11 @@ public class CardContainerView extends FrameLayout {
 
     public interface ContainerEventListener {
         void onContainerDragging(float percentX, float percentY);
+
         void onContainerSwiped(Point point, SwipeDirection direction);
+
         void onContainerMovedToOrigin();
+
         void onContainerClicked();
     }
 
@@ -104,6 +112,9 @@ public class CardContainerView extends FrameLayout {
     private void handleActionDown(MotionEvent event) {
         motionOriginX = event.getRawX();
         motionOriginY = event.getRawY();
+
+        isMovedBottom = false;
+        initializedIsMovedBottom = false;
     }
 
     private void handleActionUp(MotionEvent event) {
@@ -154,7 +165,7 @@ public class CardContainerView extends FrameLayout {
                     radian = Math.toRadians(degree);
                     if (Math.cos(radian) < 0.5) {
                         direction = SwipeDirection.Bottom;
-                    }else{
+                    } else {
                         direction = SwipeDirection.Right;
                     }
                     break;
@@ -193,6 +204,18 @@ public class CardContainerView extends FrameLayout {
     private void handleActionMove(MotionEvent event) {
         isDragging = true;
 
+        if(!initializedIsMovedBottom) {
+            if (motionOriginY < event.getRawY()) {
+                isMovedBottom = true;
+            }
+
+            initializedIsMovedBottom = true;
+        }
+
+        if(isMovedBottom) {
+            return;
+        }
+
         updateTranslation(event);
         updateRotation();
         updateAlpha();
@@ -203,8 +226,12 @@ public class CardContainerView extends FrameLayout {
     }
 
     private void updateTranslation(MotionEvent event) {
-        ViewCompat.setTranslationX(this, viewOriginX + event.getRawX() - motionOriginX);
-        ViewCompat.setTranslationY(this, viewOriginY + event.getRawY() - motionOriginY);
+        this.setTranslationX(viewOriginX + event.getRawX() - motionOriginX);
+
+        final float calcTransitionY = viewOriginY + event.getRawY() - motionOriginY;
+        final float limitedY = viewOriginY + Util.toPx(getContext(), option.translationDiff);
+
+        this.setTranslationY((calcTransitionY > limitedY) ? limitedY : calcTransitionY);
     }
 
     private void updateRotation() {
@@ -233,7 +260,7 @@ public class CardContainerView extends FrameLayout {
                 showVerticalOverlay(percentY);
             }
         } else {
-            if (Math.abs(percentX) > Math.abs(percentY)){
+            if (Math.abs(percentX) > Math.abs(percentY)) {
                 if (percentX < 0) {
                     showLeftOverlay();
                 } else {
@@ -280,8 +307,8 @@ public class CardContainerView extends FrameLayout {
 
     public void setContainerEventListener(ContainerEventListener listener) {
         this.containerEventListener = listener;
-        viewOriginX = ViewCompat.getTranslationX(this);
-        viewOriginY = ViewCompat.getTranslationY(this);
+        viewOriginX = this.getTranslationX();
+        viewOriginY = this.getTranslationY();
     }
 
     public void setCardStackOption(CardStackOption option) {
@@ -344,7 +371,7 @@ public class CardContainerView extends FrameLayout {
     }
 
     public void setOverlayAlpha(AnimatorSet overlayAnimatorSet) {
-        if(overlayAnimatorSet != null) {
+        if (overlayAnimatorSet != null) {
             overlayAnimatorSet.start();
         }
     }
@@ -432,7 +459,7 @@ public class CardContainerView extends FrameLayout {
     }
 
     public float getPercentX() {
-        float percent = 2f * (ViewCompat.getTranslationX(this) - viewOriginX) / getWidth();
+        float percent = 2f * (this.getTranslationX() - viewOriginX) / getWidth();
         if (percent > 1) {
             percent = 1;
         }
@@ -443,7 +470,7 @@ public class CardContainerView extends FrameLayout {
     }
 
     public float getPercentY() {
-        float percent = 2f * (ViewCompat.getTranslationY(this) - viewOriginY) / getHeight();
+        float percent = 2f * (this.getTranslationY() - viewOriginY) / getHeight();
         if (percent > 1) {
             percent = 1;
         }

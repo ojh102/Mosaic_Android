@@ -157,6 +157,7 @@ public class CardStackView extends FrameLayout {
 
     private void nextCardStackPosition() {
         initializeCardStackPosition();
+
         CardContainerView view = containers.get(option.visibleCount - 1);
 
         ObjectAnimator.ofFloat(view, "alpha", 0f, 1f).setDuration(200).start();
@@ -268,10 +269,6 @@ public class CardStackView extends FrameLayout {
 
             float translationY = currentTranslationY - Math.abs(percentFromDirection) * translationYFromDirection;
             ViewCompat.setTranslationY(view, translationY);
-
-//            if(i == option.visibleCount - 1 && percentX == 0f && percentY == 0f) {
-//                ObjectAnimator.ofFloat(view, "alpha", 0f, 1f).start();
-//            }
         }
     }
 
@@ -375,7 +372,6 @@ public class CardStackView extends FrameLayout {
 
         state.lastPoint = point;
 
-//        initializeCardStackPosition();
         nextCardStackPosition();
 
         state.topIndex++;
