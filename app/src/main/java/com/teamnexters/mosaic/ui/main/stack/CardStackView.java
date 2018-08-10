@@ -64,6 +64,12 @@ public class CardStackView extends FrameLayout {
 
         @Override
         public void onContainerSwiped(Point point, SwipeDirection direction) {
+            if (direction == SwipeDirection.Bottom) {
+                reverse();
+
+                return;
+            }
+
             swipe(point, direction);
         }
 
@@ -155,7 +161,7 @@ public class CardStackView extends FrameLayout {
         update(0f, 0f);
     }
 
-    private void nextCardStackPosition() {
+    private void initializeCardStackPositionWithAnimation() {
         initializeCardStackPosition();
 
         CardContainerView view = containers.get(option.visibleCount - 1);
@@ -370,9 +376,9 @@ public class CardStackView extends FrameLayout {
     private void executePostSwipeTask(Point point, SwipeDirection direction) {
         reorderForSwipe();
 
-        state.lastPoint = point;
+        initializeCardStackPositionWithAnimation();
 
-        nextCardStackPosition();
+        state.swipedItems.put(state.topIndex, point);
 
         state.topIndex++;
 
@@ -387,11 +393,10 @@ public class CardStackView extends FrameLayout {
     }
 
     private void executePostReverseTask() {
-        state.lastPoint = null;
-
         initializeCardStackPosition();
 
         state.topIndex--;
+        state.swipedItems.remove(state.topIndex);
 
         if (cardEventListener != null) {
             cardEventListener.onCardReversed();
@@ -530,16 +535,21 @@ public class CardStackView extends FrameLayout {
     }
 
     public void reverse() {
-        if (state.lastPoint != null) {
+        int reverseIndex = state.topIndex - 1;
+        if (isReversible() && reverseIndex >= 0) {
             ViewGroup parent = containers.getLast();
-            View prevView = adapter.getView(state.topIndex - 1, null, parent);
-            performReverse(state.lastPoint, prevView, new AnimatorListenerAdapter() {
+            View prevView = adapter.getView(reverseIndex, null, parent);
+            performReverse(state.swipedItems.get(reverseIndex), prevView, new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animator) {
                     executePostReverseTask();
                 }
             });
         }
+    }
+
+    public boolean isReversible() {
+        return state.swipedItems != null && state.swipedItems.size() > 0;
     }
 
     public CardContainerView getTopView() {
