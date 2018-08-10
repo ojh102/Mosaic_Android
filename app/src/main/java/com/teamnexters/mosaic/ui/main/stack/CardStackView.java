@@ -3,6 +3,7 @@ package com.teamnexters.mosaic.ui.main.stack;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -25,9 +26,13 @@ public class CardStackView extends FrameLayout {
 
     public interface CardEventListener {
         void onCardDragging(float percentX, float percentY);
+
         void onCardSwiped(SwipeDirection direction);
+
         void onCardReversed();
+
         void onCardMovedToOrigin();
+
         void onCardClicked(int index);
     }
 
@@ -56,10 +61,12 @@ public class CardStackView extends FrameLayout {
         public void onContainerDragging(float percentX, float percentY) {
             update(percentX, percentY);
         }
+
         @Override
         public void onContainerSwiped(Point point, SwipeDirection direction) {
             swipe(point, direction);
         }
+
         @Override
         public void onContainerMovedToOrigin() {
             initializeCardStackPosition();
@@ -67,6 +74,7 @@ public class CardStackView extends FrameLayout {
                 cardEventListener.onCardMovedToOrigin();
             }
         }
+
         @Override
         public void onContainerClicked() {
             if (cardEventListener != null) {
@@ -147,6 +155,13 @@ public class CardStackView extends FrameLayout {
         update(0f, 0f);
     }
 
+    private void nextCardStackPosition() {
+        initializeCardStackPosition();
+        CardContainerView view = containers.get(option.visibleCount - 1);
+
+        ObjectAnimator.ofFloat(view, "alpha", 0f, 1f).setDuration(200).start();
+    }
+
     private void initializeViewContents() {
         for (int i = 0; i < option.visibleCount; i++) {
             CardContainerView container = containers.get(i);
@@ -218,7 +233,7 @@ public class CardStackView extends FrameLayout {
 
         final float percentFromDirection;
 
-        if(isVerticalDirection()) {
+        if (isVerticalDirection()) {
             percentFromDirection = percentY;
         } else {
             percentFromDirection = percentX;
@@ -245,7 +260,7 @@ public class CardStackView extends FrameLayout {
 
             final float translationYFromDirection;
 
-            if(isVerticalDirection()) {
+            if (isVerticalDirection()) {
                 translationYFromDirection = currentTranslationY - nextTranslationY;
             } else {
                 translationYFromDirection = currentTranslationY - nextTranslationY;
@@ -253,6 +268,10 @@ public class CardStackView extends FrameLayout {
 
             float translationY = currentTranslationY - Math.abs(percentFromDirection) * translationYFromDirection;
             ViewCompat.setTranslationY(view, translationY);
+
+//            if(i == option.visibleCount - 1 && percentX == 0f && percentY == 0f) {
+//                ObjectAnimator.ofFloat(view, "alpha", 0f, 1f).start();
+//            }
         }
     }
 
@@ -284,15 +303,15 @@ public class CardStackView extends FrameLayout {
             getTopView().showLeftOverlay();
         } else if (showOverlay = direction == SwipeDirection.Right) {
             getTopView().showRightOverlay();
-        } else if (showOverlay = direction == SwipeDirection.Bottom){
+        } else if (showOverlay = direction == SwipeDirection.Bottom) {
             getTopView().showBottomOverlay();
-        } else if (showOverlay = direction == SwipeDirection.Top){
+        } else if (showOverlay = direction == SwipeDirection.Top) {
             getTopView().showTopOverlay();
         } else {
             showOverlay = false;
         }
-        if(showOverlay) {
-            if(overlayAnimatorSet != null) {
+        if (showOverlay) {
+            if (overlayAnimatorSet != null) {
                 getTopView().setOverlayAlpha(overlayAnimatorSet);
             } else {
                 getTopView().setOverlayAlpha(1f);
@@ -356,7 +375,8 @@ public class CardStackView extends FrameLayout {
 
         state.lastPoint = point;
 
-        initializeCardStackPosition();
+//        initializeCardStackPosition();
+        nextCardStackPosition();
 
         state.topIndex++;
 
