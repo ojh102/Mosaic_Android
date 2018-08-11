@@ -8,7 +8,9 @@ import android.support.v7.content.res.AppCompatResources
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.teamnexters.mosaic.utils.extension.hasResource
+import jp.wasabeef.glide.transformations.BlurTransformation
 
 class BindingAdapter {
     companion object {
@@ -46,9 +48,17 @@ class BindingAdapter {
         }
 
         @JvmStatic
-        @BindingAdapter("srcCompat")
-        fun setSrcCompat(imageView: ImageView, url: String?) {
-            Glide.with(imageView).load(url).into(imageView)
+        @BindingAdapter(value = [
+            "srcCompat", "useBlur"
+        ], requireAll = false)
+        fun setSrcCompat(imageView: ImageView, url: String?, useBlur: Boolean) {
+            val requestBuilder = Glide.with(imageView).load(url)
+
+            if (useBlur) {
+                requestBuilder.apply(RequestOptions.bitmapTransform(BlurTransformation()))
+            }
+
+            requestBuilder.into(imageView)
         }
     }
 }

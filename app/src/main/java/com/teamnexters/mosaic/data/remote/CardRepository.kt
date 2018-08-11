@@ -9,16 +9,26 @@ class CardRepository @Inject constructor(
 
 ) : CardRepositoryApi {
 
+
     fun getCards(): Observable<List<CardLooknFeel>> {
         val dummyList = mutableListOf<CardLooknFeel>()
 
-        for (i in 1..20) {
+        val dummyImageUrl = "https://picsum.photos/200?random"
+
+        for (i in 0..20) {
+            val dummyImageUrlList = mutableListOf<String>()
+
+            for (j in 0 until i % 6) {
+                dummyImageUrlList.add(dummyImageUrl)
+            }
+
             val dummy = CardLooknFeel(
                     date = "오늘",
                     theme = "테마$i",
                     content = "이것이 콘텐츠다$i",
+                    univImageUrl = dummyImageUrl,
                     univName = "대학$i",
-                    imageUrlList = listOf(),
+                    imageUrlList = dummyImageUrlList,
                     commentCount = i,
                     scarped = i % 2 == 0
             )

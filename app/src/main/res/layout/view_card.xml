@@ -103,6 +103,7 @@
                     android:layout_height="40dp"
                     android:visibility="@{card.imageUrlList.size() >= 3}"
                     app:srcCompat="@{card.imageUrlList.size() >= 3 ? card.imageUrlList.get(2) : null}"
+                    app:useBlur="@{card.imageUrlList.size() > 3}"
                     tools:srcCompat="@color/colorPrimary" />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -147,6 +148,7 @@
                 android:background="@color/colorAccent"
                 app:layout_constraintBottom_toTopOf="@+id/tv_univ"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:srcCompat="@{card.univImageUrl}"
                 tools:srcCompat="@color/colorAccent" />
 
             <android.support.v7.widget.AppCompatTextView
