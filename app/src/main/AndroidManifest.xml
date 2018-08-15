@@ -22,6 +22,12 @@
         </activity>
 
         <activity
+            android:name=".ui.login.LoginActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:theme="@style/AppTheme.Login"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait" />
 
@@ -29,6 +35,26 @@
             android:name=".ui.write.WriteActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.detail.DetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.scheme.SchemeProcessNoUIActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="@string/email_confirm_host"
+                    android:scheme="@string/email_confirm_scheme" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -1,6 +1,10 @@
 package com.teamnexters.mosaic.di
 
 import com.teamnexters.mosaic.di.anotation.ActivityScope
+import com.teamnexters.mosaic.ui.detail.DetailActivity
+import com.teamnexters.mosaic.ui.detail.DetailActivityModule
+import com.teamnexters.mosaic.ui.login.LoginActivity
+import com.teamnexters.mosaic.ui.login.LoginActivityModule
 import com.teamnexters.mosaic.ui.main.MainActivity
 import com.teamnexters.mosaic.ui.main.MainActivityModule
 import com.teamnexters.mosaic.ui.splash.SplashActivity
@@ -23,4 +27,12 @@ interface ActivityModule {
     @ContributesAndroidInjector(modules = [WriteActivityModule::class])
     @ActivityScope
     fun bindWriteActivity(): WriteActivity
+
+    @ContributesAndroidInjector(modules = [LoginActivityModule::class])
+    @ActivityScope
+    fun bindLoginActivity(): LoginActivity
+
+    @ContributesAndroidInjector(modules = [DetailActivityModule::class])
+    @ActivityScope
+    fun bindDetailActivity(): DetailActivity
 }

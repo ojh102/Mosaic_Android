@@ -4,13 +4,29 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="textColorLightGrey">#ADADAD</color>
     <color name="textColorGrey">#ABAFB4</color>
     <color name="textColorBlack">#474747</color>
+    <color name="textColorDarkGrey">#8D8D8D</color>
+    <color name="textColorDeepDarkGrey">#5D5D5D</color>
+
+    <color name="textColorRed">#ff644c</color>
 
     <color name="colorCommentSelected">#2D3253</color>
     <color name="colorScrapSelected">#FF573D</color>
     <color name="colorUnSelected">#CDCFD1</color>
 
+    <color name="colorEmailConfirmBgUnselected">#CDCFD1</color>
+    <color name="colorEmailConfirmBgSelected">#f0492f</color>
+
     <color name="white">#FFFFFF</color>
 
+    <color name="splashAlpha">#99000000</color>
+    <color name="lineColor">#ebebeb</color>
+
+    <color name="useAgreementContents">#888888</color>
+    <color name="useAgreementAgreeBg">#2d3253</color>
+
+    <color name="emailTextColor">#f0492f</color>
+    <color name="emailTextNormalColor">#888888</color>
 </resources>
