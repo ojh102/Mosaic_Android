@@ -5,6 +5,7 @@ import android.support.annotation.StringRes
 import android.support.annotation.StyleRes
 import android.support.v4.widget.TextViewCompat
 import android.support.v7.content.res.AppCompatResources
+import android.view.KeyEvent
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -25,8 +26,8 @@ class BindingAdapter {
         @JvmStatic
         @BindingAdapter("android:textColor")
         fun setTextColor(textView: TextView, colorOrResId: Int) {
-            if (textView.context.hasResource(colorOrResId)) {
-                val resId = if (colorOrResId == 0) {
+            if(textView.context.hasResource(colorOrResId)) {
+                val resId = if(colorOrResId == 0) {
                     null
                 } else {
                     AppCompatResources.getColorStateList(textView.context, colorOrResId)
@@ -41,7 +42,7 @@ class BindingAdapter {
         @JvmStatic
         @BindingAdapter("android:textAppearance")
         fun setTextAppearance(textView: TextView, @StyleRes resId: Int) {
-            if (resId == 0) {
+            if(resId == 0) {
                 return
             }
 
@@ -55,7 +56,7 @@ class BindingAdapter {
         fun setSrcCompat(imageView: ImageView, url: String?, useBlur: Boolean) {
             val requestBuilder = Glide.with(imageView).load(url)
 
-            if (useBlur) {
+            if(useBlur) {
                 requestBuilder.apply(RequestOptions.bitmapTransform(BlurTransformation()))
             }
 
@@ -65,10 +66,17 @@ class BindingAdapter {
         @JvmStatic
         @BindingAdapter("android:onEditorAction")
         fun setOnEditorAction(textView: TextView, onEditorAction: Action) {
-            textView.setOnEditorActionListener { _, _, _ ->
+            textView.setOnEditorActionListener { _, _, event ->
+                if(event?.action != KeyEvent.ACTION_DOWN) {
+                    false
+                }
+
                 onEditorAction.run()
-                false
+
+                true
             }
         }
+
+
     }
 }

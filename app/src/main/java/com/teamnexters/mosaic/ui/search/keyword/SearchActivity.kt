@@ -7,17 +7,20 @@ import android.transition.Fade
 import android.transition.TransitionInflater
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
+import com.teamnexters.mosaic.data.local.model.Keyword
 import com.teamnexters.mosaic.databinding.ActivitySearchBinding
 import com.teamnexters.mosaic.utils.Navigator
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.withLatestFrom
 import kotlinx.android.synthetic.main.activity_search.*
+import java.util.*
 import javax.inject.Inject
 
 
 internal class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>() {
 
-    @Inject lateinit var searchAdapter: SearchAdapter
+    @Inject
+    lateinit var searchAdapter: SearchAdapter
 
     override fun getLayoutRes() = R.layout.activity_search
 
@@ -51,9 +54,14 @@ internal class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewMo
                         .observeOn(mainScheduler)
                         .subscribeBy(
                                 onNext = {
-                                    viewModel.addKeyword(it)
+                                    val keyword = Keyword().apply {
+                                        keyword = it
+                                        createdAt = Date().time
+                                    }
 
-                                    Navigator.navigationToSearchResult(this@SearchActivity)
+                                    viewModel.addKeyword(keyword)
+
+                                    Navigator.navigationToSearchResult(this@SearchActivity, keyword)
                                 }
                         ),
 

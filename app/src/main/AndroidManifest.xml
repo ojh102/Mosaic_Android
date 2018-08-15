@@ -33,6 +33,10 @@
             android:name=".ui.search.keyword.SearchActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.search.result.SearchResultActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

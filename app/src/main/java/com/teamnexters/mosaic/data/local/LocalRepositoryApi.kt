@@ -6,5 +6,5 @@ import io.reactivex.Observable
 
 internal interface LocalRepositoryApi {
     fun getKeywordList(): Observable<List<Keyword>>
-    fun addKeyword(keyword: String)
+    fun addKeyword(keyword: Keyword)
 }

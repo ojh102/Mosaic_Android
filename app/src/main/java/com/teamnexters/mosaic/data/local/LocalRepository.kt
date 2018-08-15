@@ -3,7 +3,6 @@ package com.teamnexters.mosaic.data.local
 import com.teamnexters.mosaic.data.local.model.Keyword
 import io.reactivex.Observable
 import io.realm.Sort
-import java.util.*
 import javax.inject.Inject
 
 internal class LocalRepository @Inject constructor(
@@ -18,12 +17,9 @@ internal class LocalRepository @Inject constructor(
         }
     }
 
-    override fun addKeyword(keyword: String) {
+    override fun addKeyword(keyword: Keyword) {
         realmTransaction.execute {
-            it.insertOrUpdate(Keyword().apply {
-                this.keyword = keyword
-                createdAt = Date().time
-            })
+            it.insertOrUpdate(keyword)
         }
     }
 }

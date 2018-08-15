@@ -55,7 +55,7 @@ internal class SearchViewModel @Inject constructor(
         return localRepository.getKeywordList()
     }
 
-    fun addKeyword(keyword: String) {
+    fun addKeyword(keyword: Keyword) {
         localRepository.addKeyword(keyword)
     }
 
