@@ -17,8 +17,8 @@ class RealmModule {
 
     @Provides
     @Singleton
-    fun provideMosaicRealmObservableFactory(): MosaicRealmObservableFactory {
-        return MosaicRealmObservableFactory()
+    fun provideMosaicRealmObservableFactory(realmConfiguration: RealmConfiguration): MosaicRealmObservableFactory {
+        return MosaicRealmObservableFactory(realmConfiguration)
     }
 
     @Provides

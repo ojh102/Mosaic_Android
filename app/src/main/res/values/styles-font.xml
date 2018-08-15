@@ -54,6 +54,10 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="B13LightRed" parent="B13">
+        <item name="android:textColor">@color/textColorLightRed</item>
+    </style>
+
     <style name="B14White" parent="B14">
         <item name="android:textColor">@color/white</item>
     </style>

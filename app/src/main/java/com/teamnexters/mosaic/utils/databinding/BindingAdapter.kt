@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.teamnexters.mosaic.utils.extension.hasResource
+import io.reactivex.functions.Action
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 class BindingAdapter {
@@ -59,6 +60,15 @@ class BindingAdapter {
             }
 
             requestBuilder.into(imageView)
+        }
+
+        @JvmStatic
+        @BindingAdapter("android:onEditorAction")
+        fun setOnEditorAction(textView: TextView, onEditorAction: Action) {
+            textView.setOnEditorActionListener { _, _, _ ->
+                onEditorAction.run()
+                false
+            }
         }
     }
 }

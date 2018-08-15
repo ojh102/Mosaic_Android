@@ -30,7 +30,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.search.SearchActivity"
+            android:name=".ui.search.keyword.SearchActivity"
             android:screenOrientation="portrait" />
 
     </application>

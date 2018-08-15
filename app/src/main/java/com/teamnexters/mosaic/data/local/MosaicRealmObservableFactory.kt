@@ -7,7 +7,9 @@ import io.realm.*
 import java.util.*
 import javax.inject.Inject
 
-class MosaicRealmObservableFactory @Inject constructor(){
+class MosaicRealmObservableFactory @Inject constructor(
+        private val realmConfiguration: RealmConfiguration
+) {
 
     // Maps for storing strong references to Realm classes while they are subscribed to.
     // This is needed if users create Observables without manually maintaining a reference to them.
@@ -31,14 +33,12 @@ class MosaicRealmObservableFactory @Inject constructor(){
     private val BACK_PRESSURE_STRATEGY = BackpressureStrategy.LATEST
 
     fun <E : RealmModel> from(
-            realmConfiguration: RealmConfiguration,
             query: (realm: Realm) -> RealmResults<E>
     ): Observable<E> {
-        return from(realmConfiguration, query, null)
+        return from(query, null)
     }
 
     fun <E : RealmModel> from(
-            realmConfiguration: RealmConfiguration,
             query: (realm: Realm) -> RealmResults<E>,
             defaultValue: E?
     ): Observable<E> {
@@ -49,7 +49,7 @@ class MosaicRealmObservableFactory @Inject constructor(){
             resultsRefs.get().acquireReference(realmResults)
 
             val listener = RealmChangeListener<RealmResults<E>> {
-                if (!emitter.isDisposed) {
+                if(!emitter.isDisposed) {
                     realmResults.first(defaultValue)?.let {
                         emitter.onNext(observableRealm.copyFromRealm(it))
                     }
@@ -72,9 +72,7 @@ class MosaicRealmObservableFactory @Inject constructor(){
     }
 
     fun <E : RealmModel> fromList(
-            realmConfiguration: RealmConfiguration,
             query: (realm: Realm) -> RealmResults<E>
-
     ): Observable<List<E>> {
 
         return Observable.create<List<E>> { emitter ->
@@ -84,7 +82,7 @@ class MosaicRealmObservableFactory @Inject constructor(){
             resultsRefs.get().acquireReference(realmResults)
 
             val listener = RealmChangeListener<RealmResults<E>> {
-                if (!emitter.isDisposed) {
+                if(!emitter.isDisposed) {
                     emitter.onNext(observableRealm.copyFromRealm(realmResults))
                 }
             }
@@ -110,7 +108,7 @@ class MosaicRealmObservableFactory @Inject constructor(){
         fun acquireReference(obj: K) {
             val count = references[obj]
 
-            if (count == null) {
+            if(count == null) {
                 references[obj] = 1
             } else {
                 references[obj] = count + 1

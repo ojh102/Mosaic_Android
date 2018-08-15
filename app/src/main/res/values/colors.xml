@@ -7,6 +7,7 @@
     <color name="textColorGrey">#ABAFB4</color>
     <color name="textColorBlack">#474747</color>
     <color name="textColorRed">#FE563C</color>
+    <color name="textColorLightRed">#FFC9C1</color>
     <color name="textColorHighlight">#CCF6FF</color>
 
     <color name="colorCommentSelected">#2D3253</color>

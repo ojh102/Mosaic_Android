@@ -7,5 +7,6 @@
     <string name="transition_search">transition_search</string>
     <string name="cancel">취소</string>
     <string name="hint_search">검색어를 입력해주세요</string>
+    <string name="dash">-</string>
 
 </resources>

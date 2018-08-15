@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.teamnexters.mosaic.ui.search.SearchViewModel" />
+            type="com.teamnexters.mosaic.ui.search.keyword.SearchViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -19,6 +19,7 @@
         tools:background="@drawable/main_background">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/layout_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -44,6 +45,10 @@
                     android:paddingLeft="35dp"
                     android:background="@drawable/img_search_box"
                     android:hint="@string/hint_search"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:onEditorAction="@{() -> viewModel.onClickSearch()}"
                     android:onTextChanged="@{(text, start, before, count) -> viewModel.acceptKeyword(text.toString)}"
                     android:textAppearance="@style/B13"
                     android:textColor="@color/white"
@@ -94,12 +99,14 @@
         </android.support.constraint.ConstraintLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_search"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="12dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/container_search" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_search" />
 
     </android.support.constraint.ConstraintLayout>
 

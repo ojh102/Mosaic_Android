@@ -10,6 +10,7 @@ import com.facebook.stetho.Stetho
 import com.teamnexters.mosaic.di.DaggerApplicationComponent
 import dagger.android.*
 import dagger.android.support.HasSupportFragmentInjector
+import io.realm.Realm
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -34,6 +35,8 @@ class MosaicApplication : Application(), HasActivityInjector, HasSupportFragment
                 .application(this)
                 .build()
                 .inject(this)
+
+        Realm.init(this)
 
         EmojiCompat.init(BundledEmojiCompatConfig(this))
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="keyword"
+            type="com.teamnexters.mosaic.data.local.model.Keyword" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_dash"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginLeft="31dp"
+            android:gravity="center_vertical"
+            android:text="@string/dash"
+            android:textAppearance="@style/B13LightRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="31dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@{keyword.keyword}"
+            android:textAppearance="@style/B13LightRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tv_dash"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="이화여자대학교 인근 맛집" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

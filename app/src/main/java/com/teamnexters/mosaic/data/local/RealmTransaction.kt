@@ -9,12 +9,12 @@ class RealmTransaction @Inject constructor(
         private val realmConfiguration: RealmConfiguration
 ) {
 
-    fun execute(realmConfiguration: RealmConfiguration, transactionAction: ((realm: Realm) -> Unit)) {
+    fun execute(transactionAction: ((realm: Realm) -> Unit)) {
         val realm = Realm.getInstance(realmConfiguration)
         realm.executeTransaction(transactionAction)
     }
 
-    fun executeAsync(realmConfiguration: RealmConfiguration, transactionAction: (realm: Realm) -> Unit): Completable {
+    fun executeAsync(transactionAction: (realm: Realm) -> Unit): Completable {
 
         return Completable.create { emitter ->
             val realm = Realm.getInstance(realmConfiguration)
@@ -27,7 +27,7 @@ class RealmTransaction @Inject constructor(
         }
     }
 
-    fun <T> select(realmConfiguration: RealmConfiguration, selectAction: ((realm: Realm) -> T)): T {
+    fun <T> select(selectAction: ((realm: Realm) -> T)): T {
         val realm = Realm.getInstance(realmConfiguration)
         val selectedValue = selectAction.invoke(realm)
         realm.close()
