@@ -107,7 +107,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:stackFrom="bottom"
-            app:swipeDirection="vertical"
+            app:swipeDirection="freedom"
             app:translationDiff="24"
             app:swipeThreshold="0.6"
             app:scaleDiff="0.05"
