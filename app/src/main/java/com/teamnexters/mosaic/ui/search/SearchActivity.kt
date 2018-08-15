@@ -7,6 +7,7 @@ import android.transition.TransitionInflater
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivitySearchBinding
+import io.reactivex.rxkotlin.subscribeBy
 
 
 internal class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>() {
@@ -20,12 +21,39 @@ internal class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewMo
 
         super.onCreate(savedInstanceState)
 
+        binding.viewModel = viewModel
+
         initializeAnimation()
+
+        bind(
+                viewModel.bindClickCancel()
+                        .subscribeBy(
+                                onNext = {
+                                    binding.editSearch.setText("")
+                                    finishAfterTransition()
+                                }
+                        ),
+
+                viewModel.bindClickKewordCancel()
+                        .subscribeBy(
+                                onNext = {
+                                    binding.editSearch.setText("")
+                                }
+                        ),
+
+                viewModel.bindKeyword()
+                        .subscribeBy(
+                                onNext = {
+                                    val keywordCancelVisibility = it.isNotEmpty()
+
+                                    binding.keywordCancelVisibility = keywordCancelVisibility
+                                }
+                        )
+        )
     }
 
     private fun initializeAnimation() {
-        val transition = TransitionInflater.from(this)
-                .inflateTransition(R.transition.change_bound_transform)
+        val transition = TransitionInflater.from(this).inflateTransition(R.transition.change_bound_transform)
 
         window.sharedElementEnterTransition = transition
 
