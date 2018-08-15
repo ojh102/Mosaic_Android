@@ -34,6 +34,10 @@
         <item name="android:textSize">13sp</item>
     </style>
 
+    <style name="B14" parent="AppFont.B">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="B10Grey" parent="B10">
         <item name="android:textColor">@color/textColorGrey</item>
     </style>
@@ -43,6 +47,14 @@
     </style>
 
     <style name="B10White" parent="B13">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="B13White" parent="B13">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="B14White" parent="B14">
         <item name="android:textColor">@color/white</item>
     </style>
 

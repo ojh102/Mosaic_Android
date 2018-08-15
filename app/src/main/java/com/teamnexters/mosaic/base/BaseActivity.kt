@@ -5,10 +5,12 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
+import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.WindowManager
 import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
 import com.teamnexters.mosaic.di.qualifier.RxMainScheduler
 import dagger.android.AndroidInjection
@@ -20,6 +22,7 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
+
 
 abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatActivity(),
         HasFragmentInjector, HasSupportFragmentInjector {
@@ -62,10 +65,12 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass())
 
         viewModel.let {
-            if (it is BaseViewModel) {
+            if(it is BaseViewModel) {
                 it.intent(intent)
             }
         }
+
+        initializeWindow()
     }
 
     override fun onDestroy() {
@@ -78,7 +83,7 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
         super.onActivityResult(requestCode, resultCode, data)
 
         viewModel.let {
-            if (it is BaseViewModel) {
+            if(it is BaseViewModel) {
                 it.activityResult(requestCode, resultCode, data)
             }
         }
@@ -94,6 +99,22 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
 
     protected fun bind(vararg disposables: Disposable) {
         compositeDisposable.addAll(*disposables)
+    }
+
+    private fun initializeWindow() {
+        setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
+        window.statusBarColor = Color.TRANSPARENT
+    }
+
+    private fun setWindowFlag(bits: Int, on: Boolean) {
+        val win = window
+        val winParams = win.attributes
+        if (on) {
+            winParams.flags = winParams.flags or bits
+        } else {
+            winParams.flags = winParams.flags and bits.inv()
+        }
+        win.attributes = winParams
     }
 
 }

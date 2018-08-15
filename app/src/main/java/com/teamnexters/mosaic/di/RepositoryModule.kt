@@ -1,7 +1,7 @@
 package com.teamnexters.mosaic.di
 
-import com.teamnexters.mosaic.data.remote.CardRepository
-import com.teamnexters.mosaic.data.remote.CardRepositoryApi
+import com.teamnexters.mosaic.data.remote.RemoteRepository
+import com.teamnexters.mosaic.data.remote.RemoteRepositoryApi
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
@@ -10,5 +10,5 @@ import javax.inject.Singleton
 interface RepositoryModule {
     @Binds
     @Singleton
-    fun bindCardRepository(cardRepository: CardRepository): CardRepositoryApi
+    fun bindCardRepository(remoteRepository: RemoteRepository): RemoteRepositoryApi
 }

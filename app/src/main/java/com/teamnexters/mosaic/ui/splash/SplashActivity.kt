@@ -7,7 +7,7 @@ import com.teamnexters.mosaic.databinding.ActivitySplashBinding
 import com.teamnexters.mosaic.utils.Navigator
 import io.reactivex.rxkotlin.subscribeBy
 
-class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
+internal class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
 
     override fun getLayoutRes() = R.layout.activity_splash
 

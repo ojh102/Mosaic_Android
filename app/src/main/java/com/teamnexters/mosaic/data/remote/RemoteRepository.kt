@@ -4,10 +4,10 @@ import com.teamnexters.mosaic.ui.main.CardLooknFeel
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class CardRepository @Inject constructor(
+class RemoteRepository @Inject constructor(
         private val mosaicApi: MosaicApi
 
-) : CardRepositoryApi {
+) : RemoteRepositoryApi {
 
 
     fun getCards(): Observable<List<CardLooknFeel>> {

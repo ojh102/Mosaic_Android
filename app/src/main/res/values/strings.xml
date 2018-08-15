@@ -4,5 +4,7 @@
     <string name="format_card_last_image">+%1$d</string>
     <string name="format_card_comment">댓글 %1$d</string>
     <string name="scarp">스크랩</string>
+    <string name="transition_search">transition_search</string>
+    <string name="cancel">취소</string>
 
 </resources>

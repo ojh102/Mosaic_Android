@@ -5,7 +5,7 @@ import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityWriteBinding
 
-class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel>() {
+internal class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel>() {
 
     override fun getLayoutRes() = R.layout.activity_write
 

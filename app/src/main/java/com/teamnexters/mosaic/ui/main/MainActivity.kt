@@ -1,16 +1,18 @@
 package com.teamnexters.mosaic.ui.main
 
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityMainBinding
 import com.teamnexters.mosaic.ui.main.stack.CardStackView
 import com.teamnexters.mosaic.ui.main.stack.SwipeDirection
+import com.teamnexters.mosaic.utils.Navigator
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun getLayoutRes() = R.layout.activity_main
 
@@ -20,6 +22,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     lateinit var adapter: MosaicStackAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.main_background))
+
         super.onCreate(savedInstanceState)
 
         binding.viewModel = viewModel
@@ -27,6 +31,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         initializeStack()
 
         bind(
+                viewModel.bindClickSearch()
+                        .subscribeBy(
+                                onNext = {
+                                    Navigator.navigateToSearch(this, container_search)
+                                }
+                        ),
+
                 viewModel.getCards()
                         .subscribeOn(ioScheduler)
                         .observeOn(mainScheduler)
