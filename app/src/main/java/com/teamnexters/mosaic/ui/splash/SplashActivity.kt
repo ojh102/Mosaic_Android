@@ -23,6 +23,7 @@ internal class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewMo
                                     binding.text = it
 
                                     Navigator.navigateToMain(this)
+
                                     finish()
                                 }
                         )

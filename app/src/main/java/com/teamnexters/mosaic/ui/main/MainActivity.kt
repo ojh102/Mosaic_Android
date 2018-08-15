@@ -1,7 +1,6 @@
 package com.teamnexters.mosaic.ui.main
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityMainBinding
@@ -22,8 +21,6 @@ internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>()
     lateinit var adapter: MosaicStackAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.main_background))
-
         super.onCreate(savedInstanceState)
 
         binding.viewModel = viewModel
@@ -38,7 +35,7 @@ internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>()
                                 }
                         ),
 
-                viewModel.getCards()
+                viewModel.fetchMainCardList()
                         .subscribeOn(ioScheduler)
                         .observeOn(mainScheduler)
                         .subscribeBy(

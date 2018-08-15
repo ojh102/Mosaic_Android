@@ -16,7 +16,6 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 
 class BindingAdapter {
     companion object {
-
         @JvmStatic
         @BindingAdapter("android:text")
         fun setText(textView: TextView, @StringRes resId: Int) {
@@ -26,8 +25,8 @@ class BindingAdapter {
         @JvmStatic
         @BindingAdapter("android:textColor")
         fun setTextColor(textView: TextView, colorOrResId: Int) {
-            if(textView.context.hasResource(colorOrResId)) {
-                val resId = if(colorOrResId == 0) {
+            if (textView.context.hasResource(colorOrResId)) {
+                val resId = if (colorOrResId == 0) {
                     null
                 } else {
                     AppCompatResources.getColorStateList(textView.context, colorOrResId)
@@ -42,7 +41,7 @@ class BindingAdapter {
         @JvmStatic
         @BindingAdapter("android:textAppearance")
         fun setTextAppearance(textView: TextView, @StyleRes resId: Int) {
-            if(resId == 0) {
+            if (resId == 0) {
                 return
             }
 
@@ -53,10 +52,14 @@ class BindingAdapter {
         @BindingAdapter(value = [
             "srcCompat", "useBlur"
         ], requireAll = false)
-        fun setSrcCompat(imageView: ImageView, url: String?, useBlur: Boolean) {
+        fun setSrcCompat(
+                imageView: ImageView,
+                url: String?,
+                useBlur: Boolean
+        ) {
             val requestBuilder = Glide.with(imageView).load(url)
 
-            if(useBlur) {
+            if (useBlur) {
                 requestBuilder.apply(RequestOptions.bitmapTransform(BlurTransformation()))
             }
 
@@ -67,7 +70,7 @@ class BindingAdapter {
         @BindingAdapter("android:onEditorAction")
         fun setOnEditorAction(textView: TextView, onEditorAction: Action) {
             textView.setOnEditorActionListener { _, _, event ->
-                if(event?.action != KeyEvent.ACTION_DOWN) {
+                if (event?.action != KeyEvent.ACTION_DOWN) {
                     false
                 }
 
@@ -76,7 +79,5 @@ class BindingAdapter {
                 true
             }
         }
-
-
     }
 }

@@ -1,4 +1,4 @@
-package com.teamnexters.mosaic.ui.search.keyword
+package com.teamnexters.mosaic.ui.search
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

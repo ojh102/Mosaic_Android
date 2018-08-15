@@ -9,8 +9,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
+import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
 import com.teamnexters.mosaic.di.qualifier.RxMainScheduler
 import dagger.android.AndroidInjection
@@ -104,6 +106,8 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
     private fun initializeWindow() {
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
         window.statusBarColor = Color.TRANSPARENT
+        window.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.main_background))
+
     }
 
     private fun setWindowFlag(bits: Int, on: Boolean) {

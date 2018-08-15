@@ -9,8 +9,23 @@ class RemoteRepository @Inject constructor(
 
 ) : RemoteRepositoryApi {
 
+    override fun fetchMainCardList(): Observable<List<CardLooknFeel>> {
+        return createDummyList()
+    }
 
-    fun getCards(): Observable<List<CardLooknFeel>> {
+    override fun fetchResultListFromSearch(): Observable<List<CardLooknFeel>> {
+        return createDummyList()
+    }
+
+    override fun fetchResultListFromWritten(): Observable<List<CardLooknFeel>> {
+        return createDummyList()
+    }
+
+    override fun fetchResultListFromScrap(): Observable<List<CardLooknFeel>> {
+        return createDummyList()
+    }
+
+    private fun createDummyList(): Observable<List<CardLooknFeel>> {
         val dummyList = mutableListOf<CardLooknFeel>()
 
         val dummyImageUrl = "https://picsum.photos/200?random"
@@ -23,9 +38,10 @@ class RemoteRepository @Inject constructor(
             }
 
             val dummy = CardLooknFeel(
+                    id = "Univ$i",
                     date = "오늘",
                     theme = "테마$i",
-                    content = "이것이 콘텐츠다$i",
+                    content = "$i 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다이것이 콘텐츠다 이것이 콘텐츠다",
                     univImageUrl = dummyImageUrl,
                     univName = "대학$i",
                     imageUrlList = dummyImageUrlList,

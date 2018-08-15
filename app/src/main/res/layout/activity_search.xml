@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.teamnexters.mosaic.ui.search.keyword.SearchViewModel" />
+            type="com.teamnexters.mosaic.ui.search.SearchViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout

@@ -3,10 +3,12 @@
 
     <string name="format_card_last_image">+%1$d</string>
     <string name="format_card_comment">댓글 %1$d</string>
-    <string name="scarp">스크랩</string>
+    <string name="format_result_header">%1$d개의 결과</string>
     <string name="transition_search">transition_search</string>
+    <string name="scarp">스크랩</string>
     <string name="cancel">취소</string>
     <string name="hint_search">검색어를 입력해주세요</string>
     <string name="dash">-</string>
+    <string name="pipe">|</string>
 
 </resources>

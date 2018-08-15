@@ -1,4 +1,4 @@
-package com.teamnexters.mosaic.ui.search.keyword
+package com.teamnexters.mosaic.ui.search
 
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay

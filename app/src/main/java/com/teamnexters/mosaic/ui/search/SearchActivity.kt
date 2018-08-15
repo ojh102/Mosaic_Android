@@ -1,7 +1,6 @@
-package com.teamnexters.mosaic.ui.search.keyword
+package com.teamnexters.mosaic.ui.search
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.transition.Fade
 import android.transition.TransitionInflater
@@ -9,6 +8,7 @@ import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.data.local.model.Keyword
 import com.teamnexters.mosaic.databinding.ActivitySearchBinding
+import com.teamnexters.mosaic.ui.result.FromScreen
 import com.teamnexters.mosaic.utils.Navigator
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.withLatestFrom
@@ -27,8 +27,6 @@ internal class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewMo
     override fun getViewModelClass() = SearchViewModel::class.java
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.main_background))
-
         super.onCreate(savedInstanceState)
 
         binding.viewModel = viewModel
@@ -61,7 +59,7 @@ internal class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewMo
 
                                     viewModel.addKeyword(keyword)
 
-                                    Navigator.navigationToSearchResult(this@SearchActivity, keyword)
+                                    Navigator.navigationToSearchResult(this@SearchActivity, keyword, FromScreen.Search)
                                 }
                         ),
 

@@ -1,6 +1,7 @@
 package com.teamnexters.mosaic.ui.main
 
 data class CardLooknFeel(
+        val id: String,
         val date: String,
         val theme: String,
         val content: String,

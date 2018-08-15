@@ -1,4 +1,4 @@
-package com.teamnexters.mosaic.ui.search.keyword
+package com.teamnexters.mosaic.ui.result
 
 import android.arch.lifecycle.ViewModel
 import com.teamnexters.mosaic.di.anotation.ActivityScope
@@ -9,20 +9,20 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 
 
-@Module(includes = [SearchActivityModule.ProvideModule::class])
-internal interface SearchActivityModule {
+@Module(includes = [ResultActivityModule.ProvideModule::class])
+internal interface ResultActivityModule {
     @Module
     class ProvideModule {
         @Provides
         @ActivityScope
-        fun provideSearchAdapter(): SearchAdapter {
-            return SearchAdapter()
+        fun provideResultAdapter(): ResultAdapter {
+            return ResultAdapter()
         }
     }
 
     @Binds
     @ActivityScope
     @IntoMap
-    @ViewModelKey(SearchViewModel::class)
-    fun bindSearchViewModel(searchViewModel: SearchViewModel): ViewModel
+    @ViewModelKey(ResultViewModel::class)
+    fun bindResultViewModel(resultViewModel: ResultViewModel) : ViewModel
 }

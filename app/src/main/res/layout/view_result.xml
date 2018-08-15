@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="card"
+            type="com.teamnexters.mosaic.ui.main.CardLooknFeel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/bg_result"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="0dp"
+            android:layout_height="9dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_theme"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_theme"
+            app:layout_constraintRight_toRightOf="@+id/tv_theme"
+            app:srcCompat="@color/textColorHighlight" />
+
+        <com.teamnexters.mosaic.ui.widget.CustomTextView
+            android:id="@+id/tv_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@{card.theme}"
+            android:textAppearance="@style/EB14Black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="아무말😀" />
+
+        <com.teamnexters.mosaic.ui.widget.CustomTextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{card.content}"
+            android:textAppearance="@style/R13Black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/iv_image"
+            app:layout_constraintTop_toBottomOf="@+id/tv_theme"
+            tools:text="asdasdasd ads akjhsdja a a a a aa a a a a a a a a  a d a s d a s sda sdsasd asdas dsa da" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_image"
+            android:layout_width="59dp"
+            android:layout_height="59dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="19dp"
+            android:visibility="@{card.imageUrlList.size() > 0}"
+            app:layout_constraintLeft_toRightOf="@+id/tv_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@{card.imageUrlList.size() > 0 ? card.imageUrlList.get(0) : null}"
+            tools:src="@color/colorAccent" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="92dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/line_result" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_univ"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_comment"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_comment"
+            app:srcCompat="@{card.univImageUrl}"
+            tools:srcCompat="@color/textColorBlack" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_univ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:text="@{card.univName}"
+            android:textAppearance="@style/B10Black"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_univ"
+            app:layout_constraintLeft_toRightOf="@+id/iv_univ"
+            app:layout_constraintTop_toTopOf="@+id/iv_univ"
+            tools:text="이화여자대학교" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_pipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:text="@string/pipe"
+            android:textAppearance="@style/B10LightGrey"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_univ"
+            app:layout_constraintLeft_toRightOf="@+id/tv_univ"
+            app:layout_constraintTop_toTopOf="@+id/iv_univ" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:text="@{card.id}"
+            android:textAppearance="@style/B10MiddleGrey"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_univ"
+            app:layout_constraintLeft_toRightOf="@+id/tv_pipe"
+            app:layout_constraintTop_toTopOf="@+id/iv_univ"
+            tools:text="EWHA0001" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="@{card.date}"
+            android:textAppearance="@style/B10MiddleGrey"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_comment"
+            app:layout_constraintRight_toLeftOf="@+id/tv_comment"
+            app:layout_constraintTop_toTopOf="@+id/tv_comment"
+            tools:text="3월 23일" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:layout_marginTop="18dp"
+            android:text="@{@string/format_card_comment(card.commentCount)}"
+            android:textAppearance="@style/B10Commented"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line"
+            tools:text="댓글 24" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

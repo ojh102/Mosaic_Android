@@ -8,12 +8,28 @@
         <item name="android:fontFamily">@font/nanum_square_regular</item>
     </style>
 
+    <style name="R13" parent="AppFont.R">
+        <item name="android:textSize">13sp</item>
+    </style>
+
     <style name="R16" parent="AppFont.R">
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="R18" parent="AppFont.R">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="R13Black" parent="R13">
+        <item name="android:textColor">@color/textColorBlack</item>
+    </style>
+
     <style name="R16Black" parent="R16">
         <item name="android:textColor">@color/textColorBlack</item>
+    </style>
+
+    <style name="R18LightRed" parent="AppFont.R">
+        <item name="android:textColor">@color/textColorLightRed</item>
     </style>
 
 
@@ -38,16 +54,32 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="B10Black" parent="B10">
+        <item name="android:textColor">@color/textColorBlack</item>
+    </style>
+
     <style name="B10Grey" parent="B10">
         <item name="android:textColor">@color/textColorGrey</item>
     </style>
 
-    <style name="B12Grey" parent="B12">
-        <item name="android:textColor">@color/textColorGrey</item>
+    <style name="B10MiddleGrey" parent="B10">
+        <item name="android:textColor">@color/textColorMiddleGrey</item>
+    </style>
+
+    <style name="B10LightGrey" parent="B10">
+        <item name="android:textColor">@color/textColorLightGrey</item>
     </style>
 
     <style name="B10White" parent="B13">
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="B10Commented" parent="B10">
+        <item name="android:textColor">@color/colorCommented</item>
+    </style>
+
+    <style name="B12Grey" parent="B12">
+        <item name="android:textColor">@color/textColorGrey</item>
     </style>
 
     <style name="B13White" parent="B13">
@@ -68,8 +100,20 @@
         <item name="android:fontFamily">@font/nanum_square_extra_bold</item>
     </style>
 
+    <style name="EB14" parent="AppFont.EB">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="EB16" parent="AppFont.EB">
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="EB14White" parent="EB14">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="EB14Black" parent="EB14">
+        <item name="android:textColor">@color/textColorBlack</item>
     </style>
 
     <style name="EB16Black" parent="EB16">

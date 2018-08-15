@@ -54,7 +54,7 @@
 
         <com.teamnexters.mosaic.ui.widget.CustomTextView
             android:id="@+id/tv_content"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
@@ -156,17 +156,17 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="60dp"
                 android:background="@color/colorAccent"
-                app:layout_constraintBottom_toTopOf="@+id/tv_univ"
+                app:layout_constraintBottom_toTopOf="@+id/tv_id"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:srcCompat="@{card.univImageUrl}"
                 tools:srcCompat="@color/colorAccent" />
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_univ"
+                android:id="@+id/tv_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:text="@{card.univName}"
+                android:text="@{card.id}"
                 android:textAppearance="@style/B10Grey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/btn_univ"

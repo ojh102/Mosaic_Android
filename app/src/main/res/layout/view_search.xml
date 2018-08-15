@@ -5,6 +5,7 @@
 
     <data>
         <import type="com.teamnexters.mosaic.utils.Navigator" />
+        <import type="com.teamnexters.mosaic.ui.result.FromScreen" />
 
         <variable
             name="keyword"
@@ -13,7 +14,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:onClick="@{(v) -> Navigator.navigationToSearchResult(v.getContext(), keyword)}"
+        android:onClick="@{(v) -> Navigator.navigationToSearchResult(v.getContext(), keyword, FromScreen.Search)}"
         android:layout_height="40dp">
 
         <android.support.v7.widget.AppCompatTextView
