@@ -10,5 +10,6 @@
     <string name="hint_search">검색어를 입력해주세요</string>
     <string name="dash">-</string>
     <string name="pipe">|</string>
+    <string name="theme">관심분야</string>
 
 </resources>

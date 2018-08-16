@@ -1,8 +1,12 @@
 package com.teamnexters.mosaic.di
 
 import com.teamnexters.mosaic.di.anotation.ActivityScope
+import com.teamnexters.mosaic.ui.filter.FilterActivity
+import com.teamnexters.mosaic.ui.filter.FilterActivityModule
 import com.teamnexters.mosaic.ui.main.MainActivity
 import com.teamnexters.mosaic.ui.main.MainActivityModule
+import com.teamnexters.mosaic.ui.mypage.MyPageActivity
+import com.teamnexters.mosaic.ui.mypage.MyPageActivityModule
 import com.teamnexters.mosaic.ui.result.ResultActivity
 import com.teamnexters.mosaic.ui.result.ResultActivityModule
 import com.teamnexters.mosaic.ui.search.SearchActivity
@@ -35,4 +39,12 @@ internal interface ActivityModule {
     @ContributesAndroidInjector(modules = [ResultActivityModule::class])
     @ActivityScope
     fun bindResultActivity(): ResultActivity
+
+    @ContributesAndroidInjector(modules = [MyPageActivityModule::class])
+    @ActivityScope
+    fun bindMyPageActivity(): MyPageActivity
+
+    @ContributesAndroidInjector(modules = [FilterActivityModule::class])
+    @ActivityScope
+    fun bindFilterActivity(): FilterActivity
 }
