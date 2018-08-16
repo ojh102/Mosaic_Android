@@ -12,6 +12,10 @@
         <item name="android:textSize">13sp</item>
     </style>
 
+    <style name="R12" parent="AppFont.R">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="R16" parent="AppFont.R">
         <item name="android:textSize">16sp</item>
     </style>
@@ -32,6 +36,18 @@
         <item name="android:textColor">@color/textColorLightRed</item>
     </style>
 
+    <style name="R12DeepDarkGrey" parent="R12">
+        <item name="android:textColor">@color/textColorDeepDarkGrey</item>
+    </style>
+
+    <style name="R12Red" parent="R12">
+        <item name="android:textColor">@color/emailTextColor</item>
+    </style>
+
+    <style name="R12EmailNormal" parent="R12">
+        <item name="android:textColor">@color/emailTextNormalColor</item>
+    </style>
+
 
     <!-- bold -->
     <style name="AppFont.B">
@@ -40,6 +56,10 @@
 
     <style name="B10" parent="AppFont.B">
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="B11" parent="AppFont.B">
+        <item name="android:textSize">11sp</item>
     </style>
 
     <style name="B12" parent="AppFont.B">
@@ -100,6 +120,10 @@
         <item name="android:fontFamily">@font/nanum_square_extra_bold</item>
     </style>
 
+    <style name="EB12" parent="AppFont.EB">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="EB14" parent="AppFont.EB">
         <item name="android:textSize">14sp</item>
     </style>
@@ -116,8 +140,11 @@
         <item name="android:textColor">@color/textColorBlack</item>
     </style>
 
+    <style name="EB12DarkGrey" parent="EB12">
+        <item name="android:textColor">@color/textColorDarkGrey</item>
+    </style>
+
     <style name="EB16Black" parent="EB16">
         <item name="android:textColor">@color/textColorBlack</item>
     </style>
-
 </resources>

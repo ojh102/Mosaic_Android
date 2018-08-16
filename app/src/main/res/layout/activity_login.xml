@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.teamnexters.mosaic.ui.login.LoginViewModel" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.login.LoginActivity">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-20dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/img_back_ewhauniv" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/splashAlpha"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:fitsSystemWindows="true">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/login_logo"
+                    android:layout_width="120dp"
+                    android:layout_height="28dp"
+                    android:layout_marginTop="108dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_login_logo" />
+
+                <View
+                    android:id="@+id/email_text_bg"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="84dp"
+                    android:background="@color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/login_logo" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/email_fixed_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/email"
+                    android:textAppearance="@style/EB12DarkGrey"
+                    app:layout_constraintBottom_toBottomOf="@+id/email_text_bg"
+                    app:layout_constraintLeft_toLeftOf="@+id/email_text_bg"
+                    app:layout_constraintTop_toTopOf="@+id/email_text_bg" />
+
+                <View
+                    android:id="@+id/email_text_line"
+                    android:layout_width="1dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/lineColor"
+                    app:layout_constraintBottom_toBottomOf="@+id/email_text_bg"
+                    app:layout_constraintLeft_toRightOf="@+id/email_fixed_text"
+                    app:layout_constraintTop_toTopOf="@+id/email_text_bg" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/email_edittext"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@null"
+                    android:hint="학교 이메일을 입력해주세요"
+                    android:imeOptions="actionSend"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="30"
+                    android:maxLines="1"
+                    android:textAppearance="@style/R12DeepDarkGrey"
+                    android:textColorHint="@color/textColorGrey"
+                    android:textCursorDrawable="@color/colorEmailConfirmBgSelected"
+                    app:layout_constraintBottom_toBottomOf="@+id/email_text_bg"
+                    app:layout_constraintLeft_toRightOf="@+id/email_text_line"
+                    app:layout_constraintRight_toRightOf="@+id/email_text_bg"
+                    app:layout_constraintTop_toTopOf="@+id/email_text_bg" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/email_text_bg">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/use_agreement_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
+                        android:text="@string/use_agreement_left"
+                        android:textAppearance="@style/B11"
+                        android:textColor="#ADADAD"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/use_agreement_text"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/use_agreement_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
+                        android:text="@string/use_agreement_center"
+                        android:textAppearance="@style/B11"
+                        android:textColor="#ff644c"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/use_agreement_left"
+                        app:layout_constraintRight_toLeftOf="@+id/use_agreement_right"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/use_agreement_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
+                        android:text="@string/use_agreement_right"
+                        android:textAppearance="@style/B11"
+                        android:textColor="#ADADAD"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/use_agreement_text"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/send_email"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:background="@drawable/email_confirm_text_bg"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:text="@string/confirm_email"
+                    android:textAppearance="@style/EB14White"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/use_agreement_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/use_agreement_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginRight="24dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/use_agreement_title"
+                        android:textAppearance="@style/EB16Black"
+                        app:layout_constraintBottom_toTopOf="@+id/use_agreement_line"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/use_agreement_line"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginRight="24dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@color/lineColor"
+                        app:layout_constraintBottom_toTopOf="@+id/use_agreement_contents"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/use_agreement_title" />
+
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/use_agreement_contents"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginRight="24dp"
+                        android:layout_marginTop="16dp"
+                        android:letterSpacing="-0.02"
+                        android:lineSpacingExtra="8sp"
+                        android:text="@string/use_agreement_contents"
+                        android:textAppearance="@style/R12"
+                        android:textColor="@color/useAgreementContents"
+                        app:layout_constraintBottom_toTopOf="@+id/use_agreement_agree"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/use_agreement_line" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/use_agreement_agree"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="61dp"
+                        android:background="@color/useAgreementAgreeBg"
+                        android:gravity="center"
+                        android:text="@string/use_agreement_agree"
+                        android:textAppearance="@style/EB14White"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/use_agreement_contents" />
+                </android.support.constraint.ConstraintLayout>
+            </android.support.constraint.ConstraintLayout>
+        </ScrollView>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/email_check_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f5f5f5">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/check_email_bg"
+                android:layout_width="0dp"
+                android:layout_height="204dp"
+                android:scaleType="fitXY"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/img_email_back" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/check_email_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="13dp"
+                android:layout_marginTop="33dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_email_back" />
+
+            <View
+                android:id="@+id/check_email_center_bg"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="144dp"
+                android:background="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/check_email_center_img"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                app:layout_constraintBottom_toBottomOf="@+id/check_email_center_bg"
+                app:layout_constraintLeft_toLeftOf="@+id/check_email_center_bg"
+                app:layout_constraintRight_toRightOf="@+id/check_email_center_bg"
+                app:layout_constraintTop_toTopOf="@+id/check_email_center_bg"
+                app:srcCompat="@drawable/ic_email_send" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/check_email_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="@string/check_email_text"
+                android:textAppearance="@style/EB16Black"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/check_email_center_bg" />
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/check_email_text">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/user_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:textAppearance="@style/R12Red"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/user_email_right"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="gunjoon.lee@navercorp.com" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/user_email_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:text="@string/user_email_right"
+                    android:textAppearance="@style/R12EmailNormal"
+                    app:layout_constraintLeft_toRightOf="@+id/user_email"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/user_email_center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:text="@string/user_email_center"
+                    android:textAppearance="@style/R12EmailNormal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/user_email" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/user_email_bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:text="@string/user_email_bottom"
+                    android:textAppearance="@style/R12EmailNormal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/user_email_center" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/check_email"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:background="@color/useAgreementAgreeBg"
+                android:gravity="center"
+                android:text="@string/use_agreement_agree"
+                android:textAppearance="@style/EB14White"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </FrameLayout>
+</layout>
+

@@ -1,6 +1,7 @@
 package com.teamnexters.mosaic.ui.splash
 
 import android.os.Bundle
+import android.os.Handler
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivitySplashBinding
@@ -8,6 +9,7 @@ import com.teamnexters.mosaic.utils.Navigator
 import io.reactivex.rxkotlin.subscribeBy
 
 internal class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
+    val mRemainSecond : Long = 1000
 
     override fun getLayoutRes() = R.layout.activity_splash
 
@@ -16,17 +18,16 @@ internal class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewMo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        bind(
-                viewModel.text()
-                        .subscribeBy(
-                                onSuccess = {
-                                    binding.text = it
+        checkLogin()
+    }
 
-                                    Navigator.navigateToMain(this)
+    fun checkLogin() {
+        Handler().let {
+            it.postDelayed(Runnable {
+                if(true) Navigator.navigateToLogin(this) else Navigator.navigateToMain(this)
 
-                                    finish()
-                                }
-                        )
-        )
+                finish()
+            }, mRemainSecond)
+        }
     }
 }

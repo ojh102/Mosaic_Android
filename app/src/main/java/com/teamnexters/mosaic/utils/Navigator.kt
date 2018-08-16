@@ -5,12 +5,14 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.teamnexters.mosaic.data.local.model.Keyword
+import android.net.Uri
 import com.teamnexters.mosaic.ui.main.MainActivity
 import com.teamnexters.mosaic.ui.result.FromScreen
 import com.teamnexters.mosaic.ui.result.ResultActivity
 import com.teamnexters.mosaic.ui.search.SearchActivity
 import com.teamnexters.mosaic.ui.write.WriteActivity
 import com.teamnexters.mosaic.utils.extension.startActivityWithTransition
+import com.teamnexters.mosaic.ui.login.LoginActivity
 
 internal class Navigator {
     companion object {
@@ -44,7 +46,20 @@ internal class Navigator {
                 putExtra(ResultActivity.KEY_TITLE, keyword.keyword)
                 putExtra(ResultActivity.KEY_FROM_SCREEN, fromScreen)
             }
+        }
 
+        @JvmStatic
+        fun navigateToLogin(context: Context) {
+            context.startActivity(Intent(context, LoginActivity::class.java))
+        }
+
+        @JvmStatic
+        fun navigateToInternet(context: Context) {
+            context.startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("http://www.naver.com")))
+        }
+
+        @JvmStatic
+        fun navigateWithIntent(context: Context, intent: Intent) {
             context.startActivity(intent)
         }
     }
