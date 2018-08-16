@@ -28,7 +28,7 @@
         <item name="android:textColor">@color/textColorBlack</item>
     </style>
 
-    <style name="R18LightRed" parent="AppFont.R">
+    <style name="R18LightRed" parent="R18">
         <item name="android:textColor">@color/textColorLightRed</item>
     </style>
 

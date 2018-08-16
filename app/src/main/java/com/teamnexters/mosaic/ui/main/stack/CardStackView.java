@@ -225,10 +225,6 @@ public class CardStackView extends FrameLayout {
         }
     }
 
-    private boolean isVerticalDirection() {
-        return option.swipeDirection == SwipeDirection.VERTICAL;
-    }
-
     private void update(float percentX, float percentY) {
         if (cardEventListener != null) {
             cardEventListener.onCardDragging(percentX, percentY);
