@@ -27,6 +27,16 @@ internal class Navigator {
         }
 
         @JvmStatic
+        fun navigateToMypage(context: Context) {
+
+        }
+
+        @JvmStatic
+        fun navigateToFilter(context: Context) {
+
+        }
+
+        @JvmStatic
         fun navigateToWrite(context: Context) {
             context.startActivity(Intent(context, WriteActivity::class.java))
         }
@@ -39,7 +49,7 @@ internal class Navigator {
         }
 
         @JvmStatic
-        fun navigationToSearchResult(context: Context, keyword: Keyword, fromScreen: FromScreen) {
+        fun navigationToResult(context: Context, keyword: Keyword, fromScreen: FromScreen) {
             val intent = Intent(context, ResultActivity::class.java).apply {
                 putExtra(ResultActivity.KEY_TITLE, keyword.keyword)
                 putExtra(ResultActivity.KEY_FROM_SCREEN, fromScreen)

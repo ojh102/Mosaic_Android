@@ -59,7 +59,7 @@ internal class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewMo
 
                                     viewModel.addKeyword(keyword)
 
-                                    Navigator.navigationToSearchResult(this@SearchActivity, keyword, FromScreen.Search)
+                                    Navigator.navigationToResult(this@SearchActivity, keyword, FromScreen.Search)
                                 }
                         ),
 
