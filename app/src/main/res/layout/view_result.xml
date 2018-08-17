@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="card"
             type="com.teamnexters.mosaic.ui.main.CardLooknFeel" />

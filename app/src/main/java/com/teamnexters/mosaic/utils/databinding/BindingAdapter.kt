@@ -6,6 +6,7 @@ import android.support.annotation.StyleRes
 import android.support.v4.widget.TextViewCompat
 import android.support.v7.content.res.AppCompatResources
 import android.view.KeyEvent
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -78,6 +79,12 @@ class BindingAdapter {
 
                 true
             }
+        }
+
+        @JvmStatic
+        @BindingAdapter("android:selected")
+        fun setSelected(view: View, selected: Boolean) {
+            view.isSelected = selected
         }
     }
 }

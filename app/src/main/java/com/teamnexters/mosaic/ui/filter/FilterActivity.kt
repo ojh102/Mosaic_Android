@@ -1,5 +1,6 @@
 package com.teamnexters.mosaic.ui.filter
 
+import android.content.Intent
 import android.os.Bundle
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
@@ -12,6 +13,7 @@ internal class FilterActivity : BaseActivity<ActivityFilterBinding, FilterViewMo
 
     companion object {
         const val REQUEST_FILTER = 100
+        const val KEY_FILTER = "filter"
     }
 
     @Inject lateinit var filterAdapter: FilterAdapter
@@ -44,6 +46,16 @@ internal class FilterActivity : BaseActivity<ActivityFilterBinding, FilterViewMo
                                 }
                         )
         )
+    }
+
+    override fun finish() {
+        val intent = Intent().apply {
+            putParcelableArrayListExtra(KEY_FILTER, ArrayList(filterAdapter.getSelectedItems()))
+        }
+
+        setResult(REQUEST_FILTER, intent)
+
+        super.finish()
     }
 
     private fun initializeRecyclerView() {
