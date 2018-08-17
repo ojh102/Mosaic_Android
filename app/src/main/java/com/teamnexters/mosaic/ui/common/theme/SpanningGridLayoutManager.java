@@ -1,4 +1,4 @@
-package com.teamnexters.mosaic.ui.filter;
+package com.teamnexters.mosaic.ui.common.theme;
 
 import android.content.Context;
 import android.content.res.Resources;

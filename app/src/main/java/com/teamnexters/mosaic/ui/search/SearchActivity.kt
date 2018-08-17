@@ -8,7 +8,7 @@ import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.data.local.model.Keyword
 import com.teamnexters.mosaic.databinding.ActivitySearchBinding
-import com.teamnexters.mosaic.ui.result.FromScreen
+import com.teamnexters.mosaic.ui.Screen
 import com.teamnexters.mosaic.utils.Navigator
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.withLatestFrom
@@ -59,7 +59,7 @@ internal class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewMo
 
                                     viewModel.addKeyword(keyword)
 
-                                    Navigator.navigationToResult(this@SearchActivity, keyword, FromScreen.Search)
+                                    Navigator.navigationToResult(this@SearchActivity, keyword, Screen.Search)
                                 }
                         ),
 

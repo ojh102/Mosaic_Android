@@ -11,7 +11,8 @@
     <color name="textColorRed">#FE563C</color>
     <color name="textColorLightRed">#FFC9C1</color>
     <color name="textColorHighlight">#CCF6FF</color>
-    <color name="textColorHighlightAccent">#E62F12</color>
+    <color name="textColorHighlightFilter">#E62F12</color>
+    <color name="textColorHighlightWrite">#4F9CBA</color>
 
     <color name="colorCommentSelected">#2D3253</color>
     <color name="colorScrapSelected">#FF573D</color>

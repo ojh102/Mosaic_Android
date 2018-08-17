@@ -4,7 +4,7 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.teamnexters.mosaic.base.BaseViewModel
 import com.teamnexters.mosaic.data.remote.RemoteRepositoryApi
 import com.teamnexters.mosaic.ui.filter.FilterActivity
-import com.teamnexters.mosaic.ui.filter.FilterData
+import com.teamnexters.mosaic.ui.common.theme.ThemeData
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
@@ -27,7 +27,7 @@ internal class MainViewModel @Inject constructor(
                         .map {
                             val intent = it.third
 
-                            intent!!.getParcelableArrayListExtra<FilterData>(FilterActivity.KEY_FILTER)
+                            intent!!.getParcelableArrayListExtra<ThemeData>(FilterActivity.KEY_FILTER)
                         }
                         .subscribeBy(
                                 onNext = {

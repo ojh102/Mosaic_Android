@@ -5,6 +5,9 @@ import android.os.Bundle
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityFilterBinding
+import com.teamnexters.mosaic.ui.Screen
+import com.teamnexters.mosaic.ui.common.theme.SpanningGridLayoutManager
+import com.teamnexters.mosaic.ui.common.theme.ThemeAdapter
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_filter.*
 import javax.inject.Inject
@@ -16,7 +19,11 @@ internal class FilterActivity : BaseActivity<ActivityFilterBinding, FilterViewMo
         const val KEY_FILTER = "filter"
     }
 
-    @Inject lateinit var filterAdapter: FilterAdapter
+    @Inject lateinit var themeAdapterFactory: ThemeAdapter.Factory
+
+    private val themeAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        themeAdapterFactory.newInstance(Screen.Filter)
+    }
 
     override fun getLayoutRes() = R.layout.activity_filter
 
@@ -42,7 +49,7 @@ internal class FilterActivity : BaseActivity<ActivityFilterBinding, FilterViewMo
                         .observeOn(mainScheduler)
                         .subscribeBy(
                                 onNext = {
-                                    filterAdapter.setItems(it)
+                                    themeAdapter.setItems(it)
                                 }
                         )
         )
@@ -50,7 +57,7 @@ internal class FilterActivity : BaseActivity<ActivityFilterBinding, FilterViewMo
 
     override fun finish() {
         val intent = Intent().apply {
-            putParcelableArrayListExtra(KEY_FILTER, ArrayList(filterAdapter.getSelectedItems()))
+            putParcelableArrayListExtra(KEY_FILTER, ArrayList(themeAdapter.getSelectedItems()))
         }
 
         setResult(REQUEST_FILTER, intent)
@@ -61,7 +68,7 @@ internal class FilterActivity : BaseActivity<ActivityFilterBinding, FilterViewMo
     private fun initializeRecyclerView() {
         rv_filter.run {
             layoutManager = SpanningGridLayoutManager(this@FilterActivity, 2)
-            adapter = filterAdapter
+            adapter = themeAdapter
         }
     }
 }

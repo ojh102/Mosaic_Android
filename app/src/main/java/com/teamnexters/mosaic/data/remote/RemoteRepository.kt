@@ -1,6 +1,6 @@
 package com.teamnexters.mosaic.data.remote
 
-import com.teamnexters.mosaic.ui.filter.FilterData
+import com.teamnexters.mosaic.ui.common.theme.ThemeData
 import com.teamnexters.mosaic.ui.main.CardLooknFeel
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -14,7 +14,7 @@ internal class RemoteRepository @Inject constructor(
         return createDummyList()
     }
 
-    override fun fetchFilterList(): Observable<List<FilterData>> {
+    override fun fetchFilterList(): Observable<List<ThemeData>> {
         return createDummyFilterList()
     }
 
@@ -60,17 +60,17 @@ internal class RemoteRepository @Inject constructor(
         return Observable.just(dummyList)
     }
 
-    private fun createDummyFilterList(): Observable<List<FilterData>> {
-        val dummyList = mutableListOf<FilterData>()
+    private fun createDummyFilterList(): Observable<List<ThemeData>> {
+        val dummyList = mutableListOf<ThemeData>()
 
-        dummyList.add(FilterData("\uD83E\uDD2B", "익명제보"))
-        dummyList.add(FilterData("\uD83C\uDFC6", "공모전"))
-        dummyList.add(FilterData("\uD83D\uDC83", "대외활동"))
-        dummyList.add(FilterData("✍️", "스터디"))
-        dummyList.add(FilterData("\uD83C\uDF6F", "대학생활 팁"))
-        dummyList.add(FilterData("\uD83D\uDE4B\u200D♀️", "아르바이트"))
-        dummyList.add(FilterData("\uD83D\uDC6B", "동아리"))
-        dummyList.add(FilterData("\uD83D\uDC7B", "아무말"))
+        dummyList.add(ThemeData("\uD83E\uDD2B", "익명제보"))
+        dummyList.add(ThemeData("\uD83C\uDFC6", "공모전"))
+        dummyList.add(ThemeData("\uD83D\uDC83", "대외활동"))
+        dummyList.add(ThemeData("✍️", "스터디"))
+        dummyList.add(ThemeData("\uD83C\uDF6F", "대학생활 팁"))
+        dummyList.add(ThemeData("\uD83D\uDE4B\u200D♀️", "아르바이트"))
+        dummyList.add(ThemeData("\uD83D\uDC6B", "동아리"))
+        dummyList.add(ThemeData("\uD83D\uDC7B", "아무말"))
 
         return Observable.just(dummyList)
     }
