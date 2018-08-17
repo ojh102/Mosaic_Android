@@ -23,7 +23,7 @@ internal class FilterAdapter : RecyclerView.Adapter<FilterViewHolder>() {
         return items.size
     }
 
-    fun setItmes(items: List<FilterData>) {
+    fun setItems(items: List<FilterData>) {
         this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()

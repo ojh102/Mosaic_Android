@@ -20,6 +20,10 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="R48" parent="AppFont.R">
+        <item name="android:textSize">48sp</item>
+    </style>
+
     <style name="R13Black" parent="R13">
         <item name="android:textColor">@color/textColorBlack</item>
     </style>
@@ -32,6 +36,9 @@
         <item name="android:textColor">@color/textColorLightRed</item>
     </style>
 
+    <style name="R48Black" parent="R48">
+        <item name="android:textColor">@color/textColorBlack</item>
+    </style>
 
     <!-- bold -->
     <style name="AppFont.B">

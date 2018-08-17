@@ -2,5 +2,6 @@ package com.teamnexters.mosaic.ui.filter
 
 internal data class FilterData(
         val emoji: String,
-        val theme: String
+        val theme: String,
+        var selected: Boolean = false
 )
