@@ -89,6 +89,10 @@
         <item name="android:textColor">@color/textColorGrey</item>
     </style>
 
+    <style name="B12LightRed" parent="B12">
+        <item name="android:textColor">@color/textColorLightRed</item>
+    </style>
+
     <style name="B13White" parent="B13">
         <item name="android:textColor">@color/white</item>
     </style>
@@ -97,8 +101,16 @@
         <item name="android:textColor">@color/textColorLightRed</item>
     </style>
 
+    <style name="B14Black" parent="B14">
+        <item name="android:textColor">@color/textColorBlack</item>
+    </style>
+
     <style name="B14White" parent="B14">
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="B14Badge" parent="B14">
+        <item name="android:textColor">@color/colorBadge</item>
     </style>
 
 

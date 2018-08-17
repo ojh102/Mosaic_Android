@@ -1,12 +1,17 @@
 package com.teamnexters.mosaic.data.remote
 
+import android.content.res.Resources
+import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.ui.common.theme.ThemeData
 import com.teamnexters.mosaic.ui.main.CardLooknFeel
+import com.teamnexters.mosaic.ui.mypage.MyPageData
+import com.teamnexters.mosaic.ui.mypage.MyPageRowData
 import io.reactivex.Observable
 import javax.inject.Inject
 
 internal class RemoteRepository @Inject constructor(
-        private val mosaicApi: MosaicApi
+        private val mosaicApi: MosaicApi,
+        private val resource: Resources
 
 ) : RemoteRepositoryApi {
 
@@ -28,6 +33,10 @@ internal class RemoteRepository @Inject constructor(
 
     override fun fetchResultListFromScrap(): Observable<List<CardLooknFeel>> {
         return createDummyList()
+    }
+
+    override fun fetchMyPage(): Observable<MyPageData> {
+        return createDummyMyPageData()
     }
 
     private fun createDummyList(): Observable<List<CardLooknFeel>> {
@@ -73,5 +82,19 @@ internal class RemoteRepository @Inject constructor(
         dummyList.add(ThemeData("\uD83D\uDC7B", "아무말"))
 
         return Observable.just(dummyList)
+    }
+
+    private fun createDummyMyPageData(): Observable<MyPageData> {
+        return Observable.just(MyPageData(
+                id = "SOGANG2039",
+                univName = "이화여자대학교",
+                email = "ojh102@gmail.com",
+                univImgUrl = "https://picsum.photos/200?random",
+                myPageRowDataList = listOf(
+                        MyPageRowData.ScarpRow(resource.getString(R.string.my_page_scrap), 24),
+                        MyPageRowData.WrittenRow(resource.getString(R.string.my_page_written), 3),
+                        MyPageRowData.Reset(resource.getString(R.string.my_page_reset))
+                )
+        ))
     }
 }

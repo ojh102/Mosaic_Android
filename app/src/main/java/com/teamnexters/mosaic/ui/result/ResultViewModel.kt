@@ -53,6 +53,10 @@ internal class ResultViewModel @Inject constructor(
         return titleRelay
     }
 
+    fun bindFromScreen(): Observable<Screen> {
+        return fromScreenRelay
+    }
+
     fun bindResultList(): Observable<List<CardLooknFeel>> {
         return fromScreenRelay.flatMap {
             when(it) {

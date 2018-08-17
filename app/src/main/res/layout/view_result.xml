@@ -19,6 +19,7 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:background="@drawable/bg_result"
+        android:foreground="?android:attr/selectableItemBackground"
         android:onClick="@{(v) -> Navigator.navigateToDetail(v.getContext(), card)}"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">

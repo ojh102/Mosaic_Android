@@ -18,6 +18,7 @@
     <color name="colorScrapSelected">#FF573D</color>
     <color name="colorUnSelected">#CDCFD1</color>
     <color name="colorCommented">#FC543A</color>
+    <color name="colorBadge">#FC5339</color>
 
     <color name="colorGreyBackground">#F0F0F0</color>
 
