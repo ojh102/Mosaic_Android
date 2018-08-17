@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="data"
+            type="com.teamnexters.mosaic.ui.filter.FilterData" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="3dp"
+        android:background="@drawable/selector_filter_bg">
+
+        <com.teamnexters.mosaic.ui.widget.CustomTextView
+            android:id="@+id/tv_emoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:selected="@{data.selected}"
+            android:text="@{data.emoji}"
+            android:textAppearance="@style/R48Black"
+            app:layout_constraintBottom_toTopOf="@+id/tv_theme"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="🤫" />
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="0dp"
+            android:layout_height="9dp"
+            app:srcCompat="@drawable/selector_filter_text_highlight"
+            app:layout_constraintBottom_toBottomOf="@id/tv_theme"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_theme"
+            app:layout_constraintRight_toRightOf="@+id/tv_theme" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:selected="@{data.selected}"
+            android:text="@{data.theme}"
+            android:textAppearance="@style/EB14"
+            android:textColor="@drawable/selector_filter_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:text="공모전"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_emoji" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

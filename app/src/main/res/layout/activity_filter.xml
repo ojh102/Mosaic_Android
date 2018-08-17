@@ -7,18 +7,12 @@
 
         <variable
             name="viewModel"
-            type="com.teamnexters.mosaic.ui.result.ResultViewModel" />
-
-        <variable
-            name="title"
-            type="String" />
-
+            type="com.teamnexters.mosaic.ui.filter.FilterViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/main_background">
+        android:layout_height="match_parent">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/toolbar"
@@ -26,52 +20,52 @@
             android:layout_height="48dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            tools:background="@drawable/main_background">
 
-            <android.support.v7.widget.AppCompatImageButton
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/ic_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="13dp"
+                android:layout_marginLeft="14dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:onClick="@{() -> viewModel.onClickBack()}"
+                android:onClick="@{() -> viewModel.onClickClose()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_search_back" />
+                app:srcCompat="@drawable/ic_search_close" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:text="@{title}"
-                android:textAppearance="@style/EB14White"
+                android:text="@string/theme"
+                android:textAppearance="@style/EB18White"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/ic_back"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="재환이의 콩닥콩닥 연애교실" />
-
-            <android.support.v7.widget.AppCompatImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="13dp"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:onClick="@{() -> viewModel.onClickClose()}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_search_close" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_result"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@color/colorGreyBackground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_filter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+
+        </FrameLayout>
+
 
     </android.support.constraint.ConstraintLayout>
 

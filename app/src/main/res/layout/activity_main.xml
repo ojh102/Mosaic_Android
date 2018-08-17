@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.teamnexters.mosaic.utils.Navigator" />
+
         <variable
             name="viewModel"
             type="com.teamnexters.mosaic.ui.main.MainViewModel" />
@@ -31,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="13dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:onClick="@{(v) -> Navigator.navigateToMypage(v.getContext())}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -51,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="13dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:onClick="@{(v) -> Navigator.navigateToFilter(v.getContext())}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -62,9 +66,9 @@
             android:id="@+id/container_search"
             android:layout_width="0dp"
             android:layout_height="36dp"
-            android:layout_marginTop="12dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/img_search_box"
             android:clickable="true"
             android:focusable="true"
@@ -99,11 +103,11 @@
             android:id="@+id/stack_card"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:paddingTop="116dp"
+            android:clipToPadding="false"
             android:paddingBottom="100dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:clipToPadding="false"
+            android:paddingTop="116dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

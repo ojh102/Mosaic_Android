@@ -225,10 +225,6 @@ public class CardStackView extends FrameLayout {
         }
     }
 
-    private boolean isVerticalDirection() {
-        return option.swipeDirection == SwipeDirection.VERTICAL;
-    }
-
     private void update(float percentX, float percentY) {
         if (cardEventListener != null) {
             cardEventListener.onCardDragging(percentX, percentY);
@@ -238,20 +234,16 @@ public class CardStackView extends FrameLayout {
             return;
         }
 
-        final float percentFromDirection;
-
-        if (isVerticalDirection()) {
-            percentFromDirection = percentY;
-        } else {
-            percentFromDirection = percentX;
-        }
-
         for (int i = 1; i < option.visibleCount; i++) {
             CardContainerView view = containers.get(i);
 
             float currentScale = 1f - (i * option.scaleDiff);
             float nextScale = 1f - ((i - 1) * option.scaleDiff);
-            float percent = currentScale + (nextScale - currentScale) * Math.abs(percentFromDirection);
+
+            float percentByX = currentScale + (nextScale - currentScale) * Math.abs(percentX);
+            float percentByY = currentScale + (nextScale - currentScale) * Math.abs(percentY);
+
+            float percent = (percentByX > percentByY) ? percentByX : percentByY;
             ViewCompat.setScaleX(view, percent);
             ViewCompat.setScaleY(view, percent);
 
@@ -265,15 +257,9 @@ public class CardStackView extends FrameLayout {
                 nextTranslationY *= -1;
             }
 
-            final float translationYFromDirection;
+            final float translationYFromDirection = currentTranslationY - nextTranslationY;
 
-            if (isVerticalDirection()) {
-                translationYFromDirection = currentTranslationY - nextTranslationY;
-            } else {
-                translationYFromDirection = currentTranslationY - nextTranslationY;
-            }
-
-            float translationY = currentTranslationY - Math.abs(percentFromDirection) * translationYFromDirection;
+            float translationY = currentTranslationY - Math.abs((percentX > percentY) ? percentX : percentY) * translationYFromDirection;
             ViewCompat.setTranslationY(view, translationY);
         }
     }

@@ -3,10 +3,10 @@
     package="com.teamnexters.mosaic">
 
     <application
+        android:name=".MosaicApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".MosaicApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
@@ -41,6 +41,14 @@
 
         <activity
             android:name=".ui.result.ResultActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.filter.FilterActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.mypage.MyPageActivity"
             android:screenOrientation="portrait" />
 
         <activity

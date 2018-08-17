@@ -6,7 +6,7 @@ import com.teamnexters.mosaic.data.remote.RemoteRepositoryApi
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(
+internal class MainViewModel @Inject constructor(
         private val remoteRepository: RemoteRepositoryApi
 
 ) : BaseViewModel() {
