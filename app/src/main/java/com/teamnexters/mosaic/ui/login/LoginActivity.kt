@@ -1,5 +1,6 @@
 package com.teamnexters.mosaic.ui.login
 
+import android.animation.Animator
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -21,7 +22,10 @@ import com.teamnexters.mosaic.utils.extension.toast
 import javax.inject.Inject
 import android.content.Intent
 import android.net.Uri
+import android.opengl.Visibility
 import android.text.TextUtils
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import com.teamnexters.mosaic.utils.extension.isEmailAddress
 
 
@@ -57,7 +61,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
     fun initLayout() {
         //서비스 약관 내려놓음
         mUseAgreementLayout.let {
-            it.post { it.translationY = it.height.toFloat() }
+            it.post {
+                it.translationY = it.height.toFloat()
+                it.visibility = GONE
+            }
         }
     }
 
@@ -81,9 +88,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
         mUseAgreementText.setOnClickListener { showUseAgreement() }
         mSendEmail.setOnClickListener { sendEmailInfo() }
         mCheckEmail.setOnClickListener {
-            Navigator.navigateToInternet(this)
+
+            Navigator.navigateToDetail(this)
+            //Navigator.navigateToInternet(this)
             //Navigator.navigateToMain(this)
-            //finish()
+            finish()
         }
         mCheckEmailBack.setOnClickListener {
             hideEmailCheckLayout()
@@ -187,6 +196,17 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
                     .translationY(0f)
                     .setDuration(300)
                     .setInterpolator(DecelerateInterpolator(1.5f))
+                    .setListener(object : Animator.AnimatorListener{
+                        override fun onAnimationRepeat(animation: Animator?) {}
+
+                        override fun onAnimationCancel(animation: Animator?) {}
+
+                        override fun onAnimationStart(animation: Animator?) {
+                            it.visibility = VISIBLE
+                        }
+
+                        override fun onAnimationEnd(animation: Animator){}
+                    })
                     .start()
         }
     }
@@ -204,6 +224,17 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
                     .translationY(it.height.toFloat())
                     .setDuration(300)
                     .setInterpolator(DecelerateInterpolator(1.5f))
+                    .setListener(object : Animator.AnimatorListener{
+                        override fun onAnimationRepeat(animation: Animator?) {}
+
+                        override fun onAnimationCancel(animation: Animator?) {}
+
+                        override fun onAnimationStart(animation: Animator?) {}
+
+                        override fun onAnimationEnd(animation: Animator){
+                            it.visibility = GONE
+                        }
+                    })
                     .start()
         }
     }

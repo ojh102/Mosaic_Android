@@ -7,7 +7,6 @@
         <variable
             name="viewModel"
             type="com.teamnexters.mosaic.ui.login.LoginViewModel" />
-
     </data>
 
     <FrameLayout

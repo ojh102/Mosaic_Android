@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.teamnexters.mosaic.data.local.model.Keyword
 import android.net.Uri
+import com.teamnexters.mosaic.ui.detail.DetailActivity
 import com.teamnexters.mosaic.ui.main.MainActivity
 import com.teamnexters.mosaic.ui.result.FromScreen
 import com.teamnexters.mosaic.ui.result.ResultActivity
@@ -51,6 +52,11 @@ internal class Navigator {
         @JvmStatic
         fun navigateToLogin(context: Context) {
             context.startActivity(Intent(context, LoginActivity::class.java))
+        }
+
+        @JvmStatic
+        fun navigateToDetail(context: Context) {
+            context.startActivity(Intent(context, DetailActivity::class.java))
         }
 
         @JvmStatic

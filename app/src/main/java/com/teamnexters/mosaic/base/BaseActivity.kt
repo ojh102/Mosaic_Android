@@ -15,6 +15,8 @@ import android.view.WindowManager
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
 import com.teamnexters.mosaic.di.qualifier.RxMainScheduler
+import com.teamnexters.mosaic.ui.detail.DetailViewModel
+import com.teamnexters.mosaic.ui.login.LoginViewModel
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -72,7 +74,9 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
             }
         }
 
-        initializeWindow()
+        if(viewModel is LoginViewModel == false && viewModel is DetailViewModel == false ){
+            initializeWindow()
+        }
     }
 
     override fun onDestroy() {
@@ -107,7 +111,6 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
         window.statusBarColor = Color.TRANSPARENT
         window.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.main_background))
-
     }
 
     private fun setWindowFlag(bits: Int, on: Boolean) {

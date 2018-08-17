@@ -44,6 +44,10 @@
         <item name="android:textColor">@color/emailTextColor</item>
     </style>
 
+    <style name="R12Black" parent="R12">
+        <item name="android:textColor">@color/textColorBlack</item>
+    </style>
+
     <style name="R12EmailNormal" parent="R12">
         <item name="android:textColor">@color/emailTextNormalColor</item>
     </style>

@@ -38,6 +38,9 @@
     <string name="user_email_bottom">링크를 클릭해주세요.</string>
     <string name="invalid_email_format">이메일 형식이 올바르지 않습니다.</string>
 
+    <string name="reply">댓글</string>
+    <string name="write_reply">댓글을 입력하세요.</string>
+
     <string name="email_confirm_host">email_confirm</string>
     <string name="email_confirm_scheme">mosaicapp</string>
     <string name="email_confirm_code">code</string>
