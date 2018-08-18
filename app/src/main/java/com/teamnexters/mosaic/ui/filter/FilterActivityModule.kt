@@ -3,21 +3,18 @@ package com.teamnexters.mosaic.ui.filter
 import android.arch.lifecycle.ViewModel
 import com.teamnexters.mosaic.di.anotation.ActivityScope
 import com.teamnexters.mosaic.di.anotation.ViewModelKey
+import com.teamnexters.mosaic.ui.common.theme.ThemeModule
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.multibindings.IntoMap
 
-@Module(includes = [FilterActivityModule.ProvideModule::class])
+@Module(includes = [
+    FilterActivityModule.ProvideModule::class,
+    ThemeModule::class
+])
 internal interface FilterActivityModule {
     @Module
-    class ProvideModule {
-        @Provides
-        @ActivityScope
-        fun provideFilterAdapter(): FilterAdapter {
-            return FilterAdapter()
-        }
-    }
+    class ProvideModule
 
     @Binds
     @ActivityScope

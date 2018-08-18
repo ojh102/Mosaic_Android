@@ -66,7 +66,7 @@ internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>()
             }
 
             override fun onCardClicked(index: Int) {
-
+                Navigator.navigateToDetail(this@MainActivity, adapter.getItem(index))
             }
 
         })

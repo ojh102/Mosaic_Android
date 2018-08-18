@@ -203,6 +203,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewModel>() {
                     i % 2 == 0,
                     "댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당",
                     "3분전",
+                    if(i % 2 == 1 ) "@EWHA0001" else "",
                     null))
         }
 

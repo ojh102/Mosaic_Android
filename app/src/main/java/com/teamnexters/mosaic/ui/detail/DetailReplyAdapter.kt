@@ -5,6 +5,7 @@ import android.opengl.Visibility
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.AppCompatTextView
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -94,7 +95,7 @@ class DetailReplyAdapter(val context : Context) : RecyclerView.Adapter<RecyclerV
             universityName.setText(replyDetailData.universityName)
             userId.setText(replyDetailData.userId)
             if(replyDetailData.isMy) myBadge.visibility = VISIBLE else myBadge.visibility = GONE
-            replyContent.setText(replyDetailData.replyContent)
+            replyContent.setText(Html.fromHtml("<font color=#ff573d>${replyDetailData.rereplyTo}</font>  ${replyDetailData.replyContent}"))
             replyWriteTime.setText(replyDetailData.replyWriteTime)
         }
     }

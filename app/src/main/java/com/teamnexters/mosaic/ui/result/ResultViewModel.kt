@@ -4,6 +4,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import com.teamnexters.mosaic.base.BaseViewModel
 import com.teamnexters.mosaic.data.remote.RemoteRepositoryApi
+import com.teamnexters.mosaic.ui.Screen
 import com.teamnexters.mosaic.ui.main.CardLooknFeel
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
@@ -16,7 +17,7 @@ internal class ResultViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val titleRelay = BehaviorRelay.createDefault("")
-    private val fromScreenRelay = BehaviorRelay.create<FromScreen>()
+    private val fromScreenRelay = BehaviorRelay.create<Screen>()
 
     private val backRelay = PublishRelay.create<Unit>()
     private val closeRelay = PublishRelay.create<Unit>()
@@ -26,7 +27,7 @@ internal class ResultViewModel @Inject constructor(
                 intent().subscribeBy(
                         onNext = {
                             titleRelay.accept(it.getStringExtra(ResultActivity.KEY_TITLE))
-                            fromScreenRelay.accept(it.getSerializableExtra(ResultActivity.KEY_FROM_SCREEN) as FromScreen)
+                            fromScreenRelay.accept(it.getSerializableExtra(ResultActivity.KEY_FROM_SCREEN) as Screen)
                         }
                 )
         )
@@ -52,12 +53,17 @@ internal class ResultViewModel @Inject constructor(
         return titleRelay
     }
 
+    fun bindFromScreen(): Observable<Screen> {
+        return fromScreenRelay
+    }
+
     fun bindResultList(): Observable<List<CardLooknFeel>> {
         return fromScreenRelay.flatMap {
             when(it) {
-                FromScreen.Search -> remoteRepository.fetchResultListFromSearch()
-                FromScreen.Scrap -> remoteRepository.fetchResultListFromScrap()
-                FromScreen.Written -> remoteRepository.fetchResultListFromWritten()
+                Screen.Search -> remoteRepository.fetchResultListFromSearch()
+                Screen.Scrap -> remoteRepository.fetchResultListFromScrap()
+                Screen.Written -> remoteRepository.fetchResultListFromWritten()
+                else -> throw RuntimeException("있을리가 없음ㅋ")
             }
         }
     }

@@ -1,11 +1,22 @@
 package com.teamnexters.mosaic.ui.mypage
 
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
+import com.teamnexters.mosaic.data.local.model.Keyword
 import com.teamnexters.mosaic.databinding.ActivityMyPageBinding
+import com.teamnexters.mosaic.ui.Screen
+import com.teamnexters.mosaic.utils.Navigator
+import com.teamnexters.mosaic.utils.extension.toast
+import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.android.synthetic.main.activity_my_page.*
+import javax.inject.Inject
 
 internal class MyPageActivity : BaseActivity<ActivityMyPageBinding, MyPageViewModel>() {
+
+    @Inject
+    lateinit var myPageAdapter: MyPageAdapter
 
     override fun getLayoutRes() = R.layout.activity_my_page
 
@@ -15,6 +26,61 @@ internal class MyPageActivity : BaseActivity<ActivityMyPageBinding, MyPageViewMo
         super.onCreate(savedInstanceState)
 
         binding.viewModel = viewModel
+
+        bind(
+                viewModel.bindClickBack()
+                        .subscribeBy(
+                                onNext = {
+                                    finish()
+                                }
+                        ),
+
+                viewModel.fetchMyPage()
+                        .subscribeOn(ioScheduler)
+                        .observeOn(mainScheduler)
+                        .subscribeBy(
+                                onNext = {
+                                    binding.data = it
+
+                                    myPageAdapter.setItems(it.myPageRowDataList)
+                                }
+                        )
+        )
+
+        rv_my_page.run {
+            layoutManager = LinearLayoutManager(this@MyPageActivity)
+            adapter = myPageAdapter
+        }
+
+        myPageAdapter.setMyPageRowClickListener(object : MyPageAdapter.MyPageRowClickListener {
+            override fun onRowClick(myPageRowData: MyPageRowData) {
+                when (myPageRowData) {
+                    is MyPageRowData.ScarpRow -> {
+                        Navigator.navigationToResult(
+                                this@MyPageActivity,
+                                Keyword().apply {
+                                    keyword = myPageRowData.title
+                                },
+                                Screen.Scrap
+                        )
+                    }
+
+                    is MyPageRowData.WrittenRow -> {
+                        Navigator.navigationToResult(
+                                this@MyPageActivity,
+                                Keyword().apply {
+                                    keyword = myPageRowData.title
+                                },
+                                Screen.Written
+                        )
+                    }
+
+                    is MyPageRowData.Reset -> {
+                        toast("리셋하자")
+                    }
+                }
+            }
+        })
     }
 
 }

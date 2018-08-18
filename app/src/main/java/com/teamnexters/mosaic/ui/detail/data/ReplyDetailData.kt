@@ -13,4 +13,5 @@ data class ReplyDetailData(
         val isMy: Boolean,
         val replyContent: String,
         val replyWriteTime: String,
+        val rereplyTo : String,
         val imageUrl: String?)

@@ -4,9 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="data"
-            type="com.teamnexters.mosaic.ui.filter.FilterData" />
+            type="com.teamnexters.mosaic.ui.common.theme.ThemeData" />
+
+        <variable
+            name="backgroundSelectorRes"
+            type="int" />
+
+        <variable
+            name="highlightSelectorRes"
+            type="int" />
+
+        <variable
+            name="textSelectorRes"
+            type="int" />
+
+        <variable
+            name="clickListener"
+            type="com.teamnexters.mosaic.ui.common.theme.ThemeAdapter.ThemeClickListener" />
 
     </data>
 
@@ -14,15 +31,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="3dp"
-        android:background="@drawable/selector_filter_bg">
+        android:background="@{backgroundSelectorRes}"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="@{() -> clickListener.onClickFilter()}"
+        android:selected="@{data.selected}">
 
         <com.teamnexters.mosaic.ui.widget.CustomTextView
             android:id="@+id/tv_emoji"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:selected="@{data.selected}"
             android:text="@{data.emoji}"
-            android:textAppearance="@style/R48Black"
+            android:textSize="50sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_theme"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -30,14 +50,13 @@
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="🤫" />
 
-
         <android.support.v7.widget.AppCompatImageView
             android:layout_width="0dp"
             android:layout_height="9dp"
-            app:srcCompat="@drawable/selector_filter_text_highlight"
             app:layout_constraintBottom_toBottomOf="@id/tv_theme"
             app:layout_constraintLeft_toLeftOf="@+id/tv_theme"
-            app:layout_constraintRight_toRightOf="@+id/tv_theme" />
+            app:layout_constraintRight_toRightOf="@+id/tv_theme"
+            app:srcCompat="@{highlightSelectorRes}" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_theme"
@@ -49,12 +68,12 @@
             android:selected="@{data.selected}"
             android:text="@{data.theme}"
             android:textAppearance="@style/EB14"
-            android:textColor="@drawable/selector_filter_text"
+            android:textColor="@{textSelectorRes}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            tools:text="공모전"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_emoji" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_emoji"
+            tools:text="공모전" />
 
     </android.support.constraint.ConstraintLayout>
 

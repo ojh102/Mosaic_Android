@@ -1,11 +1,15 @@
 package com.teamnexters.mosaic.utils.databinding
 
 import android.databinding.BindingAdapter
+import android.graphics.drawable.ColorDrawable
 import android.support.annotation.StringRes
 import android.support.annotation.StyleRes
+import android.support.v4.content.ContextCompat
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.TextViewCompat
 import android.support.v7.content.res.AppCompatResources
 import android.view.KeyEvent
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -36,6 +40,28 @@ class BindingAdapter {
             } else {
                 textView.setTextColor(colorOrResId)
             }
+        }
+
+        @JvmStatic
+        @BindingAdapter("android:background")
+        fun setBackground(view :View, colorOrResId: Int) {
+            if (view.context.hasResource(colorOrResId)) {
+                ViewCompat.setBackground(view, ContextCompat.getDrawable(view.context, colorOrResId))
+            } else {
+                ViewCompat.setBackground(view, ColorDrawable(colorOrResId))
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("srcCompat")
+        fun setSrcCompat(imageView: ImageView, colorOrResId: Int) {
+            val drawable = if (imageView.context.hasResource(colorOrResId)) {
+                ContextCompat.getDrawable(imageView.context, colorOrResId)
+            } else {
+                ColorDrawable(colorOrResId)
+            }
+
+            imageView.setImageDrawable(drawable)
         }
 
         @JvmStatic
@@ -78,6 +104,12 @@ class BindingAdapter {
 
                 true
             }
+        }
+
+        @JvmStatic
+        @BindingAdapter("android:selected")
+        fun setSelected(view: View, selected: Boolean) {
+            view.isSelected = selected
         }
     }
 }

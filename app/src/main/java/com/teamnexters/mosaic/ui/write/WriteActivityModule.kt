@@ -3,12 +3,19 @@ package com.teamnexters.mosaic.ui.write
 import android.arch.lifecycle.ViewModel
 import com.teamnexters.mosaic.di.anotation.ActivityScope
 import com.teamnexters.mosaic.di.anotation.ViewModelKey
+import com.teamnexters.mosaic.ui.common.theme.ThemeModule
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 
-@Module
+@Module(includes = [
+    WriteActivityModule.ProvideModule::class,
+    ThemeModule::class
+])
 interface WriteActivityModule {
+    @Module
+    class ProvideModule
+
     @Binds
     @ActivityScope
     @IntoMap

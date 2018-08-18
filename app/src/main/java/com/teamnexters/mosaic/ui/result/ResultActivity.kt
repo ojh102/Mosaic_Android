@@ -5,8 +5,10 @@ import android.support.v7.widget.LinearLayoutManager
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityResultBinding
+import com.teamnexters.mosaic.ui.Screen
 import com.teamnexters.mosaic.utils.Navigator
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.rxkotlin.withLatestFrom
 import kotlinx.android.synthetic.main.activity_result.*
 import javax.inject.Inject
 
@@ -34,9 +36,19 @@ internal class ResultActivity : BaseActivity<ActivityResultBinding, ResultViewMo
 
         bind(
                 viewModel.bindClickBack()
+                        .withLatestFrom(viewModel.bindFromScreen())
+                        .map { it.second }
                         .subscribeBy(
                                 onNext = {
-                                    Navigator.navigateToMain(this, true)
+                                    when (it) {
+                                        Screen.Search -> {
+                                            Navigator.navigateToMain(this, true)
+                                        }
+                                        Screen.Scrap,
+                                        Screen.Written -> {
+                                            finish()
+                                        }
+                                    }
                                 }
                         ),
 
@@ -51,6 +63,13 @@ internal class ResultActivity : BaseActivity<ActivityResultBinding, ResultViewMo
                         .subscribeBy(
                                 onNext = {
                                     binding.title = it
+                                }
+                        ),
+
+                viewModel.bindFromScreen()
+                        .subscribeBy(
+                                onNext = {
+                                    binding.closeVisibility = Screen.Search == it
                                 }
                         ),
 

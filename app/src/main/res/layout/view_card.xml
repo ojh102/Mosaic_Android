@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.teamnexters.mosaic.utils.Navigator" />
+
         <variable
             name="card"
             type="com.teamnexters.mosaic.ui.main.CardLooknFeel" />
@@ -31,16 +33,18 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:layout_width="0dp"
-            app:srcCompat="@color/textColorHighlight"
+            android:layout_height="9dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_theme"
             app:layout_constraintLeft_toLeftOf="@+id/tv_theme"
             app:layout_constraintRight_toRightOf="@+id/tv_theme"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_theme"
-            android:layout_height="9dp" />
+            app:srcCompat="@color/textColorHighlight" />
 
         <com.teamnexters.mosaic.ui.widget.CustomTextView
             android:id="@+id/tv_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
             android:text="@{card.theme}"
             android:textAppearance="@style/EB16Black"
             app:layout_constraintBottom_toTopOf="@+id/tv_content"
@@ -48,8 +52,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_date"
             app:layout_constraintVertical_chainStyle="packed"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
             tools:text="공모전" />
 
         <com.teamnexters.mosaic.ui.widget.CustomTextView

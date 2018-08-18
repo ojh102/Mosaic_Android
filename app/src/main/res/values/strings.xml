@@ -11,6 +11,9 @@
     <string name="dash">-</string>
     <string name="pipe">|</string>
     <string name="theme">관심분야</string>
+    <string name="my_page_scrap">내가 스크랩한 글</string>
+    <string name="my_page_written">내가 작성한 글</string>
+    <string name="my_page_reset">인증 초기화</string>
 
     <string name="email">이메일</string>
     <string name="email_empty">이메일을 적어주세요.</string>
