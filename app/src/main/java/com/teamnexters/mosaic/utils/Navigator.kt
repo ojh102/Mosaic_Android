@@ -3,14 +3,15 @@ package com.teamnexters.mosaic.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 import com.teamnexters.mosaic.data.local.model.Keyword
-import android.net.Uri
-import com.teamnexters.mosaic.ui.detail.DetailActivity
 import com.teamnexters.mosaic.ui.Screen
+import com.teamnexters.mosaic.ui.detail.DetailActivity
 import com.teamnexters.mosaic.ui.filter.FilterActivity
+import com.teamnexters.mosaic.ui.login.LoginActivity
 import com.teamnexters.mosaic.ui.main.CardLooknFeel
 import com.teamnexters.mosaic.ui.main.MainActivity
 import com.teamnexters.mosaic.ui.mypage.MyPageActivity
@@ -18,7 +19,6 @@ import com.teamnexters.mosaic.ui.result.ResultActivity
 import com.teamnexters.mosaic.ui.search.SearchActivity
 import com.teamnexters.mosaic.ui.write.WriteActivity
 import com.teamnexters.mosaic.utils.extension.startActivityWithTransition
-import com.teamnexters.mosaic.ui.login.LoginActivity
 
 internal class Navigator {
     companion object {
@@ -65,10 +65,10 @@ internal class Navigator {
 
         @JvmStatic
         fun navigationToResult(context: Context, keyword: Keyword, fromScreen: Screen) {
-            val intent = Intent(context, ResultActivity::class.java).apply {
+            context.startActivity(Intent(context, ResultActivity::class.java).apply {
                 putExtra(ResultActivity.KEY_TITLE, keyword.keyword)
                 putExtra(ResultActivity.KEY_FROM_SCREEN, fromScreen)
-            }
+            })
         }
 
         @JvmStatic
