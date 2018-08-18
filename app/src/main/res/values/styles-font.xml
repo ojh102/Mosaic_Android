@@ -8,6 +8,10 @@
         <item name="android:fontFamily">@font/nanum_square_regular</item>
     </style>
 
+    <style name="R10" parent="AppFont.R">
+        <item name="android:textSize">10sp</item>
+    </style>
+
     <style name="R13" parent="AppFont.R">
         <item name="android:textSize">13sp</item>
     </style>
@@ -59,14 +63,18 @@
     <style name="R48Black" parent="R48">
         <item name="android:textColor">@color/textColorBlack</item>
     </style>
-    
+
     <!-- bold -->
     <style name="AppFont.B">
         <item name="android:fontFamily">@font/nanum_square_bold</item>
     </style>
 
+    <style name="B9" parent="AppFont.B">
+        <item name="android:textSize">9sp</item>
+    </style>
+
     <style name="B10" parent="AppFont.B">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
     </style>
 
     <style name="B11" parent="AppFont.B">
@@ -162,12 +170,8 @@
     <style name="EB16Black" parent="EB16">
         <item name="android:textColor">@color/textColorBlack</item>
     </style>
-<<<<<<< HEAD
-=======
 
     <style name="EB18White" parent="EB18">
         <item name="android:textColor">@color/white</item>
     </style>
-
->>>>>>> ef40936713d50d11d7ac0abbde56177762d10da1
 </resources>

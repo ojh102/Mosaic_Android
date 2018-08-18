@@ -30,18 +30,18 @@ import com.teamnexters.mosaic.utils.extension.isEmailAddress
 
 
 class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
-    val mUseAgreementLayout by lazy { binding.useAgreementLayout }
-    val mUseAgreementText by lazy { binding.useAgreementText }
-    val mUseAgreementAgree by lazy { binding.useAgreementAgree }
-    val mEmailEditText by lazy { binding.emailEdittext }
-    val mSendEmail by lazy { binding.sendEmail }
-    val mEmailCheckLayout by lazy { binding.emailCheckLayout }
-    val mUserEmail by lazy { binding.userEmail }
-    val mCheckEmail by lazy { binding.checkEmail }
-    val mCheckEmailBack by lazy { binding.checkEmailBack }
+    val useAgreementLayout by lazy { binding.useAgreementLayout }
+    val useAgreementText by lazy { binding.useAgreementText }
+    val useAgreementAgree by lazy { binding.useAgreementAgree }
+    val emailEditText by lazy { binding.emailEdittext }
+    val sendEmail by lazy { binding.sendEmail }
+    val emailCheckLayout by lazy { binding.emailCheckLayout }
+    val userEmail by lazy { binding.userEmail }
+    val checkEmail by lazy { binding.checkEmail }
+    val checkEmailBack by lazy { binding.checkEmailBack }
 
-    var mIsAgreementLayoutVisible = false
-    var mIsEmailCheckLayoutVisible = false
+    var isAgreementLayoutVisible = false
+    var isEmailCheckLayoutVisible = false
 
     @Inject
     lateinit var mSharedPreferenceManager: MosaicSharedPreferenceManager
@@ -60,7 +60,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
 
     fun initLayout() {
         //서비스 약관 내려놓음
-        mUseAgreementLayout.let {
+        useAgreementLayout.let {
             it.post {
                 it.translationY = it.height.toFloat()
                 it.visibility = GONE
@@ -72,40 +72,40 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
         mSharedPreferenceManager.getString(MosaicSharedPreferenceManager.EMAIL_ADDRESS).let {
             if ("".equals(it)) {
                 val screenWidth = applicationContext.getResources().getDisplayMetrics().widthPixels
-                mEmailCheckLayout.translationX = screenWidth.toFloat()
+                emailCheckLayout.translationX = screenWidth.toFloat()
 
-                mIsEmailCheckLayoutVisible = false
+                isEmailCheckLayoutVisible = false
             } else {
-                mUserEmail.text = it
+                userEmail.text = it
 
-                mIsEmailCheckLayoutVisible = true
+                isEmailCheckLayoutVisible = true
             }
         }
     }
 
     fun initListener() {
-        mUseAgreementAgree.setOnClickListener { hideUseAgreement() }
-        mUseAgreementText.setOnClickListener { showUseAgreement() }
-        mSendEmail.setOnClickListener { sendEmailInfo() }
-        mCheckEmail.setOnClickListener {
+        useAgreementAgree.setOnClickListener { hideUseAgreement() }
+        useAgreementText.setOnClickListener { showUseAgreement() }
+        sendEmail.setOnClickListener { sendEmailInfo() }
+        checkEmail.setOnClickListener {
 
             Navigator.navigateToDetail(this)
             //Navigator.navigateToInternet(this)
             //Navigator.navigateToMain(this)
             finish()
         }
-        mCheckEmailBack.setOnClickListener {
+        checkEmailBack.setOnClickListener {
             hideEmailCheckLayout()
         }
 
         //이메일 edittext 관련 listener
-        mEmailEditText.addTextChangedListener(object : TextWatcher {
+        emailEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().length == 0) mSendEmail.isEnabled = false else mSendEmail.isEnabled = true
+                if (s.toString().length == 0) sendEmail.isEnabled = false else sendEmail.isEnabled = true
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -113,7 +113,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
             }
         })
 
-        mEmailEditText.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+        emailEditText.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
                     sendEmailInfo()
@@ -130,15 +130,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
     }
 
     fun sendEmailInfo() {
-        if (mEmailEditText.text.toString().length == 0) {
+        if (emailEditText.text.toString().length == 0) {
             toast(resources.getString(R.string.email_empty));
         } else {
-            if(mEmailEditText.text.toString().isEmailAddress){
+            if(emailEditText.text.toString().isEmailAddress){
                 //서버에 이메일을 보내달라고 요청!
                 viewModel.sendEmailInfo()
 
-                saveEmailPref(mEmailEditText.text.toString())
-                mUserEmail.text = mEmailEditText.text.toString()
+                saveEmailPref(emailEditText.text.toString())
+                userEmail.text = emailEditText.text.toString()
 
                 showEmailCheckLayout()
             }else{
@@ -149,13 +149,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
 
     fun showEmailCheckLayout() {
         //이메일 edittext의 포커스 제거
-        mEmailEditText.clearFocus()
+        emailEditText.clearFocus()
 
-        mEmailEditText.hideSoftKeyboard()
+        emailEditText.hideSoftKeyboard()
 
-        mIsEmailCheckLayoutVisible = true
+        isEmailCheckLayoutVisible = true
 
-        mEmailCheckLayout.let {
+        emailCheckLayout.let {
             it.clearAnimation()
 
             it.animate()
@@ -168,11 +168,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
 
     fun hideEmailCheckLayout() {
         //이메일 edittext의 포커스 제거
-        mEmailEditText.clearFocus()
+        emailEditText.clearFocus()
 
-        mIsEmailCheckLayoutVisible = false
+        isEmailCheckLayoutVisible = false
 
-        mEmailCheckLayout.let {
+        emailCheckLayout.let {
             it.clearAnimation()
 
             it.animate()
@@ -185,11 +185,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
 
     fun showUseAgreement() {
         //이메일 edittext의 포커스 제거
-        mEmailEditText.clearFocus()
+        emailEditText.clearFocus()
 
-        mIsAgreementLayoutVisible = true
+        isAgreementLayoutVisible = true
 
-        mUseAgreementLayout.let {
+        useAgreementLayout.let {
             it.clearAnimation()
 
             it.animate()
@@ -213,11 +213,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
 
     fun hideUseAgreement() {
         //이메일 edittext의 포커스 제거
-        mEmailEditText.clearFocus()
+        emailEditText.clearFocus()
 
-        mIsAgreementLayoutVisible = false
+        isAgreementLayoutVisible = false
 
-        mUseAgreementLayout.let {
+        useAgreementLayout.let {
             it.clearAnimation()
 
             it.animate()
@@ -240,9 +240,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
     }
 
     override fun onBackPressed() {
-        if (mIsAgreementLayoutVisible)
+        if (isAgreementLayoutVisible)
             hideUseAgreement()
-        else if(mIsEmailCheckLayoutVisible)
+        else if(isEmailCheckLayoutVisible)
             hideEmailCheckLayout()
         else super.onBackPressed()
     }

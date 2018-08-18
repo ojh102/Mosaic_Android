@@ -14,7 +14,8 @@
         android:layout_height="match_parent"
         tools:context=".ui.detail.DetailActivity"
         android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:background="@color/white">
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/content_scrollview"
@@ -24,7 +25,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/write_reply_layout"
-            android:fillViewport="true">
+            android:overScrollMode="never">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -102,18 +103,29 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginRight="13dp"
-                        app:srcCompat="@drawable/ic_scrap_pr"/>
+                        app:srcCompat="@drawable/ic_scrap_nol"/>
                 </android.support.constraint.ConstraintLayout>
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/image_view_pager"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="280dp"
+                    android:layout_height="280dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/top_layout"
                     android:layout_marginTop="24dp"
-                    android:visibility="gone"/>
+                    android:overScrollMode="never"/>
+
+                <com.teamnexters.mosaic.ui.detail.IndicatorLayout
+                    android:id="@+id/indicator_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="5dp"
+                    android:gravity="center"
+                    app:layout_constraintLeft_toLeftOf="@+id/image_view_pager"
+                    app:layout_constraintRight_toRightOf="@+id/image_view_pager"
+                    app:layout_constraintBottom_toBottomOf="@+id/image_view_pager"
+                    android:layout_marginBottom="12dp"/>
 
                 <View
                     android:layout_width="0dp"
@@ -278,19 +290,33 @@
                 android:layout_marginLeft="9dp"
                 android:background="#ebebeb"/>
 
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/write_rereply_to_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:text="\ufeff@EWHA0001"
+                android:textAppearance="@style/R12"
+                android:textColor="#ff573d"
+                app:layout_constraintLeft_toRightOf="@+id/write_reply_seperate_line"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="gone" />
+
             <EditText
                 android:id="@+id/write_reply_edittext"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/write_reply"
-                android:paddingLeft="15dp"
+                app:layout_goneMarginLeft="15dp"
+                android:layout_marginLeft="5dp"
                 android:paddingRight="15dp"
                 android:textColorHint="#abafb4"
                 android:letterSpacing="-0.03"
                 android:lineSpacingExtra="6sp"
                 android:textAppearance="@style/R12Black"
                 android:background="@null"
-                app:layout_constraintLeft_toRightOf="@+id/write_reply_seperate_line"
+                app:layout_constraintLeft_toRightOf="@+id/write_rereply_to_text"
                 app:layout_constraintRight_toLeftOf="@+id/send_reply"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
@@ -303,7 +329,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="13dp"
-                app:srcCompat="@drawable/ic_send_pr"/>
+                app:srcCompat="@drawable/detail_send_reply_bg"/>
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 </layout>

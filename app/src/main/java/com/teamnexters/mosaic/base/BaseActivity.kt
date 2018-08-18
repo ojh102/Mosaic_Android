@@ -11,6 +11,7 @@ import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.view.WindowManager
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
@@ -74,7 +75,9 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
             }
         }
 
-        if(viewModel is LoginViewModel == false && viewModel is DetailViewModel == false ){
+        if(viewModel is DetailViewModel == true){
+            initializeWhiteWindow()
+        }else if(viewModel is LoginViewModel == false){
             initializeWindow()
         }
     }
@@ -111,6 +114,12 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
         window.statusBarColor = Color.TRANSPARENT
         window.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.main_background))
+    }
+
+    private fun initializeWhiteWindow() {
+        setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        window.statusBarColor = Color.WHITE
     }
 
     private fun setWindowFlag(bits: Int, on: Boolean) {

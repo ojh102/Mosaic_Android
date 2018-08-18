@@ -41,6 +41,10 @@
 
     <string name="reply">댓글</string>
     <string name="write_reply">댓글을 입력하세요.</string>
+    <string name="write_rereply_text">답글</string>
+
+    <string name="my_badge">MY</string>
+
 
     <string name="email_confirm_host">email_confirm</string>
     <string name="email_confirm_scheme">mosaicapp</string>

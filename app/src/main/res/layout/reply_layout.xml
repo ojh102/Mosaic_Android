@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="15dp">
+    
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/university_image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_univ_ewha"
+        android:layout_marginLeft="20dp"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/university_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/university_image"
+        app:layout_constraintTop_toTopOf="@+id/university_image"
+        app:layout_constraintBottom_toBottomOf="@+id/university_image"
+        android:textAppearance="@style/B12"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/textColorBlack"
+        android:text="이화여자대학교"/>
+
+    <View
+        android:id="@+id/user_seperateline"
+        android:layout_width="1dp"
+        android:layout_height="10dp"
+        app:layout_constraintLeft_toRightOf="@+id/university_name"
+        app:layout_constraintTop_toTopOf="@+id/university_name"
+        app:layout_constraintBottom_toBottomOf="@+id/university_name"
+        android:layout_marginLeft="4dp"
+        android:background="#dbdbdb"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/user_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/user_seperateline"
+        app:layout_constraintTop_toTopOf="@+id/university_name"
+        app:layout_constraintBottom_toBottomOf="@+id/university_name"
+        android:textAppearance="@style/R12"
+        android:layout_marginLeft="4dp"
+        android:text="EWHA00001"
+        android:textColor="#999999"/>
+
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/my_badge"
+        android:layout_width="19dp"
+        android:layout_height="12dp"
+        app:layout_constraintLeft_toRightOf="@+id/user_id"
+        app:layout_constraintTop_toTopOf="@+id/user_id"
+        app:layout_constraintBottom_toBottomOf="@+id/user_id"
+        android:textAppearance="@style/B9"
+        android:layout_marginLeft="6dp"
+        android:text="@string/my_badge"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="@drawable/my_badge_bg"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/reply_top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/reply_left_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="48dp"/>
+
+    <com.teamnexters.mosaic.ui.widget.CustomTextView
+        android:id="@+id/reply_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/reply_left_guideline"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reply_top_guideline"
+        android:layout_marginTop="6dp"
+        android:text="비걸은 안되나요? 댄스하나는 자신있습니다. 이화여자대학교 힙합 댄스팀 플라이입니다. 연락주세요!"
+        android:paddingRight="20dp"
+        android:letterSpacing="-0.03"
+        android:lineSpacingExtra="6sp"
+        android:textAppearance="@style/R12"
+        android:textColor="@color/textColorBlack" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/reply_write_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/reply_left_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/reply_content"
+        android:layout_marginTop="7dp"
+        android:text="1시간 전"
+        android:letterSpacing="-0.03"
+        android:textAppearance="@style/R10"
+        android:textColor="#999999" />
+
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/reply_write_rereply"
+        android:layout_width="38dp"
+        android:layout_height="20dp"
+        app:layout_constraintLeft_toLeftOf="@+id/reply_write_time"
+        app:layout_constraintTop_toBottomOf="@+id/reply_write_time"
+        app:layout_constraintBottom_toTopOf="@+id/reply_bottom_line"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:background="@drawable/btn_comment_box"
+        android:text="@string/write_rereply_text"
+        android:letterSpacing="-0.03"
+        android:textAppearance="@style/B10"
+        android:textColor="#888888" />
+
+    <View
+        android:id="@+id/reply_bottom_line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#dbdbdb"/>
+</android.support.constraint.ConstraintLayout>

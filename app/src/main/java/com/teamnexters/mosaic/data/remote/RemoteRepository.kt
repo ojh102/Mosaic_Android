@@ -1,13 +1,17 @@
 package com.teamnexters.mosaic.data.remote
 
+import com.teamnexters.mosaic.data.remote.model.EmailSendResponse
 import com.teamnexters.mosaic.ui.filter.FilterData
 import com.teamnexters.mosaic.ui.main.CardLooknFeel
 import io.reactivex.Observable
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import javax.inject.Inject
 
 internal class RemoteRepository @Inject constructor(
         private val mosaicApi: MosaicApi
-
 ) : RemoteRepositoryApi {
 
     override fun fetchMainCardList(): Observable<List<CardLooknFeel>> {
