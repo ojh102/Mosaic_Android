@@ -35,7 +35,11 @@ interface HttpModule {
         @RequestIntercetor
         fun provideRequestInterceptor(mosaicSharedPreferenceManager: MosaicSharedPreferenceManager): Interceptor {
             return Interceptor { chain ->
-                val token = mosaicSharedPreferenceManager.getString(MosaicSharedPreferenceManager.TOKEN)
+                val fakeToken = "eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAACXLTQqAIBBA4bvMWqFRx9Lb-AuulFQIortntHmLD94NpXewUMOoLZ0ZGBQ3wCJJRbtANAzS1X7QdNAHc5a4HuM0BgqaZyUDVzEi9xlXNvTGySicJnheVH-IIGIAAAA.MOGRdwI1rh2WRmcyGPge0njtikDhbQgFW1vjCxUUXeo"
+
+                var token = mosaicSharedPreferenceManager.getString(MosaicSharedPreferenceManager.TOKEN)
+
+                token = fakeToken
 
                 val newRequest = chain.request().newBuilder()
 
@@ -62,7 +66,7 @@ interface HttpModule {
                 @HttpLogging httpLoggingInterceptor: Interceptor,
                 @RequestIntercetor requestIntercetor: Interceptor
         ): OkHttpClient {
-            
+
             val okHttpClientBuilder = OkHttpClient.Builder()
                     .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
                     .readTimeout(TIMEOUT, TimeUnit.SECONDS)

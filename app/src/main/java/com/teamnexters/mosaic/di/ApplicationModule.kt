@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.preference.PreferenceManager
+import com.teamnexters.mosaic.base.GlobalChannel
+import com.teamnexters.mosaic.base.GlobalChannelApi
 import com.teamnexters.mosaic.base.ViewModelFactory
 import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
 import com.teamnexters.mosaic.di.qualifier.RxMainScheduler
@@ -18,7 +20,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Singleton
 
 @Module(includes = [ApplicationModule.ProvideModule::class])
-interface ApplicationModule {
+internal interface ApplicationModule {
     @Binds
     @Singleton
     fun bindContext(application: Application): Context
@@ -26,6 +28,10 @@ interface ApplicationModule {
     @Binds
     @Singleton
     fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    @Singleton
+    fun bindGlobalChannel(globalChannel: GlobalChannel): GlobalChannelApi
 
     @Module
     class ProvideModule {

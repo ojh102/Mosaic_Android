@@ -6,10 +6,10 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.Toast
 import com.teamnexters.mosaic.data.local.model.Keyword
 import com.teamnexters.mosaic.ui.Screen
 import com.teamnexters.mosaic.ui.detail.DetailActivity
+import com.teamnexters.mosaic.ui.detail.data.DetailIntentData
 import com.teamnexters.mosaic.ui.filter.FilterActivity
 import com.teamnexters.mosaic.ui.login.LoginActivity
 import com.teamnexters.mosaic.ui.main.CardLooknFeel
@@ -93,7 +93,24 @@ internal class Navigator {
 
         @JvmStatic
         fun navigateToDetail(context: Context, cardLooknFeel: CardLooknFeel) {
-            Toast.makeText(context, "건준이를 위한 선물 $cardLooknFeel", Toast.LENGTH_SHORT).show()
+            val data = DetailIntentData(
+                    uuid = "",
+                    contentId = "",
+                    userId = "",
+                    universityName = "",
+                    isScraped = false,
+                    contentTitle = "",
+                    contentImageList = arrayListOf(),
+                    content = "",
+                    writeTime = "",
+                    replyCount = 1
+
+            )
+
+
+            context.startActivity(
+                    Intent(context, DetailActivity::class.java)
+            )
         }
     }
 }
