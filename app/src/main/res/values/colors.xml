@@ -38,6 +38,9 @@
     <color name="useAgreementContents">#888888</color>
     <color name="useAgreementAgreeBg">#2d3253</color>
 
+    <color name="saveContentEnable">#ff2d3253</color>
+    <color name="saveContentDisable">#662d3253</color>
+
     <color name="emailTextColor">#f0492f</color>
     <color name="emailTextNormalColor">#888888</color>
 </resources>

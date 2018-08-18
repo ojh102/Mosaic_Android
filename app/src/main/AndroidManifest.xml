@@ -36,7 +36,7 @@
 
         <activity
             android:name=".ui.write.WriteActivity"
-            android:theme="@style/AppTheme.NoStatusBar"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
 
         <activity

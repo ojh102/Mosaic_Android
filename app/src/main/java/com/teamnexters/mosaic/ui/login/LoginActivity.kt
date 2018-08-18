@@ -89,9 +89,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
         sendEmail.setOnClickListener { sendEmailInfo() }
         checkEmail.setOnClickListener {
 
-            Navigator.navigateToDetail(this)
+            //Navigator.navigateToDetail(this)
             //Navigator.navigateToInternet(this)
-            //Navigator.navigateToMain(this)
+            Navigator.navigateToMain(this)
+            //Navigator.navigateToWrite(this)
             finish()
         }
         checkEmailBack.setOnClickListener {

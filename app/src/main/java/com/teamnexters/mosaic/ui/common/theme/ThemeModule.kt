@@ -3,7 +3,6 @@ package com.teamnexters.mosaic.ui.common.theme
 import com.teamnexters.mosaic.di.anotation.ActivityScope
 import com.teamnexters.mosaic.ui.Screen
 import com.teamnexters.mosaic.ui.filter.FilterThemeAction
-import com.teamnexters.mosaic.ui.write.WriteThemeAction
 import dagger.Module
 import dagger.Provides
 
@@ -18,7 +17,6 @@ internal interface ThemeModule {
                 override fun newInstance(screen: Screen): ThemeAdapter {
                     val compatibleThemeAction = when(screen) {
                         Screen.Filter -> FilterThemeAction()
-                        Screen.Write -> WriteThemeAction()
                         else -> throw RuntimeException("이상한짓하지마!")
                     }
 

@@ -18,6 +18,7 @@ import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
 import com.teamnexters.mosaic.di.qualifier.RxMainScheduler
 import com.teamnexters.mosaic.ui.detail.DetailViewModel
 import com.teamnexters.mosaic.ui.login.LoginViewModel
+import com.teamnexters.mosaic.ui.write.WriteViewModel
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -75,10 +76,11 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
             }
         }
 
-        if(viewModel is DetailViewModel == true){
-            initializeWhiteWindow()
-        }else if(viewModel is LoginViewModel == false){
-            initializeWindow()
+        when(viewModel){
+            is DetailViewModel -> initializeDetailWindow()
+            is WriteViewModel -> initializeWriteWindow()
+            is LoginViewModel -> {}
+            else ->            initializeCommonWindow()
         }
     }
 
@@ -110,16 +112,21 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
         compositeDisposable.addAll(*disposables)
     }
 
-    private fun initializeWindow() {
+    private fun initializeCommonWindow() {
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
         window.statusBarColor = Color.TRANSPARENT
         window.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.main_background))
     }
 
-    private fun initializeWhiteWindow() {
+    private fun initializeDetailWindow() {
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         window.statusBarColor = Color.WHITE
+    }
+
+    private fun initializeWriteWindow() {
+        setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
+        window.statusBarColor = 0xFF66e3ff.toInt()
     }
 
     private fun setWindowFlag(bits: Int, on: Boolean) {

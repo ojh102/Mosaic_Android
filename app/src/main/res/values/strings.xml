@@ -42,6 +42,9 @@
     <string name="user_email_bottom">링크를 클릭해주세요.</string>
     <string name="invalid_email_format">이메일 형식이 올바르지 않습니다.</string>
 
+    <string name="select_category">카테고리 선택</string>
+    <string name="write_content_save">저장</string>
+
     <string name="reply">댓글</string>
     <string name="write_reply">댓글을 입력하세요.</string>
     <string name="write_rereply_text">답글</string>
