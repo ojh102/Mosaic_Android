@@ -123,6 +123,7 @@
             android:id="@+id/btn_write"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{(v) -> Navigator.navigateToWrite(v.getContext())}"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

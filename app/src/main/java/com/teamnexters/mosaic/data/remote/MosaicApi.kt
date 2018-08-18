@@ -3,6 +3,7 @@ package com.teamnexters.mosaic.data.remote
 import com.teamnexters.mosaic.data.remote.model.EmailSendResponse
 import com.teamnexters.mosaic.data.remote.model.ResponseEnvelope
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
+import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.GET
@@ -14,6 +15,6 @@ internal interface MosaicApi {
             @Field("email") email: String
     ): Call<EmailSendResponse>
 
-    @GET("/apis/script")
-    fun fetchCards(): ResponseEnvelope<List<ScriptResponse>>
+    @GET("/apis/scripts")
+    fun fetchCards(): Single<ResponseEnvelope<List<ScriptResponse>>>
 }

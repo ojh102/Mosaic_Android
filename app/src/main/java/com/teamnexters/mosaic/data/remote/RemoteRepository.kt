@@ -1,27 +1,33 @@
 package com.teamnexters.mosaic.data.remote
 
-import com.teamnexters.mosaic.data.remote.model.EmailSendResponse
 import android.content.res.Resources
 import com.teamnexters.mosaic.R
+import com.teamnexters.mosaic.data.convertor.Converter
+import com.teamnexters.mosaic.data.remote.model.ScriptResponse
+import com.teamnexters.mosaic.di.qualifier.ScriptToCardQualifier
 import com.teamnexters.mosaic.ui.common.theme.ThemeData
 import com.teamnexters.mosaic.ui.main.CardLooknFeel
 import com.teamnexters.mosaic.ui.mypage.MyPageData
 import com.teamnexters.mosaic.ui.mypage.MyPageRowData
+import com.teamnexters.mosaic.utils.extension.validate
 import io.reactivex.Observable
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
 import javax.inject.Inject
 
 internal class RemoteRepository @Inject constructor(
         private val mosaicApi: MosaicApi,
-        private val resource: Resources
+        private val resource: Resources,
+        @ScriptToCardQualifier private val scriptToCardConverter: Converter<ScriptResponse, CardLooknFeel>
 
 ) : RemoteRepositoryApi {
 
     override fun fetchMainCardList(): Observable<List<CardLooknFeel>> {
-        return createDummyList()
+        return mosaicApi.fetchCards()
+                .map { validate(it) }
+                .map { scriptList ->
+                    scriptList.map {
+                        scriptToCardConverter.convert(it)
+                    }
+                }.toObservable()
     }
 
     override fun fetchFilterList(): Observable<List<ThemeData>> {
@@ -49,10 +55,10 @@ internal class RemoteRepository @Inject constructor(
 
         val dummyImageUrl = "https://picsum.photos/200?random"
 
-        for (i in 0..20) {
+        for(i in 0..20) {
             val dummyImageUrlList = mutableListOf<String>()
 
-            for (j in 0 until i % 6) {
+            for(j in 0 until i % 6) {
                 dummyImageUrlList.add(dummyImageUrl)
             }
 
