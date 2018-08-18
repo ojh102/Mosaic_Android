@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply from: '../versioning.gradle'
+apply from: '../url.gradle'
 
 def rawBuildNumber = System.getenv("BITRISE_BUILD_NUMBER") ?: "0"
 def buildNumber = Integer.parseInt(rawBuildNumber)
@@ -50,7 +51,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://api.github.com\"")
+            buildConfigField("String", "BASE_URL", "\"${getBaseUrl()}\"")
 
             signingConfig signingConfigs.debug
             applicationIdSuffix ".debug"
@@ -62,7 +63,7 @@ android {
         }
 
         qa {
-            buildConfigField("String", "BASE_URL", "\"https://api.github.com\"")
+            buildConfigField("String", "BASE_URL", "\"${getBaseUrl()}\"")
 
             signingConfig signingConfigs.debug
             applicationIdSuffix ".qa"
@@ -80,7 +81,7 @@ android {
         }
 
         release {
-            buildConfigField("String", "BASE_URL", "\"https://api.github.com\"")
+            buildConfigField("String", "BASE_URL", "\"${getBaseUrl()}\"")
 
             signingConfig null
 

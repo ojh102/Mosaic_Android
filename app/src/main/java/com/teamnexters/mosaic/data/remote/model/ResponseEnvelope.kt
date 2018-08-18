@@ -1,4 +1,4 @@
-package com.teamnexters.mosaic.data.remote
+package com.teamnexters.mosaic.data.remote.model
 
 data class ResponseEnvelope<T>(
         val message: String? = null,
