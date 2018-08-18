@@ -4,8 +4,8 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import com.teamnexters.mosaic.base.BaseViewModel
 import com.teamnexters.mosaic.data.remote.RemoteRepositoryApi
+import com.teamnexters.mosaic.data.remote.model.ScriptResponse
 import com.teamnexters.mosaic.ui.Screen
-import com.teamnexters.mosaic.ui.main.CardLooknFeel
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
@@ -57,7 +57,7 @@ internal class ResultViewModel @Inject constructor(
         return fromScreenRelay
     }
 
-    fun bindResultList(): Observable<List<CardLooknFeel>> {
+    fun bindResultList(): Observable<List<ScriptResponse>> {
         return fromScreenRelay.flatMap {
             when(it) {
                 Screen.Search -> remoteRepository.fetchResultListFromSearch()

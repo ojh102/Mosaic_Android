@@ -1,12 +1,10 @@
 package com.teamnexters.mosaic.data.remote
 
 import android.content.res.Resources
+import com.google.gson.Gson
 import com.teamnexters.mosaic.R
-import com.teamnexters.mosaic.data.convertor.Converter
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
-import com.teamnexters.mosaic.di.qualifier.ScriptToCardQualifier
 import com.teamnexters.mosaic.ui.common.theme.ThemeData
-import com.teamnexters.mosaic.ui.main.CardLooknFeel
 import com.teamnexters.mosaic.ui.mypage.MyPageData
 import com.teamnexters.mosaic.ui.mypage.MyPageRowData
 import com.teamnexters.mosaic.utils.extension.validate
@@ -15,34 +13,29 @@ import javax.inject.Inject
 
 internal class RemoteRepository @Inject constructor(
         private val mosaicApi: MosaicApi,
-        private val resource: Resources,
-        @ScriptToCardQualifier private val scriptToCardConverter: Converter<ScriptResponse, CardLooknFeel>
+        private val resource: Resources
 
 ) : RemoteRepositoryApi {
 
-    override fun fetchMainCardList(): Observable<List<CardLooknFeel>> {
+    override fun fetchMainCardList(): Observable<List<ScriptResponse>> {
         return mosaicApi.fetchCards()
                 .map { validate(it) }
-                .map { scriptList ->
-                    scriptList.map {
-                        scriptToCardConverter.convert(it)
-                    }
-                }.toObservable()
+                .toObservable()
     }
 
     override fun fetchFilterList(): Observable<List<ThemeData>> {
         return createDummyFilterList()
     }
 
-    override fun fetchResultListFromSearch(): Observable<List<CardLooknFeel>> {
+    override fun fetchResultListFromSearch(): Observable<List<ScriptResponse>> {
         return createDummyList()
     }
 
-    override fun fetchResultListFromWritten(): Observable<List<CardLooknFeel>> {
+    override fun fetchResultListFromWritten(): Observable<List<ScriptResponse>> {
         return createDummyList()
     }
 
-    override fun fetchResultListFromScrap(): Observable<List<CardLooknFeel>> {
+    override fun fetchResultListFromScrap(): Observable<List<ScriptResponse>> {
         return createDummyList()
     }
 
@@ -50,31 +43,44 @@ internal class RemoteRepository @Inject constructor(
         return createDummyMyPageData()
     }
 
-    private fun createDummyList(): Observable<List<CardLooknFeel>> {
-        val dummyList = mutableListOf<CardLooknFeel>()
+    private fun createDummyList(): Observable<List<ScriptResponse>> {
+        val dummyList = mutableListOf<ScriptResponse>()
 
         val dummyImageUrl = "https://picsum.photos/200?random"
 
         for(i in 0..20) {
-            val dummyImageUrlList = mutableListOf<String>()
+            val jsonString = """
+                 {
+            "idx": 1,
+            "uuid": "b171b90d-5764-416f-a433-89b3b293faab",
+            "content": "씨박asd",
+            "writer": {
+                "uuid": "524a934b-1a6f-4f55-8f5d-22baf7d77c54",
+                "nick": "BcQEGOzleH",
+                "university": {
+                    "idx": 1,
+                    "name": "네이버대",
+                    "domain": "naver.com",
+                    "imgUrl": "https://s3.ap-northeast-2.amazonaws.com/angointeam-s3/scripts/dumy/dumy.png"
+                }
+            },
+            "imgUrls": [],
+            "thumbnailUrls": [],
+            "valid": true,
+            "category": {
+                "name": "익명제보",
+                "emoji": "U+1F92B"
+            },
+            "replies": 0,
+            "scrap": false,
+            "createdAt": 1534587587000
+        }
+            """.trimIndent()
 
-            for(j in 0 until i % 6) {
-                dummyImageUrlList.add(dummyImageUrl)
-            }
+            val gson = Gson()
+            val data = gson.fromJson<ScriptResponse>(jsonString, ScriptResponse::class.java)
 
-            val dummy = CardLooknFeel(
-                    id = "Univ$i",
-                    date = "오늘",
-                    theme = "테마$i",
-                    content = "$i 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다 이것이 콘텐츠다이것이 콘텐츠다 이것이 콘텐츠다",
-                    univImageUrl = dummyImageUrl,
-                    univName = "대학$i",
-                    imageUrlList = dummyImageUrlList,
-                    commentCount = i,
-                    scarped = i % 2 == 0
-            )
-
-            dummyList.add(dummy)
+            dummyList.add(data)
         }
 
         return Observable.just(dummyList)

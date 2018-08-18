@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.teamnexters.mosaic.data.remote.model.ScriptResponse
 import com.teamnexters.mosaic.databinding.ViewCardBinding
 
-class MosaicStackAdapter(context: Context) : ArrayAdapter<CardLooknFeel>(context, 0) {
+internal class MosaicStackAdapter(context: Context) : ArrayAdapter<ScriptResponse>(context, 0) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -25,9 +26,9 @@ class MosaicStackAdapter(context: Context) : ArrayAdapter<CardLooknFeel>(context
             contentView?.tag as MosaicStackViewHolder
         }
 
-        val cardLooknFeel = getItem(position)
+        val ScriptResponse = getItem(position)
 
-        mosaicStackViewHolder.bind(cardLooknFeel)
+        mosaicStackViewHolder.bind(ScriptResponse)
 
         return contentView!!
     }

@@ -9,7 +9,7 @@
 
         <variable
             name="card"
-            type="com.teamnexters.mosaic.ui.main.CardLooknFeel" />
+            type="com.teamnexters.mosaic.data.remote.model.ScriptResponse" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginTop="24dp"
-            android:text="@{card.date}"
+            android:text="@{card.getDate()}"
             android:textAppearance="@style/B12Grey"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
-            android:text="@{card.theme}"
+            android:text="@{card.category.getTheme()}"
             android:textAppearance="@style/EB16Black"
             app:layout_constraintBottom_toTopOf="@+id/tv_content"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -93,38 +93,38 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="6dp"
-                android:visibility="@{card.imageUrlList.size() >= 1}"
-                app:srcCompat="@{card.imageUrlList.size() >= 1 ? card.imageUrlList.get(0) : null}"
+                android:visibility="@{card.thumbnailUrls.size() >= 1}"
+                app:srcCompat="@{card.thumbnailUrls.size() >= 1 ? card.thumbnailUrls.get(0) : null}"
                 tools:srcCompat="@color/colorPrimary" />
 
             <android.support.v7.widget.AppCompatImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="6dp"
-                android:visibility="@{card.imageUrlList.size() >= 2}"
-                app:srcCompat="@{card.imageUrlList.size() >= 2 ? card.imageUrlList.get(1) : null}"
+                android:visibility="@{card.thumbnailUrls.size() >= 2}"
+                app:srcCompat="@{card.thumbnailUrls.size() >= 2 ? card.thumbnailUrls.get(1) : null}"
                 tools:srcCompat="@color/colorPrimary" />
 
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{card.imageUrlList.size() >= 3}">
+                android:visibility="@{card.thumbnailUrls.size() >= 3}">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:visibility="@{card.imageUrlList.size() >= 3}"
-                    app:srcCompat="@{card.imageUrlList.size() >= 3 ? card.imageUrlList.get(2) : null}"
-                    app:useBlur="@{card.imageUrlList.size() > 3}"
+                    android:visibility="@{card.thumbnailUrls.size() >= 3}"
+                    app:srcCompat="@{card.thumbnailUrls.size() >= 3 ? card.thumbnailUrls.get(2) : null}"
+                    app:useBlur="@{card.thumbnailUrls.size() > 3}"
                     tools:srcCompat="@color/colorPrimary" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@{@string/format_card_last_image(card.imageUrlList.size() - 3)}"
+                    android:text="@{@string/format_card_last_image(card.thumbnailUrls.size() - 3)}"
                     android:textAppearance="@style/B10White"
-                    android:visibility="@{card.imageUrlList.size() > 3}"
+                    android:visibility="@{card.thumbnailUrls.size() > 3}"
                     tools:text="+3" />
 
             </FrameLayout>
@@ -160,7 +160,7 @@
                 android:background="@color/colorAccent"
                 app:layout_constraintBottom_toTopOf="@+id/tv_id"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:srcCompat="@{card.univImageUrl}"
+                app:srcCompat="@{card.writer.university.imgUrl}"
                 tools:srcCompat="@color/colorAccent" />
 
             <android.support.v7.widget.AppCompatTextView
@@ -168,7 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:text="@{card.id}"
+                android:text="@{card.writer.nick}"
                 android:textAppearance="@style/B10Grey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/btn_univ"
@@ -181,7 +181,7 @@
                 android:layout_height="32dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/selector_comment"
-                android:selected="@{card.commentCount > 0}"
+                android:selected="@{card.replies > 0}"
                 app:layout_constraintBottom_toTopOf="@+id/tv_comment"
                 app:layout_constraintLeft_toRightOf="parent"
                 app:layout_constraintRight_toLeftOf="parent"
@@ -192,7 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:text="@{@string/format_card_comment(card.commentCount)}"
+                android:text="@{@string/format_card_comment(card.replies)}"
                 android:textAppearance="@style/B10Grey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/btn_comment"
@@ -206,7 +206,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginRight="60dp"
                 android:background="@drawable/selector_scrap"
-                android:selected="@{card.scarped}"
+                android:selected="@{card.scrap}"
                 app:layout_constraintBottom_toTopOf="@+id/tv_scrap"
                 app:layout_constraintRight_toRightOf="parent"
                 app:srcCompat="@drawable/ic_scrap" />

@@ -3,9 +3,9 @@ package com.teamnexters.mosaic.ui.result
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.teamnexters.mosaic.data.remote.model.ScriptResponse
 import com.teamnexters.mosaic.databinding.ViewResultBinding
 import com.teamnexters.mosaic.databinding.ViewResultHeaderBinding
-import com.teamnexters.mosaic.ui.main.CardLooknFeel
 
 
 internal class ResultAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -16,7 +16,7 @@ internal class ResultAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         const val TYPE_RESULT = 1
     }
 
-    private val items = mutableListOf<CardLooknFeel>()
+    private val items = mutableListOf<ScriptResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when(viewType) {
@@ -61,7 +61,7 @@ internal class ResultAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    fun setItems(items: List<CardLooknFeel>) {
+    fun setItems(items: List<ScriptResponse>) {
         this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()

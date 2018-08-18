@@ -7,12 +7,12 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.teamnexters.mosaic.data.local.model.Keyword
+import com.teamnexters.mosaic.data.remote.model.ScriptResponse
 import com.teamnexters.mosaic.ui.Screen
 import com.teamnexters.mosaic.ui.detail.DetailActivity
 import com.teamnexters.mosaic.ui.detail.data.DetailIntentData
 import com.teamnexters.mosaic.ui.filter.FilterActivity
 import com.teamnexters.mosaic.ui.login.LoginActivity
-import com.teamnexters.mosaic.ui.main.CardLooknFeel
 import com.teamnexters.mosaic.ui.main.MainActivity
 import com.teamnexters.mosaic.ui.mypage.MyPageActivity
 import com.teamnexters.mosaic.ui.result.ResultActivity
@@ -92,7 +92,7 @@ internal class Navigator {
         }
 
         @JvmStatic
-        fun navigateToDetail(context: Context, cardLooknFeel: CardLooknFeel) {
+        fun navigateToDetail(context: Context, ScriptResponse: ScriptResponse) {
             val data = DetailIntentData(
                     uuid = "",
                     contentId = "",
@@ -104,9 +104,7 @@ internal class Navigator {
                     content = "",
                     writeTime = "",
                     replyCount = 1
-
             )
-
 
             context.startActivity(
                     Intent(context, DetailActivity::class.java)

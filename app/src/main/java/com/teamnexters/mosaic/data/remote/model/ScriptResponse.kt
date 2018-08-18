@@ -12,5 +12,9 @@ internal data class ScriptResponse(
         val category: CategoryResponse,
         val replies: Int,
         val scrap: Boolean = false
-)
+) {
+    fun getDate(): String {
+        return "$created"
+    }
+}
 

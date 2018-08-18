@@ -9,7 +9,7 @@
 
         <variable
             name="card"
-            type="com.teamnexters.mosaic.ui.main.CardLooknFeel" />
+            type="com.teamnexters.mosaic.data.remote.model.ScriptResponse" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -18,11 +18,11 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:background="@drawable/bg_result"
         android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="@{(v) -> Navigator.navigateToDetail(v.getContext(), card)}"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:onClick="@{(v) -> Navigator.navigateToDetail(v.getContext(), card)}">
 
         <android.support.v7.widget.AppCompatImageView
             android:layout_width="0dp"
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@{card.theme}"
+            android:text="@{card.category.getTheme()}"
             android:textAppearance="@style/EB14Black"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -60,13 +60,13 @@
             android:id="@+id/iv_image"
             android:layout_width="59dp"
             android:layout_height="59dp"
-            android:layout_marginLeft="22dp"
             android:layout_marginTop="19dp"
-            android:visibility="@{card.imageUrlList.size() > 0}"
+            android:layout_marginLeft="22dp"
+            android:visibility="@{card.imgUrls.size() > 0}"
             app:layout_constraintLeft_toRightOf="@+id/tv_content"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@{card.imageUrlList.size() > 0 ? card.imageUrlList.get(0) : null}"
+            app:srcCompat="@{card.imgUrls.size() > 0 ? card.imgUrls.get(0) : null}"
             tools:src="@color/colorAccent" />
 
         <android.support.v7.widget.AppCompatImageView
@@ -86,7 +86,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_comment"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_comment"
-            app:srcCompat="@{card.univImageUrl}"
+            app:srcCompat="@{card.writer.university.imgUrl}"
             tools:srcCompat="@color/textColorBlack" />
 
         <android.support.v7.widget.AppCompatTextView
@@ -94,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
-            android:text="@{card.univName}"
+            android:text="@{card.writer.university.name}"
             android:textAppearance="@style/B10Black"
             app:layout_constraintBottom_toBottomOf="@+id/iv_univ"
             app:layout_constraintLeft_toRightOf="@+id/iv_univ"
@@ -117,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
-            android:text="@{card.id}"
+            android:text="@{card.writer.nick}"
             android:textAppearance="@style/B10MiddleGrey"
             app:layout_constraintBottom_toBottomOf="@+id/iv_univ"
             app:layout_constraintLeft_toRightOf="@+id/tv_pipe"
@@ -129,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
-            android:text="@{card.date}"
+            android:text="@{card.getDate()}"
             android:textAppearance="@style/B10MiddleGrey"
             app:layout_constraintBottom_toBottomOf="@+id/tv_comment"
             app:layout_constraintRight_toLeftOf="@+id/tv_comment"
@@ -140,9 +140,9 @@
             android:id="@+id/tv_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
             android:layout_marginTop="18dp"
-            android:text="@{@string/format_card_comment(card.commentCount)}"
+            android:layout_marginBottom="18dp"
+            android:text="@{@string/format_card_comment(card.replies)}"
             android:textAppearance="@style/B10Commented"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
