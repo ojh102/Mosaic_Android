@@ -151,13 +151,12 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
 
-            <android.support.v7.widget.AppCompatImageButton
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/btn_univ"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="60dp"
-                android:background="@color/colorAccent"
                 app:layout_constraintBottom_toTopOf="@+id/tv_id"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:srcCompat="@{card.writer.university.imgUrl}"
