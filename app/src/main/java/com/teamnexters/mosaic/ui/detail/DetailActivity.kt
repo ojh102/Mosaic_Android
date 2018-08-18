@@ -17,13 +17,17 @@ import com.teamnexters.mosaic.ui.detail.data.ReplyDetailData
 import com.teamnexters.mosaic.utils.extension.toPx
 import java.lang.Exception
 import java.util.*
+import android.graphics.Bitmap
+import android.view.View.GONE
 
 
 internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewModel>() {
+    companion object {
+        const val DETAIL_INTENT_KEY = "detailIntentKey"
+    }
+
     val REQUEST_TAKE_ALBUM = 0
     val REQUEST_IMAGE_CROP = 1
-
-    lateinit var photoUri : Uri
 
     var uuid: Int = 0
     var isScraped = false
@@ -42,6 +46,14 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     val writeReplyEditText by lazy { binding.writeReplyEdittext }
     val sendReply by lazy { binding.sendReply }
     val indicatorLayout by lazy { binding.indicatorLayout }
+    val writeReplyImageLayout by lazy { binding.writeReplyImageLayout }
+    val writeReplyImage by lazy { binding.writeReplyImage }
+    val writeReplyImageCancel by lazy { binding.writeReplyImageCancel }
+    val writeReplyLayout by lazy { binding.writeReplyLayout }
+    val deleteCardLayout by lazy { binding.deleteCardLayout }
+    val noReply by lazy { binding.noReply }
+
+    var replyCropedBitmap: Bitmap? = null
 
     override fun getLayoutRes() = R.layout.activity_detail
 
@@ -66,7 +78,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         //intent로 받은 이미지 리스타 값을 바탕으로 viewpager 초기화
         val tmpImageList = ArrayList<String>()
 
-        for(i in 0..4){
+        for (i in 0..4) {
             tmpImageList.add("https://post-phinf.pstatic.net/20160811_167/1470891802502lQq1P_JPEG/google_co_kr_20160811_140117.jpg?type=w1200")
         }
 
@@ -83,7 +95,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         replyRecyclerview.setNestedScrollingEnabled(false)
     }
 
-    private fun initViewPager(imageList : ArrayList<String>) {
+    private fun initViewPager(imageList: ArrayList<String>) {
         //intent를 통해 이미지 리스트가 넘어 올것이다
 
         imageViewPager.adapter = DetailImagePagerAdapter(this)
@@ -143,6 +155,11 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         sendReply.setOnClickListener {
 
         }
+
+        writeReplyImageCancel.setOnClickListener {
+            writeReplyImageLayout.visibility = GONE
+            replyCropedBitmap = null
+        }
     }
 
     private fun getAlbum() {
@@ -152,16 +169,19 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         startActivityForResult(intent, REQUEST_TAKE_ALBUM)
     }
 
-    private fun cropImage() {
-        if(photoUri != null){
+    private fun cropImage(photoUri: Uri?) {
+        if (photoUri != null) {
             val cropIntent = Intent("com.android.camera.action.CROP")
 
             cropIntent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            cropIntent.setDataAndType(photoUri,"image/*")
+            cropIntent.setDataAndType(photoUri, "image/*")
             cropIntent.putExtra("aspectX", 1)
             cropIntent.putExtra("aspectY", 1)
-            cropIntent.putExtra("scale", true)
+            cropIntent.putExtra("outputX", 256)
+            cropIntent.putExtra("outputY", 256)
+            cropIntent.putExtra("crop", true)
+            cropIntent.putExtra("return-data", true);
             startActivityForResult(cropIntent, REQUEST_IMAGE_CROP)
         }
     }
@@ -186,7 +206,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
 
         val tmpReplyList = ArrayList<ReplyDetailData>()
 
-        for(i in 0..10){
+        for (i in 0..10) {
             tmpReplyList.add(ReplyDetailData(i % 2,
                     0,
                     "https://post-phinf.pstatic.net/20160811_167/1470891802502lQq1P_JPEG/google_co_kr_20160811_140117.jpg?type=w1200",
@@ -195,7 +215,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
                     i % 2 == 0,
                     "댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당",
                     "3분전",
-                    if(i % 2 == 1 ) "@EWHA0001" else "",
+                    if (i % 2 == 1) "@EWHA0001" else "",
                     null))
         }
 
@@ -204,33 +224,27 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            REQUEST_TAKE_ALBUM ->
-                if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_TAKE_ALBUM ->
                     if (data?.data != null) {
-                        try {
-                            //val albumFile = createImageFile()
-                            photoUri = data.data
-
-                            cropImage()
-                        }catch (e : Exception){
-
+                        cropImage(data.data)
+                    }
+                REQUEST_IMAGE_CROP -> {
+                    if(data != null){
+                        if(data.extras != null){
+                            replyCropedBitmap = data.extras.get("data") as Bitmap
+                            writeReplyImage.setImageBitmap(replyCropedBitmap)
+                            writeReplyImageLayout.visibility = View.VISIBLE
                         }
                     }
                 }
-            REQUEST_IMAGE_CROP ->
-                if (resultCode == Activity.RESULT_OK) {
-                    if (data?.data != null) {
-
-                    }
-                }
+            }
         }
     }
 
     fun scripContent() {
         //서버로 스크랩 정보 보내기
-
-
         if (isScraped == true) {
             isScraped = !isScraped
             scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_nol, null))

@@ -92,7 +92,7 @@
                     android:scaleType="fitXY"
                     android:layout_marginTop="48dp"/>
 
-                <android.support.v7.widget.AppCompatEditText
+                <android.support.text.emoji.widget.EmojiAppCompatEditText
                     android:id="@+id/cotent_edittext"
                     android:layout_width="0dp"
                     android:layout_height="408dp"
@@ -108,10 +108,7 @@
                     android:background="@color/white"
                     android:gravity="center"/>
             </android.support.constraint.ConstraintLayout>
-            
-           <!-- <EditText
-                android:layout_width=""
-                android:layout_height="" />-->
+
         </ScrollView>
         
         <android.support.constraint.ConstraintLayout

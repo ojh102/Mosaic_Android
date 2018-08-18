@@ -154,7 +154,9 @@
     <style name="EB12" parent="AppFont.EB">
         <item name="android:textSize">12sp</item>
     </style>
-
+    <style name="EB13" parent="AppFont.EB">
+        <item name="android:textSize">13sp</item>
+    </style>
     <style name="EB14" parent="AppFont.EB">
         <item name="android:textSize">14sp</item>
     </style>

@@ -1,7 +1,6 @@
 package com.teamnexters.mosaic.ui.detail
 
 import android.content.Context
-import android.opengl.Visibility
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.AppCompatTextView
 import android.support.v7.widget.RecyclerView
@@ -11,7 +10,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.ui.detail.data.ReplyDetailData
@@ -35,11 +33,11 @@ class DetailReplyAdapter(val context : Context) : RecyclerView.Adapter<RecyclerV
         lateinit var view : View
 
         if(viewType == REPLY_TYPE){
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reply_layout, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_reply, parent, false);
 
             return ReplyViewHolder(view, context)
         } else{
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rereply_layout, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_rereply, parent, false);
 
             return RereplyViewHolder(view, context)
         }

@@ -49,6 +49,9 @@
     <string name="write_reply">댓글을 입력하세요.</string>
     <string name="write_rereply_text">답글</string>
 
+    <string name="no_reply">아직 댓글이 없습니다. 또르르 :(</string>
+
+    <string name="delete_card">삭제하기</string>
     <string name="my_badge">MY</string>
 
 

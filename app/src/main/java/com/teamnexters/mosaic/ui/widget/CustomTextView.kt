@@ -34,7 +34,6 @@ class CustomTextView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     private var mEmojiTextViewHelper: EmojiTextViewHelper? = null
