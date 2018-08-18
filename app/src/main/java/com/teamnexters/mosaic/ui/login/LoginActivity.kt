@@ -1,16 +1,14 @@
 package com.teamnexters.mosaic.ui.login
 
 import android.animation.Animator
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
-import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
@@ -18,18 +16,12 @@ import com.teamnexters.mosaic.data.local.MosaicSharedPreferenceManager
 import com.teamnexters.mosaic.databinding.ActivityLoginBinding
 import com.teamnexters.mosaic.utils.Navigator
 import com.teamnexters.mosaic.utils.extension.hideSoftKeyboard
+import com.teamnexters.mosaic.utils.extension.isEmailAddress
 import com.teamnexters.mosaic.utils.extension.toast
 import javax.inject.Inject
-import android.content.Intent
-import android.net.Uri
-import android.opengl.Visibility
-import android.text.TextUtils
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import com.teamnexters.mosaic.utils.extension.isEmailAddress
 
 
-class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
+internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
     val useAgreementLayout by lazy { binding.useAgreementLayout }
     val useAgreementText by lazy { binding.useAgreementText }
     val useAgreementAgree by lazy { binding.useAgreementAgree }

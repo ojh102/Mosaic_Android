@@ -1,5 +1,6 @@
 package com.teamnexters.mosaic.network
 
+import com.teamnexters.mosaic.base.GlobalChannelApi
 import io.reactivex.Single
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
@@ -10,7 +11,8 @@ import javax.inject.Inject
 
 internal class MosaicCallAdapterFactory @Inject constructor(
         private val delegate: RxJava2CallAdapterFactory,
-        private val transformerFactory: MosaicRxJava2Transformer.Factory
+        private val transformerFactory: MosaicRxJava2Transformer.Factory,
+        private val globalChannelApi: GlobalChannelApi
 
 ) : CallAdapter.Factory() {
 
@@ -21,7 +23,7 @@ internal class MosaicCallAdapterFactory @Inject constructor(
 
         @Suppress("unchecked_cast")
         return when(rawType) {
-            Single::class.java -> MosaicRxJava2SingleCallAdapter(defaultAdapter as CallAdapter<Any, Single<Any>>, transformerFactory)
+            Single::class.java -> MosaicRxJava2SingleCallAdapter(defaultAdapter as CallAdapter<Any, Single<Any>>, transformerFactory, globalChannelApi)
             else -> defaultAdapter
         }
     }

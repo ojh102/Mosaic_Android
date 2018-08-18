@@ -2,6 +2,7 @@ package com.teamnexters.mosaic.di
 
 import com.google.gson.Gson
 import com.teamnexters.mosaic.BuildConfig
+import com.teamnexters.mosaic.base.GlobalChannelApi
 import com.teamnexters.mosaic.data.remote.MosaicApi
 import com.teamnexters.mosaic.network.MosaicCallAdapterFactory
 import com.teamnexters.mosaic.network.MosaicRxJava2Transformer
@@ -26,19 +27,22 @@ internal class RetrofitModule {
     @Provides
     fun provideMosaicRxJavaTransformerFactory(): MosaicRxJava2Transformer.Factory {
         return object : MosaicRxJava2Transformer.Factory {
-            override fun <T> newInstance(): MosaicRxJava2Transformer<T> {
-                return MosaicRxJava2Transformer()
+            override fun <T> newInstance(globalChannelApi: GlobalChannelApi): MosaicRxJava2Transformer<T> {
+                return MosaicRxJava2Transformer(globalChannelApi)
             }
         }
     }
 
     @Provides
     fun provideMosaicRxJavaCallAdapterFactory(
-            mosaicTransformerFactory: MosaicRxJava2Transformer.Factory
+            mosaicTransformerFactory: MosaicRxJava2Transformer.Factory,
+            globalChannelApi: GlobalChannelApi
+
     ): CallAdapter.Factory {
         return MosaicCallAdapterFactory(
                 RxJava2CallAdapterFactory.create(),
-                mosaicTransformerFactory
+                mosaicTransformerFactory,
+                globalChannelApi
         )
     }
 

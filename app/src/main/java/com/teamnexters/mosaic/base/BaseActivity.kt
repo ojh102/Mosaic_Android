@@ -6,6 +6,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
@@ -18,6 +19,7 @@ import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
 import com.teamnexters.mosaic.di.qualifier.RxMainScheduler
 import com.teamnexters.mosaic.ui.detail.DetailViewModel
 import com.teamnexters.mosaic.ui.login.LoginViewModel
+import com.teamnexters.mosaic.ui.widget.LoadingDialog
 import com.teamnexters.mosaic.ui.write.WriteViewModel
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -27,10 +29,11 @@ import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
 
-abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatActivity(),
+internal abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatActivity(),
         HasFragmentInjector, HasSupportFragmentInjector {
 
     @Inject
@@ -50,6 +53,9 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
     @field:RxMainScheduler
     lateinit var mainScheduler: Scheduler
 
+    @Inject
+    lateinit var globalChannelApi: GlobalChannelApi
+
     lateinit var binding: VB
     lateinit var viewModel: VM
 
@@ -61,6 +67,8 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
     private val compositeDisposable by lazy(LazyThreadSafetyMode.NONE) {
         CompositeDisposable()
     }
+
+    private var loadingDialog: LoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -82,6 +90,41 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatAct
             is LoginViewModel -> {}
             else ->            initializeCommonWindow()
         }
+
+        bind(
+                globalChannelApi.bindShowLoading()
+                        .subscribeOn(ioScheduler)
+                        .observeOn(mainScheduler)
+                        .subscribeBy(
+                                onNext = {
+                                    if(loadingDialog == null) {
+                                        loadingDialog = LoadingDialog(this@BaseActivity).apply {
+                                            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                                        }
+                                    }
+
+                                    loadingDialog?.let {
+                                        if(!it.isShowing) {
+                                            it.show()
+                                        }
+                                    }
+                                }
+                        ),
+
+                globalChannelApi.bindHideLoading()
+                        .subscribeOn(ioScheduler)
+                        .observeOn(mainScheduler)
+                        .subscribeBy(
+                                onNext = {
+                                    loadingDialog?.let {
+                                        if(it.isShowing) {
+                                            it.hide()
+                                        }
+                                    }
+                                }
+                        )
+
+        )
     }
 
     override fun onDestroy() {

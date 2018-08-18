@@ -2,32 +2,24 @@ package com.teamnexters.mosaic.ui.detail
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityDetailBinding
-import com.teamnexters.mosaic.ui.detail.DetailReplyAdapter.Companion.REPLY_TYPE
 import com.teamnexters.mosaic.ui.detail.data.ReplyDetailData
-import com.teamnexters.mosaic.utils.extension.toDp
 import com.teamnexters.mosaic.utils.extension.toPx
-import java.io.File
 import java.lang.Exception
-import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewModel>() {
+internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewModel>() {
     val REQUEST_TAKE_ALBUM = 0
     val REQUEST_IMAGE_CROP = 1
 
