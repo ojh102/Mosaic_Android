@@ -3,6 +3,7 @@ package com.teamnexters.mosaic.ui.mypage
 import com.jakewharton.rxrelay2.PublishRelay
 import com.teamnexters.mosaic.base.BaseViewModel
 import com.teamnexters.mosaic.data.remote.RemoteRepositoryApi
+import com.teamnexters.mosaic.data.remote.model.WriterResponse
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ internal class MyPageViewModel @Inject constructor(
         return clickBackRelay
     }
 
-    fun fetchMyPage(): Observable<MyPageData> {
+    fun fetchMyPage(): Observable<WriterResponse> {
         return remoteRepository.fetchMyPage()
     }
 

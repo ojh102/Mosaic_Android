@@ -3,7 +3,7 @@ package com.teamnexters.mosaic.ui.filter
 import com.jakewharton.rxrelay2.PublishRelay
 import com.teamnexters.mosaic.base.BaseViewModel
 import com.teamnexters.mosaic.data.remote.RemoteRepository
-import com.teamnexters.mosaic.ui.common.theme.ThemeData
+import com.teamnexters.mosaic.data.remote.model.CategoryResponse
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -22,7 +22,7 @@ internal class FilterViewModel @Inject constructor(
         return clickCloseRelay
     }
 
-    fun fetchFilterList(): Observable<List<ThemeData>> {
+    fun fetchFilterList(): Observable<List<CategoryResponse>> {
         return remoteRepository.fetchFilterList()
     }
 }

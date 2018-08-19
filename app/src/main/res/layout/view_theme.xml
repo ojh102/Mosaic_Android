@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.teamnexters.mosaic.ui.common.theme.ThemeData" />
+            type="com.teamnexters.mosaic.data.remote.model.CategoryResponse" />
 
         <variable
             name="backgroundSelectorRes"
@@ -66,7 +66,7 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:selected="@{data.selected}"
-            android:text="@{data.theme}"
+            android:text="@{data.name}"
             android:textAppearance="@style/EB14"
             android:textColor="@{textSelectorRes}"
             app:layout_constraintBottom_toBottomOf="parent"

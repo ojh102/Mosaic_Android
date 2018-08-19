@@ -60,7 +60,7 @@ internal class ResultViewModel @Inject constructor(
     fun bindResultList(): Observable<List<ScriptResponse>> {
         return fromScreenRelay.flatMap {
             when(it) {
-                Screen.Search -> remoteRepository.fetchResultListFromSearch()
+                Screen.Search -> remoteRepository.fetchResultListFromSearch(titleRelay.value)
                 Screen.Scrap -> remoteRepository.fetchResultListFromScrap()
                 Screen.Written -> remoteRepository.fetchResultListFromWritten()
                 else -> throw RuntimeException("있을리가 없음ㅋ")

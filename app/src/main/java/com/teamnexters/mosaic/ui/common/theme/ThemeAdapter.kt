@@ -3,6 +3,7 @@ package com.teamnexters.mosaic.ui.common.theme
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.teamnexters.mosaic.data.remote.model.CategoryResponse
 import com.teamnexters.mosaic.databinding.ViewThemeBinding
 import com.teamnexters.mosaic.ui.Screen
 
@@ -19,7 +20,7 @@ internal class ThemeAdapter (
         fun onClickFilter()
     }
 
-    private val items = mutableListOf<ThemeData>()
+    private val items = mutableListOf<CategoryResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThemeViewHolder {
         val binding = ViewThemeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -44,13 +45,13 @@ internal class ThemeAdapter (
         return items.size
     }
 
-    fun setItems(items: List<ThemeData>) {
+    fun setItems(items: List<CategoryResponse>) {
         this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()
     }
 
-    fun getSelectedItems(): List<ThemeData> {
+    fun getSelectedItems(): List<CategoryResponse> {
         return items.filter { it.selected }
     }
 

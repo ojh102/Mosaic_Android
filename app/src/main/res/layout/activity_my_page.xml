@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.teamnexters.mosaic.ui.mypage.MyPageData" />
+            type="com.teamnexters.mosaic.data.remote.model.WriterResponse" />
 
         <variable
             name="viewModel"
@@ -49,7 +49,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:srcCompat="@{data.univImgUrl}"
+            app:srcCompat="@{data.university.imgUrl}"
             tools:srcCompat="@color/white" />
 
         <android.support.constraint.ConstraintLayout
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="6dp"
-                android:text="@{data.univName}"
+                android:text="@{data.university.name}"
                 android:textAppearance="@style/EB14White"
                 app:layout_constraintRight_toLeftOf="@+id/pipe"
                 tools:text="이화여자대학교" />
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"
-                android:text="@{data.id}"
+                android:text="@{data.nick}"
                 android:textAppearance="@style/EB14White"
                 app:layout_constraintLeft_toRightOf="@+id/pipe"
                 tools:text="SOGANG2039" />
@@ -98,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
-            android:text="@{data.email}"
+            android:text="@{data.university.domain}"
             android:textAppearance="@style/B12LightRed"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

@@ -74,6 +74,8 @@ internal class ResultActivity : BaseActivity<ActivityResultBinding, ResultViewMo
                         ),
 
                 viewModel.bindResultList()
+                        .subscribeOn(ioScheduler)
+                        .observeOn(mainScheduler)
                         .subscribeBy(
                                 onNext = {
                                     resultAdapter.setItems(it)

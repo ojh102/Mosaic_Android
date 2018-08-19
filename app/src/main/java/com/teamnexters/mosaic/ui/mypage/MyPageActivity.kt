@@ -42,7 +42,11 @@ internal class MyPageActivity : BaseActivity<ActivityMyPageBinding, MyPageViewMo
                                 onNext = {
                                     binding.data = it
 
-                                    myPageAdapter.setItems(it.myPageRowDataList)
+                                    myPageAdapter.setItems(listOf(
+                                            MyPageRowData.ScarpRow(getString(R.string.my_page_scrap), it.myScrapCnt),
+                                            MyPageRowData.WrittenRow(getString(R.string.my_page_written), it.myScriptCnt),
+                                            MyPageRowData.Reset(getString(R.string.my_page_reset))
+                                    ))
                                 }
                         )
         )
@@ -81,6 +85,13 @@ internal class MyPageActivity : BaseActivity<ActivityMyPageBinding, MyPageViewMo
                 }
             }
         })
+
+
+        myPageAdapter.setItems(listOf(
+                MyPageRowData.ScarpRow(getString(R.string.my_page_scrap), 0),
+                MyPageRowData.WrittenRow(getString(R.string.my_page_written), 0),
+                MyPageRowData.Reset(getString(R.string.my_page_reset))
+        ))
     }
 
 }

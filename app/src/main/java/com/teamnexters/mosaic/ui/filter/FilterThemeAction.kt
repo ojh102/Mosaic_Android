@@ -1,15 +1,15 @@
 package com.teamnexters.mosaic.ui.filter
 
 import com.teamnexters.mosaic.R
+import com.teamnexters.mosaic.data.remote.model.CategoryResponse
 import com.teamnexters.mosaic.databinding.ViewThemeBinding
 import com.teamnexters.mosaic.ui.common.theme.CompatibleThemeAction
 import com.teamnexters.mosaic.ui.common.theme.ThemeAdapter
-import com.teamnexters.mosaic.ui.common.theme.ThemeData
 import com.teamnexters.mosaic.ui.common.theme.ThemeViewHolder
 
 internal class FilterThemeAction : CompatibleThemeAction {
 
-    override fun onClickTheme(themeAdapter: ThemeAdapter, viewHolder: ThemeViewHolder, items: List<ThemeData>) {
+    override fun onClickTheme(themeAdapter: ThemeAdapter, viewHolder: ThemeViewHolder, items: List<CategoryResponse>) {
         val selectedItem = items[viewHolder.adapterPosition]
         selectedItem.selected = selectedItem.selected.not()
 
