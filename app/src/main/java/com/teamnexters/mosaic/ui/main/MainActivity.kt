@@ -33,13 +33,20 @@ internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>()
                                 onNext = {
                                     Navigator.navigateToSearch(this, container_search)
                                 }
-                        ),
+                        )
+        )
+    }
 
-                viewModel.fetchMainCardList()
+    override fun onResume() {
+        super.onResume()
+
+        bind(
+                viewModel.fetchScriptList()
                         .subscribeOn(ioScheduler)
                         .observeOn(mainScheduler)
                         .subscribeBy(
                                 onNext = {
+                                    adapter.clear()
                                     adapter.addAll(it)
                                 }
                         )

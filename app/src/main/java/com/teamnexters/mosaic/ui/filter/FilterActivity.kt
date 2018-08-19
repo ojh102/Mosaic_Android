@@ -19,7 +19,8 @@ internal class FilterActivity : BaseActivity<ActivityFilterBinding, FilterViewMo
         const val KEY_FILTER = "filter"
     }
 
-    @Inject lateinit var themeAdapterFactory: ThemeAdapter.Factory
+    @Inject
+    lateinit var themeAdapterFactory: ThemeAdapter.Factory
 
     private val themeAdapter by lazy(LazyThreadSafetyMode.NONE) {
         themeAdapterFactory.newInstance(Screen.Filter)

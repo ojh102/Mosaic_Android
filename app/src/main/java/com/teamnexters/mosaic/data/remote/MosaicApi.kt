@@ -15,7 +15,7 @@ internal interface MosaicApi {
     ): Call<EmailSendResponse>
 
     @GET("/apis/scripts")
-    fun fetchScripts(): Single<ResponseEnvelope<List<ScriptResponse>>>
+    fun fetchScripts(@Query("categories") vararg categories: String): Single<ResponseEnvelope<List<ScriptResponse>>>
 
     @GET("/apis/scripts/mine")
     fun fetchMyScripts(): Single<ResponseEnvelope<List<ScriptResponse>>>

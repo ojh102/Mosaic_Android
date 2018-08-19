@@ -5,6 +5,7 @@ import android.os.Parcelable
 
 
 internal data class CategoryResponse(
+        val uuid: String = "",
         val emoji: String = "",
         val name: String = "",
         var selected: Boolean = false
@@ -12,9 +13,10 @@ internal data class CategoryResponse(
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readByte() != 0.toByte()
+            uuid = parcel.readString(),
+            emoji = parcel.readString(),
+            name = parcel.readString(),
+            selected = parcel.readByte() != 0.toByte()
     )
 
     fun getTheme(): String {
@@ -22,8 +24,9 @@ internal data class CategoryResponse(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(name)
+        parcel.writeString(uuid)
         parcel.writeString(emoji)
+        parcel.writeString(name)
         parcel.writeByte(if (selected) 1 else 0)
     }
 

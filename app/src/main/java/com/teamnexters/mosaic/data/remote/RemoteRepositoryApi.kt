@@ -6,7 +6,7 @@ import com.teamnexters.mosaic.data.remote.model.WriterResponse
 import io.reactivex.Observable
 
 internal interface RemoteRepositoryApi {
-    fun fetchMainCardList(): Observable<List<ScriptResponse>>
+    fun fetchScriptList(vararg categories: String): Observable<List<ScriptResponse>>
     fun fetchFilterList(): Observable<List<CategoryResponse>>
     fun fetchResultListFromSearch(keyword: String): Observable<List<ScriptResponse>>
     fun fetchResultListFromWritten(): Observable<List<ScriptResponse>>
