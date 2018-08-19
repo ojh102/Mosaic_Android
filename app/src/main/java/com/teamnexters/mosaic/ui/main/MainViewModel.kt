@@ -7,8 +7,8 @@ import com.teamnexters.mosaic.data.remote.RemoteRepositoryApi
 import com.teamnexters.mosaic.data.remote.model.CategoryResponse
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
 import com.teamnexters.mosaic.ui.filter.FilterActivity
+import com.teamnexters.mosaic.utils.extension.subscribeOf
 import io.reactivex.Observable
-import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
 internal class MainViewModel @Inject constructor(
@@ -36,7 +36,7 @@ internal class MainViewModel @Inject constructor(
                                         category.uuid
                                     }
                         }
-                        .subscribeBy(
+                        .subscribeOf(
                                 onNext = {
                                     filterRelay.accept(it)
                                 }

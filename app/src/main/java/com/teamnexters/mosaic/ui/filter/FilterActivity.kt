@@ -8,6 +8,7 @@ import com.teamnexters.mosaic.databinding.ActivityFilterBinding
 import com.teamnexters.mosaic.ui.Screen
 import com.teamnexters.mosaic.ui.common.theme.SpanningGridLayoutManager
 import com.teamnexters.mosaic.ui.common.theme.ThemeAdapter
+import com.teamnexters.mosaic.utils.extension.subscribeOf
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_filter.*
 import javax.inject.Inject
@@ -48,7 +49,7 @@ internal class FilterActivity : BaseActivity<ActivityFilterBinding, FilterViewMo
                 viewModel.fetchFilterList()
                         .subscribeOn(ioScheduler)
                         .observeOn(mainScheduler)
-                        .subscribeBy(
+                        .subscribeOf(
                                 onNext = {
                                     themeAdapter.setItems(it)
                                 }

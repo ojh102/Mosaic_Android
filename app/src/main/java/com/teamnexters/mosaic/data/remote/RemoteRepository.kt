@@ -15,7 +15,7 @@ internal class RemoteRepository @Inject constructor(
 ) : RemoteRepositoryApi {
 
     override fun fetchScriptList(vararg categories: String): Observable<List<ScriptResponse>> {
-        return mosaicApi.fetchScripts(*categories)
+        return mosaicApi.fetchScripts("", *categories)
                 .map { validate(it) }
                 .toObservable()
     }

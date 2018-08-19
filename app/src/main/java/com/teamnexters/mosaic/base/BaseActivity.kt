@@ -6,7 +6,6 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
@@ -19,7 +18,7 @@ import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
 import com.teamnexters.mosaic.di.qualifier.RxMainScheduler
 import com.teamnexters.mosaic.ui.detail.DetailViewModel
 import com.teamnexters.mosaic.ui.login.LoginViewModel
-import com.teamnexters.mosaic.ui.widget.LoadingDialog
+import com.teamnexters.mosaic.ui.widget.LoadingDialogFragment
 import com.teamnexters.mosaic.ui.write.WriteViewModel
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -35,6 +34,10 @@ import javax.inject.Inject
 
 internal abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : AppCompatActivity(),
         HasFragmentInjector, HasSupportFragmentInjector {
+
+    companion object {
+        const val TAG_DIALOG_LOADING = "loading"
+    }
 
     @Inject
     lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
@@ -68,7 +71,7 @@ internal abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : App
         CompositeDisposable()
     }
 
-    private var loadingDialog: LoadingDialog? = null
+    private var loadingDialogFragment: LoadingDialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -79,16 +82,17 @@ internal abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : App
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModelClass())
 
         viewModel.let {
-            if(it is BaseViewModel) {
+            if (it is BaseViewModel) {
                 it.intent(intent)
             }
         }
 
-        when(viewModel){
+        when (viewModel) {
             is DetailViewModel -> initializeDetailWindow()
             is WriteViewModel -> initializeWriteWindow()
-            is LoginViewModel -> {}
-            else ->            initializeCommonWindow()
+            is LoginViewModel -> {
+            }
+            else -> initializeCommonWindow()
         }
 
         bind(
@@ -97,17 +101,7 @@ internal abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : App
                         .observeOn(mainScheduler)
                         .subscribeBy(
                                 onNext = {
-                                    if(loadingDialog == null) {
-                                        loadingDialog = LoadingDialog(this@BaseActivity).apply {
-                                            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                                        }
-                                    }
-
-                                    loadingDialog?.let {
-                                        if(!it.isShowing) {
-                                            it.show()
-                                        }
-                                    }
+                                    showLoadingDialog()
                                 }
                         ),
 
@@ -116,11 +110,7 @@ internal abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : App
                         .observeOn(mainScheduler)
                         .subscribeBy(
                                 onNext = {
-                                    loadingDialog?.let {
-                                        if(it.isShowing) {
-                                            it.hide()
-                                        }
-                                    }
+                                    hideLoadingDialog()
                                 }
                         )
 
@@ -137,7 +127,7 @@ internal abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : App
         super.onActivityResult(requestCode, resultCode, data)
 
         viewModel.let {
-            if(it is BaseViewModel) {
+            if (it is BaseViewModel) {
                 it.activityResult(requestCode, resultCode, data)
             }
         }
@@ -181,6 +171,23 @@ internal abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : App
             winParams.flags = winParams.flags and bits.inv()
         }
         win.attributes = winParams
+    }
+
+    private fun showLoadingDialog() {
+        if (loadingDialogFragment == null) {
+            loadingDialogFragment = LoadingDialogFragment.newInstance()
+
+            supportFragmentManager.beginTransaction()
+                    .add(loadingDialogFragment, TAG_DIALOG_LOADING)
+                    .commitAllowingStateLoss()
+        }
+    }
+
+    private fun hideLoadingDialog() {
+        if (loadingDialogFragment != null) {
+            loadingDialogFragment?.dismissAllowingStateLoss()
+            loadingDialogFragment = null
+        }
     }
 
 }

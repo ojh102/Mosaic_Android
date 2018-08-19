@@ -7,6 +7,7 @@ import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityResultBinding
 import com.teamnexters.mosaic.ui.Screen
 import com.teamnexters.mosaic.utils.Navigator
+import com.teamnexters.mosaic.utils.extension.subscribeOf
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.withLatestFrom
 import kotlinx.android.synthetic.main.activity_result.*
@@ -76,7 +77,7 @@ internal class ResultActivity : BaseActivity<ActivityResultBinding, ResultViewMo
                 viewModel.bindResultList()
                         .subscribeOn(ioScheduler)
                         .observeOn(mainScheduler)
-                        .subscribeBy(
+                        .subscribeOf(
                                 onNext = {
                                     resultAdapter.setItems(it)
                                 }

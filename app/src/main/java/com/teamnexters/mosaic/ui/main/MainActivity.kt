@@ -7,6 +7,7 @@ import com.teamnexters.mosaic.databinding.ActivityMainBinding
 import com.teamnexters.mosaic.ui.main.stack.CardStackView
 import com.teamnexters.mosaic.ui.main.stack.SwipeDirection
 import com.teamnexters.mosaic.utils.Navigator
+import com.teamnexters.mosaic.utils.extension.subscribeOf
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -44,7 +45,7 @@ internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>()
                 viewModel.fetchScriptList()
                         .subscribeOn(ioScheduler)
                         .observeOn(mainScheduler)
-                        .subscribeBy(
+                        .subscribeOf(
                                 onNext = {
                                     adapter.clear()
                                     adapter.addAll(it)

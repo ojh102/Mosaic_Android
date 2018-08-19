@@ -8,6 +8,7 @@ import com.teamnexters.mosaic.data.local.model.Keyword
 import com.teamnexters.mosaic.databinding.ActivityMyPageBinding
 import com.teamnexters.mosaic.ui.Screen
 import com.teamnexters.mosaic.utils.Navigator
+import com.teamnexters.mosaic.utils.extension.subscribeOf
 import com.teamnexters.mosaic.utils.extension.toast
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_my_page.*
@@ -38,7 +39,7 @@ internal class MyPageActivity : BaseActivity<ActivityMyPageBinding, MyPageViewMo
                 viewModel.fetchMyPage()
                         .subscribeOn(ioScheduler)
                         .observeOn(mainScheduler)
-                        .subscribeBy(
+                        .subscribeOf(
                                 onNext = {
                                     binding.data = it
 
