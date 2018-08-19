@@ -3,10 +3,7 @@ package com.teamnexters.mosaic.data.remote
 import com.teamnexters.mosaic.data.remote.model.*
 import io.reactivex.Single
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 internal interface MosaicApi {
     @POST("/login/email")
@@ -31,4 +28,8 @@ internal interface MosaicApi {
 
     @GET("/categories")
     fun fetchCategories(): Single<ResponseEnvelope<List<CategoryResponse>>>
+
+    @FormUrlEncoded
+    @POST("/apis/scrap")
+    fun scarp(@Field("scriptUuid") scriptUuid: String): Single<ResponseEnvelope<ScriptResponse>>
 }

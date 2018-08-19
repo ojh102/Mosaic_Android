@@ -11,7 +11,7 @@ internal data class ScriptResponse(
         val created: Long = 0L,
         val category: CategoryResponse,
         val replies: Int,
-        val scrap: Boolean = false
+        var scrap: Boolean = false
 ) {
     fun getDate(): String {
         return "$created"

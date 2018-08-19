@@ -22,7 +22,11 @@ internal class ResultActivity : BaseActivity<ActivityResultBinding, ResultViewMo
     }
 
     @Inject
-    lateinit var resultAdapter: ResultAdapter
+    lateinit var resultAdapterFactory: ResultAdapter.Factory
+
+    private val resultAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        resultAdapterFactory.newInstance(intent.getSerializableExtra(ResultActivity.KEY_FROM_SCREEN) as Screen)
+    }
 
     override fun getLayoutRes() = R.layout.activity_result
 
@@ -45,8 +49,7 @@ internal class ResultActivity : BaseActivity<ActivityResultBinding, ResultViewMo
                                         Screen.Search -> {
                                             Navigator.navigateToMain(this, true)
                                         }
-                                        Screen.Scrap,
-                                        Screen.Written -> {
+                                        else -> {
                                             finish()
                                         }
                                     }
@@ -70,7 +73,7 @@ internal class ResultActivity : BaseActivity<ActivityResultBinding, ResultViewMo
                 viewModel.bindFromScreen()
                         .subscribeBy(
                                 onNext = {
-                                    binding.closeVisibility = Screen.Search == it
+                                    binding.screen = it
                                 }
                         ),
 

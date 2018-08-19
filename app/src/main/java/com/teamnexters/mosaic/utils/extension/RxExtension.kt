@@ -3,10 +3,14 @@ package com.teamnexters.mosaic.utils.extension
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
+import timber.log.Timber
 
 private val onNextStub: (Any) -> Unit = {}
 private val onSuccessStub: (Any) -> Unit = {}
-private val onErrorStub: (Throwable) -> Unit = { throw RuntimeException(it) }
+private val onErrorStub: (Throwable) -> Unit = {
+    Timber.e(it)
+    throw RuntimeException(it)
+}
 private val onCompleteStub: () -> Unit = {}
 
 fun <T : Any> Observable<T>.subscribeOf(

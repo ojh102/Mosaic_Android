@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.teamnexters.mosaic.ui.Screen" />
+
         <variable
             name="viewModel"
             type="com.teamnexters.mosaic.ui.result.ResultViewModel" />
@@ -14,8 +16,8 @@
             type="String" />
 
         <variable
-            name="closeVisibility"
-            type="boolean" />
+            name="screen"
+            type="com.teamnexters.mosaic.ui.Screen" />
 
     </data>
 
@@ -61,7 +63,7 @@
                 android:layout_marginRight="13dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:onClick="@{() -> viewModel.onClickClose()}"
-                android:visibility="@{closeVisibility}"
+                android:visibility="@{screen == Screen.Search}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

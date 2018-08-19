@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder
 import com.teamnexters.mosaic.BuildConfig
 import com.teamnexters.mosaic.data.local.MosaicSharedPreferenceManager
 import com.teamnexters.mosaic.di.qualifier.HttpLogging
-import com.teamnexters.mosaic.di.qualifier.RequestIntercetor
+import com.teamnexters.mosaic.di.qualifier.RequestInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -32,10 +32,10 @@ interface HttpModule {
         }
 
         @Provides
-        @RequestIntercetor
+        @RequestInterceptor
         fun provideRequestInterceptor(mosaicSharedPreferenceManager: MosaicSharedPreferenceManager): Interceptor {
             return Interceptor { chain ->
-                val fakeToken = "eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAACXLSwqAIBAA0LvMWiF1ptFu42_AVZIFQXT3irYP3gVtDFhgzfva6yagoMUdFkMOyTPhpKCe_YeZXfjgOFp5D1mMwWHSJs6iUYi0Fyra2hSFC3MmhPsBQKp-FWIAAAA.7WnHwOydM7T6AYOPkLpl92Ag6aNefWpg0A2jsjb-sbc"
+                val fakeToken = "eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAACXLOQrAIBBA0btMreC4ZDS3cQUrJSoEQu4eIcVvHvwH6hhwQouz9XwVYFD9hBON0oclQYZBvvsPRLsNa9W0HxOEtyoErjAh14Sa-2IcLxSclxFLshLeD39WtnZiAAAA.JKr06XWQc4IUNbYcz64ZdJz_xpdTX4s8gvMiTj4BvlY"
 
                 var token = mosaicSharedPreferenceManager.getString(MosaicSharedPreferenceManager.TOKEN)
 
@@ -64,7 +64,7 @@ interface HttpModule {
         @Singleton
         fun provideOkHttpClient(
                 @HttpLogging httpLoggingInterceptor: Interceptor,
-                @RequestIntercetor requestIntercetor: Interceptor
+                @RequestInterceptor requestIntercetor: Interceptor
         ): OkHttpClient {
 
             val okHttpClientBuilder = OkHttpClient.Builder()
