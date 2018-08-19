@@ -6,6 +6,7 @@ internal data class WriterResponse(
         val nick: String = "",
         val university: UniversityResponse,
         val username: String = "",
+        val email: String = "",
         val myScriptCnt: Int = 0,
         val myScrapCnt: Int = 0
 )
