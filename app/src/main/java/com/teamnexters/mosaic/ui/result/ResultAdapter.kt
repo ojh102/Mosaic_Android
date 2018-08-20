@@ -6,9 +6,13 @@ import android.view.ViewGroup
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
 import com.teamnexters.mosaic.databinding.ViewResultBinding
 import com.teamnexters.mosaic.databinding.ViewResultHeaderBinding
+import com.teamnexters.mosaic.ui.Screen
 
 
-internal class ResultAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+internal class ResultAdapter(private val screen: Screen) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    interface Factory {
+        fun newInstance(screen: Screen): ResultAdapter
+    }
 
     companion object {
         const val SIZE_OF_HEADER = 1
@@ -19,16 +23,17 @@ internal class ResultAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items = mutableListOf<ScriptResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when(viewType) {
+        return when(viewType) {
             TYPE_HEADER -> {
-                return ResultHeaderViewHolder(
+                ResultHeaderViewHolder(
                         ViewResultHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 )
             }
             TYPE_RESULT -> {
-                return ResultViewHolder(
-                        ViewResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                )
+                val binding = ViewResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                binding.screen = screen
+
+                ResultViewHolder(binding)
             }
             else -> throw RuntimeException("invalid view type")
         }

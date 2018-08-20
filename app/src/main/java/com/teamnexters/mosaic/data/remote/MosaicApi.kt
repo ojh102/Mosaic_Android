@@ -44,4 +44,8 @@ internal interface MosaicApi {
 
     @GET("/categories")
     fun fetchCategories(): Single<ResponseEnvelope<List<CategoryResponse>>>
+
+    @FormUrlEncoded
+    @POST("/apis/scrap")
+    fun scarp(@Field("scriptUuid") scriptUuid: String): Single<ResponseEnvelope<ScriptResponse>>
 }

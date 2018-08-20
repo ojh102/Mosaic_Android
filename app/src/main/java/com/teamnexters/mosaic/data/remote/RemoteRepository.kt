@@ -2,13 +2,16 @@ package com.teamnexters.mosaic.data.remote
 
 import android.content.res.Resources
 import com.teamnexters.mosaic.data.remote.model.*
+import com.teamnexters.mosaic.data.remote.model.CategoryResponse
+import com.teamnexters.mosaic.data.remote.model.ScriptResponse
+import com.teamnexters.mosaic.data.remote.model.WriterResponse
 import com.teamnexters.mosaic.utils.extension.validate
 import io.reactivex.Observable
+import io.reactivex.Single
 import javax.inject.Inject
 
 internal class RemoteRepository @Inject constructor(
-        private val mosaicApi: MosaicApi,
-        private val resource: Resources
+        private val mosaicApi: MosaicApi
 
 ) : RemoteRepositoryApi {
 
@@ -25,13 +28,7 @@ internal class RemoteRepository @Inject constructor(
     }
 
     override fun fetchScriptList(vararg categories: String): Observable<List<ScriptResponse>> {
-        val categoryList = categories.toMutableList()
-
-        if(categoryList.isEmpty()){
-            categoryList.add("")
-        }
-
-        return mosaicApi.fetchScripts(*categoryList.toTypedArray())
+        return mosaicApi.fetchScripts(*categories)
                 .map { validate(it) }
                 .toObservable()
     }
@@ -71,4 +68,9 @@ internal class RemoteRepository @Inject constructor(
                 .toObservable()
     }
 
+    override fun scrap(scriptUuid: String): Observable<ScriptResponse> {
+        return mosaicApi.scarp(scriptUuid)
+                .map { validate(it) }
+                .toObservable()
+    }
 }

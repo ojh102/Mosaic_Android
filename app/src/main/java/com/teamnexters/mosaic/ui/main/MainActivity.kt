@@ -1,15 +1,21 @@
 package com.teamnexters.mosaic.ui.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
+import com.teamnexters.mosaic.data.remote.model.ScriptResponse
 import com.teamnexters.mosaic.databinding.ActivityMainBinding
+import com.teamnexters.mosaic.databinding.ViewCardBinding
 import com.teamnexters.mosaic.ui.main.stack.CardStackView
 import com.teamnexters.mosaic.ui.main.stack.SwipeDirection
 import com.teamnexters.mosaic.utils.Navigator
 import com.teamnexters.mosaic.utils.extension.subscribeOf
+import com.teamnexters.mosaic.utils.extension.toast
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 import javax.inject.Inject
 
 internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
@@ -34,24 +40,28 @@ internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>()
                                 onNext = {
                                     Navigator.navigateToSearch(this, container_search)
                                 }
-                        )
-        )
-    }
+                        ),
 
-    override fun onResume() {
-        super.onResume()
-
-        bind(
-                viewModel.fetchScriptList()
+                viewModel.bindScrap()
                         .subscribeOn(ioScheduler)
                         .observeOn(mainScheduler)
-                        .subscribeOf(
+                        .subscribeBy(
                                 onNext = {
-                                    adapter.clear()
-                                    adapter.addAll(it)
+                                    adapter.setScrap(
+                                            scriptUuid = it.first,
+                                            scrap = it.second
+                                    )
                                 }
                         )
         )
+
+        fetchScriptList()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        fetchScriptList()
     }
 
     private fun initializeStack() {
@@ -79,7 +89,38 @@ internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>()
 
         })
 
+        adapter.setScrapClickListener(object : MosaicStackAdapter.ScarpClickListener {
+            override fun onClick(binding: ViewCardBinding, items: List<ScriptResponse>) {
+                val scriptResponse = items[stack_card.topIndex]
+
+                bind(
+                        viewModel.scarp(scriptResponse.uuid)
+                                .subscribeOn(ioScheduler)
+                                .observeOn(mainScheduler)
+                                .subscribeOf(
+                                        onNext = {
+                                            scriptResponse.scrap = it.scrap
+                                            binding.card = scriptResponse
+                                        }
+                                )
+                )
+            }
+        })
+
         stack_card.setAdapter(adapter)
+    }
+
+    private fun fetchScriptList() {
+        bind(
+                viewModel.fetchScriptList()
+                        .subscribeOn(ioScheduler)
+                        .observeOn(mainScheduler)
+                        .subscribeOf(
+                                onNext = {
+                                    adapter.setItems(it)
+                                }
+                        )
+        )
     }
 
 }

@@ -5,4 +5,4 @@ import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
-annotation class RequestIntercetor
+annotation class RequestInterceptor

@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder
 import com.teamnexters.mosaic.BuildConfig
 import com.teamnexters.mosaic.data.local.MosaicSharedPreferenceManager
 import com.teamnexters.mosaic.di.qualifier.HttpLogging
-import com.teamnexters.mosaic.di.qualifier.RequestIntercetor
+import com.teamnexters.mosaic.di.qualifier.RequestInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -32,7 +32,7 @@ interface HttpModule {
         }
 
         @Provides
-        @RequestIntercetor
+        @RequestInterceptor
         fun provideRequestInterceptor(mosaicSharedPreferenceManager: MosaicSharedPreferenceManager): Interceptor {
             return Interceptor { chain ->
                 val token = mosaicSharedPreferenceManager.getString(MosaicSharedPreferenceManager.TOKEN)
@@ -60,7 +60,7 @@ interface HttpModule {
         @Singleton
         fun provideOkHttpClient(
                 @HttpLogging httpLoggingInterceptor: Interceptor,
-                @RequestIntercetor requestIntercetor: Interceptor
+                @RequestInterceptor requestIntercetor: Interceptor
         ): OkHttpClient {
 
             val okHttpClientBuilder = OkHttpClient.Builder()

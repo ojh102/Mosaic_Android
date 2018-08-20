@@ -14,4 +14,5 @@ internal interface RemoteRepositoryApi {
     fun fetchResultListFromWritten(): Observable<List<ScriptResponse>>
     fun fetchResultListFromScrap(): Observable<List<ScriptResponse>>
     fun fetchMyPage(): Observable<WriterResponse>
+    fun scrap(scriptUuid: String): Observable<ScriptResponse>
 }

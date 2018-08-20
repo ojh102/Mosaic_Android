@@ -17,8 +17,12 @@ internal data class ScriptResponse(
         val created: Long = 0L,
         val category: CategoryResponse,
         val replies: Int,
-        val scrap: Boolean = false
+        var scrap: Boolean = false
 ) : Parcelable {
+    fun getDate(): String {
+        return "$created"
+    }
+    
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
             parcel.readString(),
@@ -46,10 +50,6 @@ internal data class ScriptResponse(
     }
 
     override fun describeContents(): Int = 0
-
-    fun getDate(): String {
-        return "$created"
-    }
 
     companion object CREATOR : Parcelable.Creator<ScriptResponse> {
         override fun createFromParcel(parcel: Parcel): ScriptResponse {

@@ -3,6 +3,7 @@ package com.teamnexters.mosaic.ui.result
 import android.arch.lifecycle.ViewModel
 import com.teamnexters.mosaic.di.anotation.ActivityScope
 import com.teamnexters.mosaic.di.anotation.ViewModelKey
+import com.teamnexters.mosaic.ui.Screen
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -15,8 +16,12 @@ internal interface ResultActivityModule {
     class ProvideModule {
         @Provides
         @ActivityScope
-        fun provideResultAdapter(): ResultAdapter {
-            return ResultAdapter()
+        fun provideResultAdapterFactory(): ResultAdapter.Factory {
+            return object : ResultAdapter.Factory {
+                override fun newInstance(screen: Screen): ResultAdapter {
+                    return ResultAdapter(screen)
+                }
+            }
         }
     }
 
