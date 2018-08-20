@@ -62,4 +62,8 @@ internal class MosaicStackAdapter(context: Context) : ArrayAdapter<ScriptRespons
         setItems(items.toList())
     }
 
+    fun getItems(): List<ScriptResponse> {
+        return items
+    }
+
 }

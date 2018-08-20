@@ -1,6 +1,7 @@
 package com.teamnexters.mosaic.ui.main
 
 import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
@@ -43,11 +44,22 @@ internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>()
                         .subscribeOn(ioScheduler)
                         .observeOn(mainScheduler)
                         .subscribeBy(
-                                onNext = {
+                                onNext = { pair ->
+                                    val scriptUuid = pair.first
+                                    val scarped = pair.second
+
                                     adapter.setScrap(
-                                            scriptUuid = it.first,
-                                            scrap = it.second
+                                            scriptUuid = scriptUuid,
+                                            scrap = scarped
                                     )
+
+                                    adapter.getItems().forEach {
+                                        if(it.uuid == scriptUuid) {
+                                            return@subscribeBy
+                                        }
+
+                                        stack_card.swipe(Point(), SwipeDirection.Top)
+                                    }
                                 }
                         )
         )
