@@ -8,7 +8,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module(includes = [DetailActivityModule.ProvideModule::class])
-interface DetailActivityModule {
+internal interface DetailActivityModule {
     @Module
     class ProvideModule
 

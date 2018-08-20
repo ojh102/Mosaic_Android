@@ -18,6 +18,8 @@
     <string name="email">이메일</string>
     <string name="email_empty">이메일을 적어주세요.</string>
     <string name="confirm_email">이메일 인증</string>
+    <string name="email_error">이메일 전송에 실패하였습니다.</string>
+    <string name="auth_email_error">인증에 실패하였습니다. 다시 시도해주세요.</string>
 
     <string name="use_agreement_left">이메일 인증시, 모자이크\u0020</string>
     <string name="use_agreement_center"><u>서비스 약관</u></string>
@@ -50,13 +52,9 @@
     <string name="write_rereply_text">답글</string>
 
     <string name="no_reply">아직 댓글이 없습니다. 또르르 :(</string>
+    <string name="reply_response_error">댓글을 불러오는데 실패하였습니다.</string>
 
     <string name="delete_card">삭제하기</string>
     <string name="my_badge">MY</string>
-
-
-    <string name="email_confirm_host">email_confirm</string>
-    <string name="email_confirm_scheme">mosaicapp</string>
-    <string name="email_confirm_code">code</string>
 </resources>
 

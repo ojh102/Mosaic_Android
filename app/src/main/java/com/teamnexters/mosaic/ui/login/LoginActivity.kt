@@ -1,12 +1,16 @@
 package com.teamnexters.mosaic.ui.login
 
 import android.animation.Animator
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
@@ -14,9 +18,11 @@ import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.data.local.MosaicSharedPreferenceManager
 import com.teamnexters.mosaic.databinding.ActivityLoginBinding
+import com.teamnexters.mosaic.ui.mypage.MyPageRowData
 import com.teamnexters.mosaic.utils.Navigator
 import com.teamnexters.mosaic.utils.extension.hideSoftKeyboard
 import com.teamnexters.mosaic.utils.extension.isEmailAddress
+import com.teamnexters.mosaic.utils.extension.subscribeOf
 import com.teamnexters.mosaic.utils.extension.toast
 import javax.inject.Inject
 
@@ -36,7 +42,7 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
     var isEmailCheckLayoutVisible = false
 
     @Inject
-    lateinit var mSharedPreferenceManager: MosaicSharedPreferenceManager
+    lateinit var sharedPreferenceManager: MosaicSharedPreferenceManager
 
     override fun getLayoutRes() = R.layout.activity_login
 
@@ -61,7 +67,7 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
     }
 
     fun checkEmailSent() {
-        mSharedPreferenceManager.getString(MosaicSharedPreferenceManager.EMAIL_ADDRESS).let {
+        sharedPreferenceManager.getString(MosaicSharedPreferenceManager.EMAIL_ADDRESS).let {
             if ("".equals(it)) {
                 val screenWidth = applicationContext.getResources().getDisplayMetrics().widthPixels
                 emailCheckLayout.translationX = screenWidth.toFloat()
@@ -79,17 +85,8 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
         useAgreementAgree.setOnClickListener { hideUseAgreement() }
         useAgreementText.setOnClickListener { showUseAgreement() }
         sendEmail.setOnClickListener { sendEmailInfo() }
-        checkEmail.setOnClickListener {
-
-            //Navigator.navigateToDetail(this)
-            //Navigator.navigateToInternet(this)
-            Navigator.navigateToMain(this)
-            //Navigator.navigateToWrite(this)
-            finish()
-        }
-        checkEmailBack.setOnClickListener {
-            hideEmailCheckLayout()
-        }
+        checkEmail.setOnClickListener { getTokenInfo() }
+        checkEmailBack.setOnClickListener { hideEmailCheckLayout() }
 
         //이메일 edittext 관련 listener
         emailEditText.addTextChangedListener(object : TextWatcher {
@@ -118,23 +115,55 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
         })
     }
 
-    fun saveEmailPref(email : String){
-        mSharedPreferenceManager.setString(MosaicSharedPreferenceManager.EMAIL_ADDRESS, email)
+    fun getTokenInfo(){
+        val authKey = sharedPreferenceManager.getString(MosaicSharedPreferenceManager.AUTH_KEY,"")
+        val uuid = sharedPreferenceManager.getString(MosaicSharedPreferenceManager.UUID,"")
+
+        if(TextUtils.isEmpty(authKey) || TextUtils.isEmpty(uuid)) {
+            toast(resources.getString(R.string.auth_email_error))
+            return
+        }
+
+        viewModel.getTokenInfo(authKey, uuid).subscribeOn(ioScheduler)
+                .observeOn(mainScheduler)
+                .subscribeOf(
+                        onNext = {
+                            sharedPreferenceManager.setString(MosaicSharedPreferenceManager.TOKEN, it.token)
+                            Navigator.navigateToMain(this)
+                            finish()
+                        },
+                        onError = {
+                            toast(resources.getString(R.string.auth_email_error));
+                        }
+                )
     }
 
     fun sendEmailInfo() {
-        if (emailEditText.text.toString().length == 0) {
+        val email = emailEditText.text.toString()
+
+        if (email.length == 0) {
             toast(resources.getString(R.string.email_empty));
         } else {
-            if(emailEditText.text.toString().isEmailAddress){
+            if (email.isEmailAddress) {
                 //서버에 이메일을 보내달라고 요청!
-                viewModel.sendEmailInfo()
 
-                saveEmailPref(emailEditText.text.toString())
-                userEmail.text = emailEditText.text.toString()
+                viewModel.sendEmailInfo(email) .subscribeOn(ioScheduler)
+                        .observeOn(mainScheduler)
+                        .subscribeOf(
+                                onNext = {
+                                    sharedPreferenceManager.setString(MosaicSharedPreferenceManager.AUTH_KEY, it.authKey)
+                                    sharedPreferenceManager.setString(MosaicSharedPreferenceManager.UUID, it.uuid)
+                                    sharedPreferenceManager.setString(MosaicSharedPreferenceManager.EMAIL_ADDRESS, email)
 
-                showEmailCheckLayout()
-            }else{
+                                    userEmail.text = email
+
+                                    showEmailCheckLayout()
+                                },
+                                onError = {
+                                    toast(resources.getString(R.string.email_error));
+                                }
+                        )
+            } else {
                 this.toast(resources.getString(R.string.invalid_email_format))
             }
         }
@@ -189,7 +218,7 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
                     .translationY(0f)
                     .setDuration(300)
                     .setInterpolator(DecelerateInterpolator(1.5f))
-                    .setListener(object : Animator.AnimatorListener{
+                    .setListener(object : Animator.AnimatorListener {
                         override fun onAnimationRepeat(animation: Animator?) {}
 
                         override fun onAnimationCancel(animation: Animator?) {}
@@ -198,7 +227,7 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
                             it.visibility = VISIBLE
                         }
 
-                        override fun onAnimationEnd(animation: Animator){}
+                        override fun onAnimationEnd(animation: Animator) {}
                     })
                     .start()
         }
@@ -217,14 +246,14 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
                     .translationY(it.height.toFloat())
                     .setDuration(300)
                     .setInterpolator(DecelerateInterpolator(1.5f))
-                    .setListener(object : Animator.AnimatorListener{
+                    .setListener(object : Animator.AnimatorListener {
                         override fun onAnimationRepeat(animation: Animator?) {}
 
                         override fun onAnimationCancel(animation: Animator?) {}
 
                         override fun onAnimationStart(animation: Animator?) {}
 
-                        override fun onAnimationEnd(animation: Animator){
+                        override fun onAnimationEnd(animation: Animator) {
                             it.visibility = GONE
                         }
                     })
@@ -235,7 +264,7 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
     override fun onBackPressed() {
         if (isAgreementLayoutVisible)
             hideUseAgreement()
-        else if(isEmailCheckLayoutVisible)
+        else if (isEmailCheckLayoutVisible)
             hideEmailCheckLayout()
         else super.onBackPressed()
     }

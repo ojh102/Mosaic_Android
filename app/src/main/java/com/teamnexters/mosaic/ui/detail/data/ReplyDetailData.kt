@@ -1,9 +1,5 @@
 package com.teamnexters.mosaic.ui.detail.data
 
-import java.util.*
-
-
-
 data class ReplyDetailData(
         val type: Int,
         val uuid: Long,

@@ -12,9 +12,12 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.teamnexters.mosaic.R
+import com.teamnexters.mosaic.data.local.MosaicSharedPreferenceManager
+import com.teamnexters.mosaic.data.remote.model.ReplyResponse
 import com.teamnexters.mosaic.ui.detail.data.ReplyDetailData
 import com.teamnexters.mosaic.ui.widget.CustomTextView
 import com.teamnexters.mosaic.utils.extension.toast
+import javax.inject.Inject
 
 
 class DetailReplyAdapter(val context : Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
@@ -23,7 +26,7 @@ class DetailReplyAdapter(val context : Context) : RecyclerView.Adapter<RecyclerV
         val REREPLY_TYPE = 1
     }
 
-    var replyList = ArrayList<ReplyDetailData>()
+    internal var replyList = ArrayList<ReplyResponse>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -45,16 +48,19 @@ class DetailReplyAdapter(val context : Context) : RecyclerView.Adapter<RecyclerV
 
     override fun getItemCount(): Int = replyList.size
 
-
-    override fun getItemViewType(position: Int): Int = replyList.get(position).type
-
+    //override fun getItemViewType(position: Int): Int = replyList.get(position).type
+    override fun getItemViewType(position: Int): Int = REPLY_TYPE //타입을 모르겟땅
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = (holder as ReplyAbstractViewHolder).setData(replyList.get(position))
 
 
-
     abstract class ReplyAbstractViewHolder(itemView :View, val context: Context) : RecyclerView.ViewHolder(itemView) {
-        abstract fun setData(replyDetailData: ReplyDetailData)
+        @Inject
+        lateinit var sharedPreferenceManager: MosaicSharedPreferenceManager
+
+        val uuid by lazy { sharedPreferenceManager.getString(MosaicSharedPreferenceManager.UUID,"") }
+
+        internal abstract fun setData(replyDetailData: ReplyResponse)
     }
 
     class ReplyViewHolder(itemView :View, context: Context) : ReplyAbstractViewHolder(itemView, context) {
@@ -62,17 +68,19 @@ class DetailReplyAdapter(val context : Context) : RecyclerView.Adapter<RecyclerV
         val universityName by lazy { itemView.findViewById<AppCompatTextView>(R.id.university_name) }
         val userId by lazy { itemView.findViewById<AppCompatTextView>(R.id.user_id) }
         val myBadge by lazy { itemView.findViewById<AppCompatTextView>(R.id.my_badge) }
+        val replyImage by lazy { itemView.findViewById<AppCompatImageView>(R.id.reply_image) }
         val replyContent by lazy { itemView.findViewById<CustomTextView>(R.id.reply_content) }
         val replyWriteTime by lazy { itemView.findViewById<AppCompatTextView>(R.id.reply_write_time) }
         val replyWriteRereply by lazy { itemView.findViewById<AppCompatTextView>(R.id.reply_write_rereply) }
 
-        override fun setData(replyDetailData: ReplyDetailData){
-            Glide.with(context).load(replyDetailData.universityImageUrl).into(universityImage)
-            universityName.setText(replyDetailData.universityName)
-            userId.setText(replyDetailData.userId)
-            if(replyDetailData.isMy) myBadge.visibility = VISIBLE else myBadge.visibility = GONE
-            replyContent.setText(replyDetailData.replyContent)
-            replyWriteTime.setText(replyDetailData.replyWriteTime)
+        override fun setData(replyDetailData: ReplyResponse){
+            Glide.with(context).load(replyDetailData.writer.university.imgUrl).into(universityImage)
+            universityName.setText(replyDetailData.writer.university.name)
+            userId.setText(replyDetailData.writer.username)
+            //if(replyDetailData.writer.uuid.equals(uuid)) myBadge.visibility = VISIBLE else myBadge.visibility = GONE
+            if(replyDetailData.imgUrl != "") Glide.with(context).load(replyDetailData.imgUrl).into(replyImage) else replyImage.visibility = GONE
+            replyContent.setText(replyDetailData.content)
+            replyWriteTime.setText(replyDetailData.createdAt.toString())
 
             replyWriteRereply.setOnClickListener {
                 context.toast("대댓글")
@@ -85,16 +93,18 @@ class DetailReplyAdapter(val context : Context) : RecyclerView.Adapter<RecyclerV
         val universityName by lazy { itemView.findViewById<AppCompatTextView>(R.id.university_name) }
         val userId by lazy { itemView.findViewById<AppCompatTextView>(R.id.user_id) }
         val myBadge by lazy { itemView.findViewById<AppCompatTextView>(R.id.my_badge) }
+        val rereplyImage by lazy { itemView.findViewById<AppCompatImageView>(R.id.rereply_image) }
         val replyContent by lazy { itemView.findViewById<CustomTextView>(R.id.rereply_content) }
         val replyWriteTime by lazy { itemView.findViewById<AppCompatTextView>(R.id.rereply_write_time) }
 
-        override fun setData(replyDetailData: ReplyDetailData){
-            Glide.with(context).load(replyDetailData.universityImageUrl).into(universityImage)
-            universityName.setText(replyDetailData.universityName)
-            userId.setText(replyDetailData.userId)
-            if(replyDetailData.isMy) myBadge.visibility = VISIBLE else myBadge.visibility = GONE
-            replyContent.setText(Html.fromHtml("<font color=#ff573d>${replyDetailData.rereplyTo}</font>  ${replyDetailData.replyContent}"))
-            replyWriteTime.setText(replyDetailData.replyWriteTime)
+        override fun setData(replyDetailData: ReplyResponse){
+            Glide.with(context).load(replyDetailData.writer.university.imgUrl).into(universityImage)
+            universityName.setText(replyDetailData.writer.university.name)
+            userId.setText(replyDetailData.writer.username)
+            if(replyDetailData.writer.uuid.equals(uuid)) myBadge.visibility = VISIBLE else myBadge.visibility = GONE
+            if(replyDetailData.imgUrl != "") Glide.with(context).load(replyDetailData.imgUrl).into(rereplyImage) else rereplyImage.visibility = GONE
+            replyContent.setText(Html.fromHtml("<font color=#ff573d>재환에게</font>  ${replyDetailData.content}"))
+            replyWriteTime.setText(replyDetailData.createdAt.toString())
         }
     }
 }

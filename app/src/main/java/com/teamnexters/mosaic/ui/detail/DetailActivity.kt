@@ -18,18 +18,36 @@ import com.teamnexters.mosaic.utils.extension.toPx
 import java.lang.Exception
 import java.util.*
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.Environment
 import android.view.View.GONE
+import android.view.View.VISIBLE
+import com.teamnexters.mosaic.data.local.MosaicSharedPreferenceManager
+import com.teamnexters.mosaic.data.remote.model.ReplyResponse
+import com.teamnexters.mosaic.data.remote.model.ScriptResponse
+import com.teamnexters.mosaic.utils.extension.subscribeOf
+import com.teamnexters.mosaic.utils.extension.toast
+import javax.inject.Inject
+import kotlin.collections.ArrayList
+import android.provider.MediaStore
+import com.teamnexters.mosaic.data.remote.model.UniversityResponse
+import com.teamnexters.mosaic.data.remote.model.WriterResponse
+import java.io.File
 
 
 internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewModel>() {
     companion object {
         const val DETAIL_INTENT_KEY = "detailIntentKey"
     }
+    @Inject
+    lateinit var sharedPreferenceManager: MosaicSharedPreferenceManager
+
+    val uuid by lazy { sharedPreferenceManager.getString(MosaicSharedPreferenceManager.UUID,"") }
 
     val REQUEST_TAKE_ALBUM = 0
     val REQUEST_IMAGE_CROP = 1
 
-    var uuid: Int = 0
+    var scriptWriterUuid: String = ""
     var isScraped = false
 
     val closeButton by lazy { binding.closeBtn }
@@ -37,7 +55,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     val universityName by lazy { binding.universityName }
     val userId by lazy { binding.userId }
     val imageViewPager by lazy { binding.imageViewPager }
-    val contentTitle by lazy { binding.contentTitle }
+    val contentCategory by lazy { binding.contentCategory }
     val content by lazy { binding.content }
     val writeTime by lazy { binding.writeTime }
     val replyCount by lazy { binding.replyCount }
@@ -51,9 +69,10 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     val writeReplyImageCancel by lazy { binding.writeReplyImageCancel }
     val writeReplyLayout by lazy { binding.writeReplyLayout }
     val deleteCardLayout by lazy { binding.deleteCardLayout }
+    val noReplyBottomLine by lazy { binding.noReplyBottomLine }
     val noReply by lazy { binding.noReply }
 
-    var replyCropedBitmap: Bitmap? = null
+    var replyCroppedBitmap: Bitmap? = null
 
     override fun getLayoutRes() = R.layout.activity_detail
 
@@ -62,48 +81,73 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //댓글 리스트 뷰 초기화
         initRecylerView()
-        initIntentData(intent)
+
+        //이미지 뷰 페이저 초기화
+        initViewPager()
+
+        //intent로 받은 값 초기화
+        initIntentData()
+
         initListener()
         initLayout()
     }
 
-    fun initIntentData(intent: Intent) {
+    private fun initRecylerView() {
+        replyRecyclerview.layoutManager = LinearLayoutManager(this)
+        replyRecyclerview.adapter = DetailReplyAdapter(this)
+        replyRecyclerview.isNestedScrollingEnabled = false
+    }
+
+    private fun initViewPager() { imageViewPager.adapter = DetailImagePagerAdapter(this) }
+
+    private fun initIntentData() {
         //intent로 받은 정보 view에 할당
+        val cardData : ScriptResponse = intent.getParcelableExtra(DETAIL_INTENT_KEY)
 
+        scriptWriterUuid = cardData.uuid
 
-        //intent로 전달 받은 uuid로 서버에 쏜다.
-        initData(uuid)
-
-        //intent로 받은 이미지 리스타 값을 바탕으로 viewpager 초기화
-        val tmpImageList = ArrayList<String>()
-
-        for (i in 0..4) {
-            tmpImageList.add("https://post-phinf.pstatic.net/20160811_167/1470891802502lQq1P_JPEG/google_co_kr_20160811_140117.jpg?type=w1200")
+        if(uuid.equals(scriptWriterUuid)){
+            deleteCardLayout.visibility = VISIBLE
         }
 
-        initViewPager(tmpImageList)
+        if(cardData.imgUrls.size != 0){
+            loadViewPager(cardData.imgUrls)
+        }
+
+        universityName.text = cardData.writer.university.name
+        userId.text = cardData.writer.username
+        contentCategory.text = "${cardData.category.name}${cardData.category.emoji}"
+        content.text = cardData.content
+        replyCount.text = cardData.replies.toString()
+        writeTime.text = cardData.created.toString()
+        initScripContent(cardData.scrap)
+
+        //intent로 전달 받은 uuid로 서버에 쏜다.
+        initData(scriptWriterUuid)
+    }
+
+    fun initScripContent(scraped : Boolean) {
+        isScraped = scraped
+
+        if (scraped == true) {
+            scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_nol, null))
+        } else {
+            scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_pr, null))
+        }
     }
 
     fun initLayout() {
         sendReply.isEnabled = false
     }
 
-    private fun initRecylerView() {
-        replyRecyclerview.layoutManager = LinearLayoutManager(this)
-        replyRecyclerview.adapter = DetailReplyAdapter(this)
-        replyRecyclerview.setNestedScrollingEnabled(false)
-    }
+    private fun loadViewPager(imageList: List<String>){
+        (imageViewPager.adapter as DetailImagePagerAdapter).imageList = imageList as ArrayList<String>
+        initIndicator(imageList.size, 6.toPx)
 
-    private fun initViewPager(imageList: ArrayList<String>) {
-        //intent를 통해 이미지 리스트가 넘어 올것이다
-
-        imageViewPager.adapter = DetailImagePagerAdapter(this)
-        (imageViewPager.adapter as DetailImagePagerAdapter).imageList = imageList
-
-        initIndicator(5, 6.toPx)
-
-        indicatorLayout.onSelected(0)
+        imageViewPager.visibility = View.VISIBLE
+        indicatorLayout.visibility = View.VISIBLE
     }
 
 
@@ -114,25 +158,35 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         for (i in 1..num) {
             indicatorLayout.addIndicator(createIndicatorView())
         }
+
+        indicatorLayout.onSelected(0)
     }
 
     private fun createIndicatorView(): View {
         val view = View(this)
         view.setBackgroundResource(R.drawable.detail_image_dot_indicator)
         val layoutParams = ViewGroup.LayoutParams(5.toPx, 5.toPx)
-        view.setLayoutParams(layoutParams)
+        view.layoutParams = layoutParams
 
         return view
     }
 
     fun initListener() {
         closeButton.setOnClickListener { finish() }
-        scrapButton.setOnClickListener { scripContent() }
+        scrapButton.setOnClickListener {
+            if (isScraped == true) {
+                isScraped = !isScraped
+                scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_nol, null))
+            } else {
+                isScraped = !isScraped
+                scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_pr, null))
+            }
+        }
         imageViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
             override fun onPageSelected(position: Int) {
-                if (indicatorLayout != null) indicatorLayout.onSelected(position % 5)
+                indicatorLayout.onSelected(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {}
@@ -142,7 +196,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().length == 0) sendReply.isEnabled = false else sendReply.isEnabled = true
+                sendReply.isEnabled = s.toString().length != 0
             }
 
             override fun afterTextChanged(s: Editable) {}
@@ -158,14 +212,14 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
 
         writeReplyImageCancel.setOnClickListener {
             writeReplyImageLayout.visibility = GONE
-            replyCropedBitmap = null
+            replyCroppedBitmap = null
         }
     }
 
     private fun getAlbum() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.setType("image/*")
-        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE)
+        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+
         startActivityForResult(intent, REQUEST_TAKE_ALBUM)
     }
 
@@ -173,54 +227,63 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         if (photoUri != null) {
             val cropIntent = Intent("com.android.camera.action.CROP")
 
-            cropIntent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-            cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             cropIntent.setDataAndType(photoUri, "image/*")
             cropIntent.putExtra("aspectX", 1)
             cropIntent.putExtra("aspectY", 1)
-            cropIntent.putExtra("outputX", 256)
-            cropIntent.putExtra("outputY", 256)
             cropIntent.putExtra("crop", true)
-            cropIntent.putExtra("return-data", true);
+            cropIntent.putExtra("return-data", true)
             startActivityForResult(cropIntent, REQUEST_IMAGE_CROP)
         }
     }
 
-/*    private fun createImageFile() : File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val imageFileName = "JPEG_$timeStamp.jpg"
-        val storageDir = File("${Environment.getExternalStorageDirectory()}/Pictures","mosaic")
+    fun initData(scriptUuid: String) {
 
-        if(!storageDir.exists()){
-            storageDir.mkdir()
-        }
-
-        val imageFile = File(storageDir,imageFileName)
-
-        return imageFile
-    }*/
-
-    fun initData(contentId: Int) {
-        //서버로 contentId를 쏴라!!!
-        //여기서 댓글 리스트를 받는다!!
-
-        val tmpReplyList = ArrayList<ReplyDetailData>()
+        val tmpReplyList = ArrayList<ReplyResponse>()
 
         for (i in 0..10) {
-            tmpReplyList.add(ReplyDetailData(i % 2,
+            tmpReplyList.add(ReplyResponse(0,
+                    "ㅁ",
+                    "ㅁ",
+                    0,
+                    "댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당",
                     0,
                     "https://post-phinf.pstatic.net/20160811_167/1470891802502lQq1P_JPEG/google_co_kr_20160811_140117.jpg?type=w1200",
                     "숭실대학교",
-                    "이건준",
-                    i % 2 == 0,
-                    "댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당",
-                    "3분전",
-                    if (i % 2 == 1) "@EWHA0001" else "",
-                    null))
+                    "https://post-phinf.pstatic.net/20160811_167/1470891802502lQq1P_JPEG/google_co_kr_20160811_140117.jpg?type=w1200",
+                    0,
+                    listOf(),
+                    WriterResponse("0",
+                            "0",
+                            UniversityResponse(0,"건준","도메인","https://post-phinf.pstatic.net/20160811_167/1470891802502lQq1P_JPEG/google_co_kr_20160811_140117.jpg?type=w1200"),
+                            "건준",
+                            "이메일",
+                            0,
+                            0)))
         }
 
 
         (replyRecyclerview.adapter as DetailReplyAdapter).replyList = tmpReplyList
+
+    /*    viewModel.getReplies(scriptUuid)
+                .subscribeOn(ioScheduler)
+                .observeOn(mainScheduler)
+                .subscribeOf(
+                        onNext = {
+                            if(it.size == 0){
+                                replyRecyclerview.visibility = View.GONE
+                                noReplyBottomLine.visibility = View.VISIBLE
+                                noReply.visibility = View.VISIBLE
+                            }else{
+                                (replyRecyclerview.adapter as DetailReplyAdapter).replyList = it as ArrayList<ReplyResponse>
+                            }
+                        },
+                        onError = {
+                            this.toast(resources.getString(R.string.reply_response_error))
+                            replyRecyclerview.visibility = View.GONE
+                            noReplyBottomLine.visibility = View.VISIBLE
+                            noReply.visibility = View.VISIBLE
+                        }
+                )*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -231,26 +294,13 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
                         cropImage(data.data)
                     }
                 REQUEST_IMAGE_CROP -> {
-                    if(data != null){
-                        if(data.extras != null){
-                            replyCropedBitmap = data.extras.get("data") as Bitmap
-                            writeReplyImage.setImageBitmap(replyCropedBitmap)
-                            writeReplyImageLayout.visibility = View.VISIBLE
-                        }
+                    if(data?.extras != null){
+                        replyCroppedBitmap = data.extras.getParcelable("data")
+                        writeReplyImage.setImageBitmap(replyCroppedBitmap)
+                        writeReplyImageLayout.visibility = View.VISIBLE
                     }
                 }
             }
-        }
-    }
-
-    fun scripContent() {
-        //서버로 스크랩 정보 보내기
-        if (isScraped == true) {
-            isScraped = !isScraped
-            scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_nol, null))
-        } else {
-            isScraped = !isScraped
-            scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_pr, null))
         }
     }
 }

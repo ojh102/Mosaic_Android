@@ -1,9 +1,7 @@
 package com.teamnexters.mosaic.data.remote
 
 import android.content.res.Resources
-import com.teamnexters.mosaic.data.remote.model.CategoryResponse
-import com.teamnexters.mosaic.data.remote.model.ScriptResponse
-import com.teamnexters.mosaic.data.remote.model.WriterResponse
+import com.teamnexters.mosaic.data.remote.model.*
 import com.teamnexters.mosaic.utils.extension.validate
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -13,6 +11,18 @@ internal class RemoteRepository @Inject constructor(
         private val resource: Resources
 
 ) : RemoteRepositoryApi {
+
+    override fun fetchEmailSend(email: String): Observable<EmailSendResponse> {
+        return mosaicApi.fetchSendEmail(email)
+                .map { validate(it) }
+                .toObservable()
+    }
+
+    override fun fetchTokenInfo(authKey: String, uuid: String): Observable<TokenInfoResponse> {
+        return mosaicApi.fetchTokenInfo(authKey, uuid)
+                .map { validate(it) }
+                .toObservable()
+    }
 
     override fun fetchScriptList(vararg categories: String): Observable<List<ScriptResponse>> {
         val categoryList = categories.toMutableList()
@@ -38,6 +48,11 @@ internal class RemoteRepository @Inject constructor(
                 .toObservable()
     }
 
+    override fun fetchRelpies(scriptUuid: String) : Observable<List<ReplyResponse>> {
+        return mosaicApi.fetchRelpies(scriptUuid)
+                .map { validate(it) }
+                .toObservable()
+    }
     override fun fetchResultListFromWritten(): Observable<List<ScriptResponse>> {
         return mosaicApi.fetchMyScripts()
                 .map { validate(it) }

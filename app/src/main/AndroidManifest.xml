@@ -57,23 +57,7 @@
 
         <activity
             android:name=".ui.detail.DetailActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".ui.scheme.SchemeProcessNoUIActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance">
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="@string/email_confirm_host"
-                    android:scheme="@string/email_confirm_scheme" />
-            </intent-filter>
-        </activity>
     </application>
 </manifest>

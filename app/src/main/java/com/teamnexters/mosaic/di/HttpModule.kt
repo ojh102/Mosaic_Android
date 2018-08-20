@@ -35,11 +35,7 @@ interface HttpModule {
         @RequestIntercetor
         fun provideRequestInterceptor(mosaicSharedPreferenceManager: MosaicSharedPreferenceManager): Interceptor {
             return Interceptor { chain ->
-                val fakeToken = "eyJhbGciOiJIUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAACXLSwqAIBAA0LvMWiF1ptFu42_AVZIFQXT3irYP3gVtDFhgzfva6yagoMUdFkMOyTPhpKCe_YeZXfjgOFp5D1mMwWHSJs6iUYi0Fyra2hSFC3MmhPsBQKp-FWIAAAA.7WnHwOydM7T6AYOPkLpl92Ag6aNefWpg0A2jsjb-sbc"
-
-                var token = mosaicSharedPreferenceManager.getString(MosaicSharedPreferenceManager.TOKEN)
-
-                token = fakeToken
+                val token = mosaicSharedPreferenceManager.getString(MosaicSharedPreferenceManager.TOKEN)
 
                 val newRequest = chain.request().newBuilder()
 

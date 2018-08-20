@@ -101,7 +101,8 @@
             app:layout_constraintBottom_toTopOf="@+id/write_reply_layout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/top_layout">
+            app:layout_constraintTop_toBottomOf="@+id/top_layout"
+            android:fillViewport="true">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -115,7 +116,8 @@
                     android:overScrollMode="never"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibility="gone"/>
 
                 <com.teamnexters.mosaic.ui.detail.IndicatorLayout
                     android:id="@+id/indicator_layout"
@@ -126,18 +128,19 @@
                     android:minHeight="5dp"
                     app:layout_constraintBottom_toBottomOf="@+id/image_view_pager"
                     app:layout_constraintLeft_toLeftOf="@+id/image_view_pager"
-                    app:layout_constraintRight_toRightOf="@+id/image_view_pager" />
+                    app:layout_constraintRight_toRightOf="@+id/image_view_pager"
+                    android:visibility="gone"/>
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="9dp"
                     android:background="#ccf6ff"
-                    app:layout_constraintBottom_toBottomOf="@+id/content_title"
-                    app:layout_constraintLeft_toLeftOf="@+id/content_title"
-                    app:layout_constraintRight_toRightOf="@+id/content_title" />
+                    app:layout_constraintBottom_toBottomOf="@+id/content_category"
+                    app:layout_constraintLeft_toLeftOf="@+id/content_category"
+                    app:layout_constraintRight_toRightOf="@+id/content_category" />
 
                 <com.teamnexters.mosaic.ui.widget.CustomTextView
-                    android:id="@+id/content_title"
+                    android:id="@+id/content_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
@@ -171,7 +174,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/bottom_layout"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/content_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/content_category" />
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/bottom_layout"
@@ -187,7 +190,7 @@
                         android:layout_height="1dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:background="#dbdbdb"
+                        android:background="#ededf0"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -233,24 +236,26 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <View
+                        android:id="@+id/has_reply_bottom_line"
                         android:layout_width="0dp"
                         android:layout_height="1dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:background="#dbdbdb"
+                        android:background="#ededf0"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
-                </android.support.constraint.ConstraintLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/reply_recyclerview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bottom_layout" />
+                    <View
+                        android:id="@+id/no_reply_bottom_line"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="#ededf0"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:visibility="gone"/>
+                </android.support.constraint.ConstraintLayout>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/no_reply"
@@ -269,6 +274,14 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/bottom_layout" />
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/reply_recyclerview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bottom_layout"/>
             </android.support.constraint.ConstraintLayout>
         </android.support.v4.widget.NestedScrollView>
 

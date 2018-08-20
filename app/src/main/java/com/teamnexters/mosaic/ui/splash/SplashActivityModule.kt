@@ -8,7 +8,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module(includes = [SplashActivityModule.ProvideModule::class])
-interface SplashActivityModule {
+internal interface SplashActivityModule {
     @Module
     class ProvideModule
 

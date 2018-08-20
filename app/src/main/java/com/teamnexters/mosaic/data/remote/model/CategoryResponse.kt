@@ -30,9 +30,7 @@ internal data class CategoryResponse(
         parcel.writeByte(if (selected) 1 else 0)
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    override fun describeContents(): Int = 0
 
     companion object CREATOR : Parcelable.Creator<CategoryResponse> {
         override fun createFromParcel(parcel: Parcel): CategoryResponse {

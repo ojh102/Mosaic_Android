@@ -3,14 +3,14 @@ package com.teamnexters.mosaic.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.teamnexters.mosaic.data.local.model.Keyword
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
 import com.teamnexters.mosaic.ui.Screen
 import com.teamnexters.mosaic.ui.detail.DetailActivity
-import com.teamnexters.mosaic.ui.detail.data.DetailIntentData
+import com.teamnexters.mosaic.ui.detail.DetailActivity.Companion.DETAIL_INTENT_KEY
 import com.teamnexters.mosaic.ui.filter.FilterActivity
 import com.teamnexters.mosaic.ui.login.LoginActivity
 import com.teamnexters.mosaic.ui.main.MainActivity
@@ -77,38 +77,14 @@ internal class Navigator {
         }
 
         @JvmStatic
-        fun navigateToDetail(context: Context) {
-            context.startActivity(Intent(context, DetailActivity::class.java))
-        }
+        fun navigateToDetail(context: Context, scriptResponse: ScriptResponse) {
+            val intent = Intent(context, DetailActivity::class.java)
+            val bundle = Bundle()
 
-        @JvmStatic
-        fun navigateToInternet(context: Context) {
-            context.startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("http://www.naver.com")))
-        }
+            bundle.putParcelable(DETAIL_INTENT_KEY, scriptResponse)
+            intent.putExtras(bundle)
 
-        @JvmStatic
-        fun navigateWithIntent(context: Context, intent: Intent) {
             context.startActivity(intent)
-        }
-
-        @JvmStatic
-        fun navigateToDetail(context: Context, ScriptResponse: ScriptResponse) {
-            val data = DetailIntentData(
-                    uuid = "",
-                    contentId = "",
-                    userId = "",
-                    universityName = "",
-                    isScraped = false,
-                    contentTitle = "",
-                    contentImageList = arrayListOf(),
-                    content = "",
-                    writeTime = "",
-                    replyCount = 1
-            )
-
-            context.startActivity(
-                    Intent(context, DetailActivity::class.java)
-            )
         }
     }
 }
