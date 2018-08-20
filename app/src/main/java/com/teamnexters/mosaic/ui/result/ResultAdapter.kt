@@ -72,4 +72,15 @@ internal class ResultAdapter(private val screen: Screen) : RecyclerView.Adapter<
         notifyDataSetChanged()
     }
 
+    fun setScrap(scarpUuid: String, scraped: Boolean) {
+        val item: ScriptResponse? = items.firstOrNull { it.uuid == scarpUuid && !scraped }
+
+        item?.let {
+            val deletePosition = items.indexOf(it) + 1
+            items.remove(it)
+            notifyItemRemoved(deletePosition)
+            notifyItemChanged(0)
+        }
+    }
+
 }

@@ -84,6 +84,18 @@ internal class ResultActivity : BaseActivity<ActivityResultBinding, ResultViewMo
                                 onNext = {
                                     resultAdapter.setItems(it)
                                 }
+                        ),
+
+                viewModel.bindScarp()
+                        .subscribeOn(ioScheduler)
+                        .observeOn(mainScheduler)
+                        .subscribeOf(
+                                onNext = {
+                                    resultAdapter.setScrap(
+                                            scarpUuid = it.first,
+                                            scraped = it.second
+                                    )
+                                }
                         )
         )
     }

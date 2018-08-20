@@ -3,6 +3,7 @@ package com.teamnexters.mosaic.ui.result
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import com.teamnexters.mosaic.base.BaseViewModel
+import com.teamnexters.mosaic.base.GlobalChannelApi
 import com.teamnexters.mosaic.data.remote.RemoteRepositoryApi
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
 import com.teamnexters.mosaic.ui.Screen
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 
 internal class ResultViewModel @Inject constructor(
-        private val remoteRepository: RemoteRepositoryApi
+        private val remoteRepository: RemoteRepositoryApi,
+        private val globalChannelApi: GlobalChannelApi
 
 ) : BaseViewModel() {
 
@@ -67,5 +69,7 @@ internal class ResultViewModel @Inject constructor(
             }
         }
     }
+
+    fun bindScarp() = globalChannelApi.bindScrapCard()
 
 }

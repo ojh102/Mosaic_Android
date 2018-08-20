@@ -34,21 +34,6 @@ internal class MyPageActivity : BaseActivity<ActivityMyPageBinding, MyPageViewMo
                                 onNext = {
                                     finish()
                                 }
-                        ),
-
-                viewModel.fetchMyPage()
-                        .subscribeOn(ioScheduler)
-                        .observeOn(mainScheduler)
-                        .subscribeOf(
-                                onNext = {
-                                    binding.data = it
-
-                                    myPageAdapter.setItems(listOf(
-                                            MyPageRowData.ScarpRow(getString(R.string.my_page_scrap), it.myScrapCnt),
-                                            MyPageRowData.WrittenRow(getString(R.string.my_page_written), it.myScriptCnt),
-                                            MyPageRowData.Reset(getString(R.string.my_page_reset))
-                                    ))
-                                }
                         )
         )
 
@@ -59,7 +44,7 @@ internal class MyPageActivity : BaseActivity<ActivityMyPageBinding, MyPageViewMo
 
         myPageAdapter.setMyPageRowClickListener(object : MyPageAdapter.MyPageRowClickListener {
             override fun onRowClick(myPageRowData: MyPageRowData) {
-                when (myPageRowData) {
+                when(myPageRowData) {
                     is MyPageRowData.ScarpRow -> {
                         Navigator.navigationToResult(
                                 this@MyPageActivity,
@@ -93,6 +78,27 @@ internal class MyPageActivity : BaseActivity<ActivityMyPageBinding, MyPageViewMo
                 MyPageRowData.WrittenRow(getString(R.string.my_page_written), 0),
                 MyPageRowData.Reset(getString(R.string.my_page_reset))
         ))
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        bind(
+                viewModel.fetchMyPage()
+                        .subscribeOn(ioScheduler)
+                        .observeOn(mainScheduler)
+                        .subscribeOf(
+                                onNext = {
+                                    binding.data = it
+
+                                    myPageAdapter.setItems(listOf(
+                                            MyPageRowData.ScarpRow(getString(R.string.my_page_scrap), it.myScrapCnt),
+                                            MyPageRowData.WrittenRow(getString(R.string.my_page_written), it.myScriptCnt),
+                                            MyPageRowData.Reset(getString(R.string.my_page_reset))
+                                    ))
+                                }
+                        )
+        )
     }
 
 }
