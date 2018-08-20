@@ -2,6 +2,7 @@ package com.teamnexters.mosaic.ui.detail
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.view.ViewPager
@@ -9,30 +10,20 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
-import com.teamnexters.mosaic.databinding.ActivityDetailBinding
-import com.teamnexters.mosaic.ui.detail.data.ReplyDetailData
-import com.teamnexters.mosaic.utils.extension.toPx
-import java.lang.Exception
-import java.util.*
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.os.Environment
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import com.teamnexters.mosaic.data.local.MosaicSharedPreferenceManager
 import com.teamnexters.mosaic.data.remote.model.ReplyResponse
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
-import com.teamnexters.mosaic.utils.extension.subscribeOf
-import com.teamnexters.mosaic.utils.extension.toast
-import javax.inject.Inject
-import kotlin.collections.ArrayList
-import android.provider.MediaStore
 import com.teamnexters.mosaic.data.remote.model.UniversityResponse
 import com.teamnexters.mosaic.data.remote.model.WriterResponse
-import java.io.File
+import com.teamnexters.mosaic.databinding.ActivityDetailBinding
+import com.teamnexters.mosaic.utils.extension.subscribeOf
+import com.teamnexters.mosaic.utils.extension.toPx
+import javax.inject.Inject
 
 
 internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewModel>() {
@@ -131,10 +122,10 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     fun initScripContent(scraped : Boolean) {
         isScraped = scraped
 
-        if (scraped == true) {
-            scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_nol, null))
-        } else {
+        if (scraped) {
             scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_pr, null))
+        } else {
+            scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_nol, null))
         }
     }
 
@@ -174,13 +165,20 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     fun initListener() {
         closeButton.setOnClickListener { finish() }
         scrapButton.setOnClickListener {
-            if (isScraped == true) {
-                isScraped = !isScraped
-                scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_nol, null))
-            } else {
-                isScraped = !isScraped
-                scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_pr, null))
-            }
+            bind(
+                    viewModel.scrap(scriptWriterUuid)
+                            .subscribeOn(ioScheduler)
+                            .observeOn(mainScheduler)
+                            .subscribeOf(
+                                    onNext = {
+                                        isScraped = it.scrap
+
+                                        initScripContent(isScraped)
+
+                                        globalChannelApi.scrapCard(scriptWriterUuid, isScraped)
+                                    }
+                            )
+            )
         }
         imageViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}

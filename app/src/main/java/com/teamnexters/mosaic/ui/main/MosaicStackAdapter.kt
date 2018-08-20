@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
 import com.teamnexters.mosaic.databinding.ViewCardBinding
-import timber.log.Timber
 
 internal class MosaicStackAdapter(context: Context) : ArrayAdapter<ScriptResponse>(context, 0) {
 
@@ -60,7 +59,7 @@ internal class MosaicStackAdapter(context: Context) : ArrayAdapter<ScriptRespons
         val selectedItem = items.first { it.uuid == scriptUuid }
         selectedItem.scrap = scrap
 
-        setItems(items)
+        setItems(items.toList())
     }
 
 }

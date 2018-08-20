@@ -565,4 +565,8 @@ public class CardStackView extends FrameLayout {
         return state.topIndex;
     }
 
+    public CardStackState getState() {
+        return state;
+    }
+
 }

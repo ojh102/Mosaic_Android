@@ -2,8 +2,6 @@ package com.teamnexters.mosaic.data.remote.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.io.Serializable
-import com.google.android.gms.common.internal.safeparcel.SafeParcelWriter.writeByte
 
 
 
@@ -19,10 +17,7 @@ internal data class ScriptResponse(
         val replies: Int,
         var scrap: Boolean = false
 ) : Parcelable {
-    fun getDate(): String {
-        return "$created"
-    }
-    
+
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
             parcel.readString(),
@@ -33,23 +28,29 @@ internal data class ScriptResponse(
             parcel.readLong(),
             parcel.readParcelable(CategoryResponse::class.java.classLoader),
             parcel.readInt(),
-            parcel.readByte() != 0.toByte()) {
+            parcel.readByte() != 0.toByte()
+    )
+
+    fun getDate(): String {
+        return "$created"
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(idx)
         parcel.writeString(uuid)
         parcel.writeString(content)
-        parcel.writeParcelable(writer,flags)
-        parcel.writeList(imgUrls)
-        parcel.writeList(thumbnailUrls)
+        parcel.writeParcelable(writer, flags)
+        parcel.writeStringList(imgUrls)
+        parcel.writeStringList(thumbnailUrls)
         parcel.writeLong(created)
-        parcel.writeParcelable(category,flags)
+        parcel.writeParcelable(category, flags)
         parcel.writeInt(replies)
-        parcel.writeByte(if (scrap) 1 else 0)
+        parcel.writeByte(if(scrap) 1 else 0)
     }
 
-    override fun describeContents(): Int = 0
+    override fun describeContents(): Int {
+        return 0
+    }
 
     companion object CREATOR : Parcelable.Creator<ScriptResponse> {
         override fun createFromParcel(parcel: Parcel): ScriptResponse {
@@ -60,5 +61,6 @@ internal data class ScriptResponse(
             return arrayOfNulls(size)
         }
     }
+
 }
 

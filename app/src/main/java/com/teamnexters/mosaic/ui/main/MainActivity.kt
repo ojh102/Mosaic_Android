@@ -2,7 +2,6 @@ package com.teamnexters.mosaic.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
@@ -12,10 +11,8 @@ import com.teamnexters.mosaic.ui.main.stack.CardStackView
 import com.teamnexters.mosaic.ui.main.stack.SwipeDirection
 import com.teamnexters.mosaic.utils.Navigator
 import com.teamnexters.mosaic.utils.extension.subscribeOf
-import com.teamnexters.mosaic.utils.extension.toast
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
 import javax.inject.Inject
 
 internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {

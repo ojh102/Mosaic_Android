@@ -3,7 +3,6 @@ package com.teamnexters.mosaic.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.teamnexters.mosaic.data.local.model.Keyword
@@ -78,11 +77,9 @@ internal class Navigator {
 
         @JvmStatic
         fun navigateToDetail(context: Context, scriptResponse: ScriptResponse) {
-            val intent = Intent(context, DetailActivity::class.java)
-            val bundle = Bundle()
-
-            bundle.putParcelable(DETAIL_INTENT_KEY, scriptResponse)
-            intent.putExtras(bundle)
+            val intent = Intent(context, DetailActivity::class.java).apply {
+                putExtra(DETAIL_INTENT_KEY, scriptResponse)
+            }
 
             context.startActivity(intent)
         }
