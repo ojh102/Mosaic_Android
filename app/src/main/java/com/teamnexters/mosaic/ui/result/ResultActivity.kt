@@ -24,8 +24,12 @@ internal class ResultActivity : BaseActivity<ActivityResultBinding, ResultViewMo
     @Inject
     lateinit var resultAdapterFactory: ResultAdapter.Factory
 
+    private val screen by lazy(LazyThreadSafetyMode.NONE) {
+        intent.getSerializableExtra(ResultActivity.KEY_FROM_SCREEN) as Screen
+    }
+
     private val resultAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        resultAdapterFactory.newInstance(intent.getSerializableExtra(ResultActivity.KEY_FROM_SCREEN) as Screen)
+        resultAdapterFactory.newInstance(screen)
     }
 
     override fun getLayoutRes() = R.layout.activity_result
@@ -87,11 +91,12 @@ internal class ResultActivity : BaseActivity<ActivityResultBinding, ResultViewMo
                         ),
 
                 viewModel.bindScarp()
+                        .filter { screen == Screen.Scrap }
                         .subscribeOn(ioScheduler)
                         .observeOn(mainScheduler)
                         .subscribeOf(
                                 onNext = {
-                                    resultAdapter.setScrap(
+                                        resultAdapter.setScrap(
                                             scarpUuid = it.first,
                                             scraped = it.second
                                     )
