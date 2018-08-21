@@ -60,17 +60,24 @@ internal class MosaicStackAdapter(context: Context) : ArrayAdapter<ScriptRespons
         this.scrapClickListener = scrapClickListener
     }
 
-    fun setScrap(swipeCardStackView: CardStackView, scriptUuid: String, scrap: Boolean) {
+    fun setScrap(swipeCardStackView: CardStackView, scriptUuid: String, scrap: Boolean, topIndex: Int) {
         val selectedItem = items.first { it.uuid == scriptUuid }
         selectedItem.scrap = scrap
 
         setItems(items.toList())
 
-        items.forEach {
-            if(it.uuid == scriptUuid) {
-                return
-            }
+        for(i in 0 until topIndex) {
+            swipeCardStackView.swipe(Point(), SwipeDirection.Top)
+        }
+    }
 
+    fun delete(swipeCardStackView: CardStackView, scriptUuid: String, topIndex: Int) {
+        val deletedItem = items.first { it.uuid == scriptUuid }
+
+        items.remove(deletedItem)
+        setItems(items.toList())
+
+        for(i in 0 until topIndex) {
             swipeCardStackView.swipe(Point(), SwipeDirection.Top)
         }
     }

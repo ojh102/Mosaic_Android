@@ -96,10 +96,19 @@ internal class ResultActivity : BaseActivity<ActivityResultBinding, ResultViewMo
                         .observeOn(mainScheduler)
                         .subscribeOf(
                                 onNext = {
-                                        resultAdapter.setScrap(
+                                    resultAdapter.unScrap(
                                             scarpUuid = it.first,
                                             scraped = it.second
                                     )
+                                }
+                        ),
+
+                viewModel.bindDelete()
+                        .subscribeOn(ioScheduler)
+                        .observeOn(mainScheduler)
+                        .subscribeOf(
+                                onNext = {
+                                    resultAdapter.delete(it)
                                 }
                         )
         )

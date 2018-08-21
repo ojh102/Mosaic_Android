@@ -51,7 +51,21 @@ internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>()
                                     adapter.setScrap(
                                             swipeCardStackView = stack_card,
                                             scriptUuid = scriptUuid,
-                                            scrap = scarped
+                                            scrap = scarped,
+                                            topIndex = stack_card.topIndex
+                                    )
+                                }
+                        ),
+
+                viewModel.bindDelete()
+                        .subscribeOn(ioScheduler)
+                        .observeOn(mainScheduler)
+                        .subscribeBy(
+                                onNext = {
+                                    adapter.delete(
+                                            swipeCardStackView = stack_card,
+                                            scriptUuid = it,
+                                            topIndex = stack_card.topIndex
                                     )
                                 }
                         )
