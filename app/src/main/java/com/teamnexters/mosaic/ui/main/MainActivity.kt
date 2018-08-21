@@ -49,17 +49,10 @@ internal class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>()
                                     val scarped = pair.second
 
                                     adapter.setScrap(
+                                            swipeCardStackView = stack_card,
                                             scriptUuid = scriptUuid,
                                             scrap = scarped
                                     )
-
-                                    adapter.getItems().forEach {
-                                        if(it.uuid == scriptUuid) {
-                                            return@subscribeBy
-                                        }
-
-                                        stack_card.swipe(Point(), SwipeDirection.Top)
-                                    }
                                 }
                         )
         )

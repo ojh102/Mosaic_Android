@@ -58,6 +58,11 @@ public class CardStackView extends FrameLayout {
     };
     private CardContainerView.ContainerEventListener containerEventListener = new CardContainerView.ContainerEventListener() {
         @Override
+        public boolean isLastCard() {
+            return CardStackView.this.isLastCard();
+        }
+
+        @Override
         public void onContainerDragging(float percentX, float percentY) {
             update(percentX, percentY);
         }
@@ -67,6 +72,10 @@ public class CardStackView extends FrameLayout {
             if (direction == SwipeDirection.Bottom) {
                 reverse();
 
+                return;
+            }
+
+            if(CardStackView.this.isLastCard()) {
                 return;
             }
 
@@ -188,6 +197,10 @@ public class CardStackView extends FrameLayout {
         if (!adapter.isEmpty()) {
             getTopView().setDraggable(true);
         }
+    }
+
+    private boolean isLastCard() {
+        return state.topIndex == adapter.getCount() - 1;
     }
 
     private void loadNextView() {
