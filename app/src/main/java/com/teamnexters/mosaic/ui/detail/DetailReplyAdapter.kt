@@ -13,11 +13,9 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.teamnexters.mosaic.R
-import com.teamnexters.mosaic.data.local.MosaicSharedPreferenceManager
 import com.teamnexters.mosaic.data.remote.model.ReplyResponse
 import com.teamnexters.mosaic.ui.widget.CustomTextView
 import com.teamnexters.mosaic.utils.extension.toast
-import javax.inject.Inject
 
 
 class DetailReplyAdapter(val context : Context, val scriptUuid : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
@@ -76,7 +74,7 @@ class DetailReplyAdapter(val context : Context, val scriptUuid : String) : Recyc
         override fun setData(replyDetailData: ReplyResponse){
             Glide.with(context).load(replyDetailData.writer.university.imgUrl).into(universityImage)
             universityName.setText(replyDetailData.writer.university.name)
-            userId.setText(replyDetailData.writer.username)
+            userId.setText(replyDetailData.writer.nick)
             if(replyDetailData.writer.uuid.equals(scriptUuid)) myBadge.visibility = VISIBLE else myBadge.visibility = GONE
             if(TextUtils.isEmpty(replyDetailData.imgUrl) == false) Glide.with(context).load(replyDetailData.imgUrl).into(replyImage) else replyImage.visibility = GONE
             replyContent.setText(replyDetailData.content)
@@ -100,7 +98,7 @@ class DetailReplyAdapter(val context : Context, val scriptUuid : String) : Recyc
         override fun setData(replyDetailData: ReplyResponse){
             Glide.with(context).load(replyDetailData.writer.university.imgUrl).into(universityImage)
             universityName.setText(replyDetailData.writer.university.name)
-            userId.setText(replyDetailData.writer.username)
+            userId.setText(replyDetailData.writer.nick)
             if(replyDetailData.writer.uuid.equals(scriptUuid)) myBadge.visibility = VISIBLE else myBadge.visibility = GONE
             if(TextUtils.isEmpty(replyDetailData.imgUrl) == false) Glide.with(context).load(replyDetailData.imgUrl).into(rereplyImage) else rereplyImage.visibility = GONE
             replyContent.setText(Html.fromHtml("<font color=#ff573d>재환에게</font>  ${replyDetailData.content}"))
