@@ -23,6 +23,7 @@ import com.teamnexters.mosaic.data.remote.model.WriterResponse
 import com.teamnexters.mosaic.databinding.ActivityDetailBinding
 import com.teamnexters.mosaic.utils.extension.subscribeOf
 import com.teamnexters.mosaic.utils.extension.toPx
+import com.teamnexters.mosaic.utils.extension.toast
 import javax.inject.Inject
 
 
@@ -33,12 +34,14 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     @Inject
     lateinit var sharedPreferenceManager: MosaicSharedPreferenceManager
 
-    val uuid by lazy { sharedPreferenceManager.getString(MosaicSharedPreferenceManager.UUID,"") }
+    val myUuid by lazy { sharedPreferenceManager.getString(MosaicSharedPreferenceManager.UUID,"") }
 
     val REQUEST_TAKE_ALBUM = 0
     val REQUEST_IMAGE_CROP = 1
 
-    var scriptWriterUuid: String = ""
+    var scriptUuid = ""
+    var scriptWriterUuid = ""
+    var upperReplyUuid = ""
     var isScraped = false
 
     val closeButton by lazy { binding.closeBtn }
@@ -72,12 +75,6 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //댓글 리스트 뷰 초기화
-        initRecylerView()
-
-        //이미지 뷰 페이저 초기화
-        initViewPager()
-
         //intent로 받은 값 초기화
         initIntentData()
 
@@ -87,7 +84,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
 
     private fun initRecylerView() {
         replyRecyclerview.layoutManager = LinearLayoutManager(this)
-        replyRecyclerview.adapter = DetailReplyAdapter(this)
+        replyRecyclerview.adapter = DetailReplyAdapter(this, scriptUuid)
         replyRecyclerview.isNestedScrollingEnabled = false
     }
 
@@ -97,11 +94,11 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         //intent로 받은 정보 view에 할당
         val cardData : ScriptResponse = intent.getParcelableExtra(DETAIL_INTENT_KEY)
 
-        scriptWriterUuid = cardData.uuid
+        scriptWriterUuid = cardData.writer.uuid
+        scriptUuid = cardData.uuid
 
-        if(uuid.equals(scriptWriterUuid)){
-            deleteCardLayout.visibility = VISIBLE
-        }
+        initRecylerView()
+        initViewPager()
 
         if(cardData.imgUrls.size != 0){
             loadViewPager(cardData.imgUrls)
@@ -116,7 +113,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         initScripContent(cardData.scrap)
 
         //intent로 전달 받은 uuid로 서버에 쏜다.
-        initData(scriptWriterUuid)
+        initData(scriptUuid)
     }
 
     fun initScripContent(scraped : Boolean) {
@@ -130,6 +127,8 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     }
 
     fun initLayout() {
+        if(myUuid.equals(scriptWriterUuid)) deleteCardLayout.visibility = VISIBLE else deleteCardLayout.visibility = GONE
+
         sendReply.isEnabled = false
     }
 
@@ -166,7 +165,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         closeButton.setOnClickListener { finish() }
         scrapButton.setOnClickListener {
             bind(
-                    viewModel.scrap(scriptWriterUuid)
+                    viewModel.scrap(scriptUuid)
                             .subscribeOn(ioScheduler)
                             .observeOn(mainScheduler)
                             .subscribeOf(
@@ -175,37 +174,38 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
 
                                         initScripContent(isScraped)
 
-                                        globalChannelApi.scrapCard(scriptWriterUuid, isScraped)
+                                        globalChannelApi.scrapCard(scriptUuid, isScraped)
                                     }
                             )
             )
         }
+
         imageViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-            override fun onPageSelected(position: Int) {
-                indicatorLayout.onSelected(position)
-            }
-
+            override fun onPageSelected(position: Int) { indicatorLayout.onSelected(position) }
             override fun onPageScrollStateChanged(state: Int) {}
         })
 
         writeReplyEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                sendReply.isEnabled = s.toString().length != 0
-            }
-
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) { sendReply.isEnabled = s.toString().length != 0 }
             override fun afterTextChanged(s: Editable) {}
         })
 
-        addReplyImage.setOnClickListener {
-            getAlbum()
-        }
+        addReplyImage.setOnClickListener { getAlbum() }
 
-        sendReply.setOnClickListener {
-
+        sendReply.setOnClickListener { it ->
+            viewModel.addReplies(writeReplyEditText.text.toString(), null ,scriptUuid, upperReplyUuid)
+                    .subscribeOn(ioScheduler)
+                    .observeOn(mainScheduler)
+                    .subscribeOf(
+                            onNext = {
+                                (replyRecyclerview.adapter as DetailReplyAdapter).addReply(it)
+                            },
+                            onError = {
+                                this.toast(resources.getString(R.string.add_reply_response_error))
+                            }
+                    )
         }
 
         writeReplyImageCancel.setOnClickListener {
@@ -235,53 +235,35 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     }
 
     fun initData(scriptUuid: String) {
-
-        val tmpReplyList = ArrayList<ReplyResponse>()
-
-        for (i in 0..10) {
-            tmpReplyList.add(ReplyResponse(0,
-                    "ㅁ",
-                    "ㅁ",
-                    0,
-                    "댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당 댓글 본문입니당",
-                    0,
-                    "https://post-phinf.pstatic.net/20160811_167/1470891802502lQq1P_JPEG/google_co_kr_20160811_140117.jpg?type=w1200",
-                    "숭실대학교",
-                    "https://post-phinf.pstatic.net/20160811_167/1470891802502lQq1P_JPEG/google_co_kr_20160811_140117.jpg?type=w1200",
-                    0,
-                    listOf(),
-                    WriterResponse("0",
-                            "0",
-                            UniversityResponse(0,"건준","도메인","https://post-phinf.pstatic.net/20160811_167/1470891802502lQq1P_JPEG/google_co_kr_20160811_140117.jpg?type=w1200"),
-                            "건준",
-                            "이메일",
-                            0,
-                            0)))
-        }
-
-
-        (replyRecyclerview.adapter as DetailReplyAdapter).replyList = tmpReplyList
-
-    /*    viewModel.getReplies(scriptUuid)
+        viewModel.getReplies(scriptUuid)
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
                 .subscribeOf(
                         onNext = {
                             if(it.size == 0){
-                                replyRecyclerview.visibility = View.GONE
-                                noReplyBottomLine.visibility = View.VISIBLE
-                                noReply.visibility = View.VISIBLE
+                                setReplyContentVisible(false)
                             }else{
+                                setReplyContentVisible(true)
                                 (replyRecyclerview.adapter as DetailReplyAdapter).replyList = it as ArrayList<ReplyResponse>
                             }
                         },
                         onError = {
-                            this.toast(resources.getString(R.string.reply_response_error))
-                            replyRecyclerview.visibility = View.GONE
-                            noReplyBottomLine.visibility = View.VISIBLE
-                            noReply.visibility = View.VISIBLE
+                            setReplyContentVisible(false)
+                            this.toast(resources.getString(R.string.get_reply_response_error))
                         }
-                )*/
+                )
+    }
+
+    fun setReplyContentVisible(isVisible : Boolean){
+        if(isVisible){
+            replyRecyclerview.visibility = View.VISIBLE
+            noReplyBottomLine.visibility = View.GONE
+            noReply.visibility = View.GONE
+        }else{
+            replyRecyclerview.visibility = View.GONE
+            noReplyBottomLine.visibility = View.VISIBLE
+            noReply.visibility = View.VISIBLE
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

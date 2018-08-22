@@ -3,6 +3,7 @@ package com.teamnexters.mosaic.data.remote
 import com.teamnexters.mosaic.data.remote.model.*
 import io.reactivex.Single
 import retrofit2.http.*
+import java.io.File
 
 internal interface MosaicApi {
     @FormUrlEncoded
@@ -21,10 +22,9 @@ internal interface MosaicApi {
 
     @FormUrlEncoded
     @POST("/apis/reply")
-    fun AddRelpies(@Field("content") content: String,
-                   @Field("imgFile") imgFile: String,
-                   @Field("scriptUuid") scriptUuid: String,
-                   @Field("upperReplyUuid") upperReplyUuid: String): Single<ResponseEnvelope<List<ReplyResponse>>>
+    fun fetchAddRelpies(@Field("content") content: String,
+                        @Field("imgFile") imgFile: File?,
+                        @Field("scriptUuid") scriptUuid: String): Single<ResponseEnvelope<ReplyResponse>>
 
     @GET("/apis/scripts/mine")
     fun fetchMyScripts(): Single<ResponseEnvelope<List<ScriptResponse>>>

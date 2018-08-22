@@ -8,6 +8,7 @@ import com.teamnexters.mosaic.data.remote.model.WriterResponse
 import com.teamnexters.mosaic.utils.extension.validate
 import io.reactivex.Observable
 import io.reactivex.Single
+import java.io.File
 import javax.inject.Inject
 
 internal class RemoteRepository @Inject constructor(
@@ -50,6 +51,13 @@ internal class RemoteRepository @Inject constructor(
                 .map { validate(it) }
                 .toObservable()
     }
+
+    override fun fetchAddReply(content: String, imgFile: File?, scriptUuid: String): Observable<ReplyResponse> {
+        return mosaicApi.fetchAddRelpies(content,imgFile,scriptUuid)
+                .map { validate(it) }
+                .toObservable()
+    }
+
     override fun fetchResultListFromWritten(): Observable<List<ScriptResponse>> {
         return mosaicApi.fetchMyScripts()
                 .map { validate(it) }
