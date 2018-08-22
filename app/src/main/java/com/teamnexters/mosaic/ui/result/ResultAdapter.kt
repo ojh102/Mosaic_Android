@@ -23,7 +23,7 @@ internal class ResultAdapter(private val screen: Screen) : RecyclerView.Adapter<
     private val items = mutableListOf<ScriptResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when(viewType) {
+        return when (viewType) {
             TYPE_HEADER -> {
                 ResultHeaderViewHolder(
                         ViewResultHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -40,14 +40,14 @@ internal class ResultAdapter(private val screen: Screen) : RecyclerView.Adapter<
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(getItemViewType(position)) {
+        when (getItemViewType(position)) {
             TYPE_HEADER -> {
-                if(holder is ResultHeaderViewHolder) {
+                if (holder is ResultHeaderViewHolder) {
                     holder.bind(items.size)
                 }
             }
             TYPE_RESULT -> {
-                if(holder is ResultViewHolder) {
+                if (holder is ResultViewHolder) {
                     holder.bind(items[position - SIZE_OF_HEADER])
                 }
             }
@@ -59,7 +59,7 @@ internal class ResultAdapter(private val screen: Screen) : RecyclerView.Adapter<
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(position == 0) {
+        return if (position == 0) {
             TYPE_HEADER
         } else {
             TYPE_RESULT
@@ -72,8 +72,19 @@ internal class ResultAdapter(private val screen: Screen) : RecyclerView.Adapter<
         notifyDataSetChanged()
     }
 
-    fun setScrap(scarpUuid: String, scraped: Boolean) {
+    fun unScrap(scarpUuid: String, scraped: Boolean) {
         val item: ScriptResponse? = items.firstOrNull { it.uuid == scarpUuid && !scraped }
+
+        item?.let {
+            val deletePosition = items.indexOf(it) + 1
+            items.remove(it)
+            notifyItemRemoved(deletePosition)
+            notifyItemChanged(0)
+        }
+    }
+
+    fun delete(uuId: String) {
+        val item: ScriptResponse? = items.firstOrNull { it.uuid == uuId }
 
         item?.let {
             val deletePosition = items.indexOf(it) + 1

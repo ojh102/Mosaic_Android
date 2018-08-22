@@ -72,4 +72,6 @@ internal class ResultViewModel @Inject constructor(
 
     fun bindScarp() = globalChannelApi.bindScrapCard()
 
+    fun bindDelete() = globalChannelApi.bindDeleteCard()
+
 }

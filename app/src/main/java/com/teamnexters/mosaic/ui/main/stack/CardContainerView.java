@@ -52,6 +52,8 @@ public class CardContainerView extends FrameLayout {
     private GestureDetector gestureDetector = new GestureDetector(getContext(), gestureListener);
 
     public interface ContainerEventListener {
+        boolean isLastCard();
+
         void onContainerDragging(float percentX, float percentY);
 
         void onContainerSwiped(Point point, SwipeDirection direction);
@@ -226,9 +228,11 @@ public class CardContainerView extends FrameLayout {
             return;
         }
 
-        updateTranslation(event);
-        updateRotation();
-        updateAlpha();
+        if(containerEventListener == null || !containerEventListener.isLastCard()) {
+            updateTranslation(event);
+            updateRotation();
+            updateAlpha();
+        }
 
         if (containerEventListener != null) {
             containerEventListener.onContainerDragging(getPercentX(), getPercentY());

@@ -1,12 +1,17 @@
 package com.teamnexters.mosaic.ui.main
 
 import android.content.Context
+import android.graphics.Point
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.teamnexters.mosaic.R.id.stack_card
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
 import com.teamnexters.mosaic.databinding.ViewCardBinding
+import com.teamnexters.mosaic.ui.main.stack.CardStackView
+import com.teamnexters.mosaic.ui.main.stack.SwipeDirection
+import kotlinx.android.synthetic.main.activity_main.*
 
 internal class MosaicStackAdapter(context: Context) : ArrayAdapter<ScriptResponse>(context, 0) {
 
@@ -55,15 +60,26 @@ internal class MosaicStackAdapter(context: Context) : ArrayAdapter<ScriptRespons
         this.scrapClickListener = scrapClickListener
     }
 
-    fun setScrap(scriptUuid: String, scrap: Boolean) {
+    fun setScrap(swipeCardStackView: CardStackView, scriptUuid: String, scrap: Boolean, topIndex: Int) {
         val selectedItem = items.first { it.uuid == scriptUuid }
         selectedItem.scrap = scrap
 
         setItems(items.toList())
+
+        for(i in 0 until topIndex) {
+            swipeCardStackView.swipe(Point(), SwipeDirection.Top)
+        }
     }
 
-    fun getItems(): List<ScriptResponse> {
-        return items
+    fun delete(swipeCardStackView: CardStackView, scriptUuid: String, topIndex: Int) {
+        val deletedItem = items.first { it.uuid == scriptUuid }
+
+        items.remove(deletedItem)
+        setItems(items.toList())
+
+        for(i in 0 until topIndex) {
+            swipeCardStackView.swipe(Point(), SwipeDirection.Top)
+        }
     }
 
 }

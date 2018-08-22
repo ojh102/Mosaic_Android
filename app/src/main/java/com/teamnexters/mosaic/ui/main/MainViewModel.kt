@@ -66,4 +66,6 @@ internal class MainViewModel @Inject constructor(
         return globalChannelApi.bindScrapCard()
     }
 
+    fun bindDelete() = globalChannelApi.bindDeleteCard()
+
 }

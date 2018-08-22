@@ -109,7 +109,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         contentCategory.text = "${cardData.category.name}${cardData.category.emoji}"
         content.text = cardData.content
         replyCount.text = cardData.replies.toString()
-        writeTime.text = cardData.created.toString()
+        writeTime.text = cardData.getDate()
         initScripContent(cardData.scrap)
 
         //intent로 전달 받은 uuid로 서버에 쏜다.

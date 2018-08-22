@@ -2,7 +2,8 @@ package com.teamnexters.mosaic.data.remote.model
 
 import android.os.Parcel
 import android.os.Parcelable
-
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 internal data class ScriptResponse(
@@ -12,7 +13,7 @@ internal data class ScriptResponse(
         val writer: WriterResponse,
         val imgUrls: List<String> = listOf(),
         val thumbnailUrls: List<String> = listOf(),
-        val created: Long = 0L,
+        val createdAt: Long = 0L,
         val category: CategoryResponse,
         val replies: Int,
         var scrap: Boolean = false
@@ -32,7 +33,31 @@ internal data class ScriptResponse(
     )
 
     fun getDate(): String {
-        return "$created"
+        val curCal = Calendar.getInstance(Locale.KOREAN)
+        curCal.timeInMillis = System.currentTimeMillis()
+
+        val curYear = curCal[Calendar.YEAR]
+        val curMonth = curCal[Calendar.MONTH] + 1
+        val curDay = curCal[Calendar.DAY_OF_MONTH]
+
+        val cal = Calendar.getInstance(Locale.KOREAN)
+        cal.timeInMillis = createdAt
+
+        val year = cal[Calendar.YEAR]
+        val month = cal[Calendar.MONTH] + 1
+        val day = cal[Calendar.DAY_OF_MONTH]
+
+        return when {
+            (year < curYear) -> {
+                SimpleDateFormat("yy.MM.dd", Locale.KOREAN).format(createdAt)
+            }
+            (year == curYear && month == curMonth && day == curDay) -> {
+                SimpleDateFormat("aa hh:mm", Locale.KOREAN).format(createdAt)
+            }
+            else -> {
+                SimpleDateFormat("MM.dd", Locale.KOREAN).format(createdAt)
+            }
+        }
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -42,7 +67,7 @@ internal data class ScriptResponse(
         parcel.writeParcelable(writer, flags)
         parcel.writeStringList(imgUrls)
         parcel.writeStringList(thumbnailUrls)
-        parcel.writeLong(created)
+        parcel.writeLong(createdAt)
         parcel.writeParcelable(category, flags)
         parcel.writeInt(replies)
         parcel.writeByte(if(scrap) 1 else 0)
