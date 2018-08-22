@@ -5,13 +5,13 @@ import android.os.Bundle
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.databinding.ActivityFilterBinding
-import com.teamnexters.mosaic.ui.Screen
 import com.teamnexters.mosaic.ui.common.theme.SpanningGridLayoutManager
 import com.teamnexters.mosaic.ui.common.theme.ThemeAdapter
 import com.teamnexters.mosaic.utils.extension.subscribeOf
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_filter.*
 import javax.inject.Inject
+import javax.inject.Named
 
 internal class FilterActivity : BaseActivity<ActivityFilterBinding, FilterViewModel>() {
 
@@ -21,11 +21,8 @@ internal class FilterActivity : BaseActivity<ActivityFilterBinding, FilterViewMo
     }
 
     @Inject
-    lateinit var themeAdapterFactory: ThemeAdapter.Factory
-
-    private val themeAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        themeAdapterFactory.newInstance(Screen.Filter)
-    }
+    @field:Named("filter")
+    lateinit var themeAdapter: ThemeAdapter
 
     override fun getLayoutRes() = R.layout.activity_filter
 
