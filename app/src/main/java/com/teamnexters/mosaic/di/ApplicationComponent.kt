@@ -2,6 +2,7 @@ package com.teamnexters.mosaic.di
 
 import android.app.Application
 import com.teamnexters.mosaic.MosaicApplication
+import com.teamnexters.mosaic.ui.common.theme.ThemeModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule

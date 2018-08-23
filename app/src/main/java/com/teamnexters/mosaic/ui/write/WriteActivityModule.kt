@@ -8,8 +8,11 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 
-@Module(includes = [WriteActivityModule.ProvideModule::class])
-interface WriteActivityModule {
+@Module(includes = [
+    WriteActivityModule.ProvideModule::class,
+    ThemeModule::class
+])
+internal interface WriteActivityModule {
     @Module
     class ProvideModule
 
