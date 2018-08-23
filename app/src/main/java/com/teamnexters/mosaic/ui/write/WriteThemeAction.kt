@@ -1,20 +1,37 @@
 package com.teamnexters.mosaic.ui.write
-
+import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.data.remote.model.CategoryResponse
 import com.teamnexters.mosaic.databinding.ViewThemeBinding
 import com.teamnexters.mosaic.ui.common.theme.CompatibleThemeAction
 import com.teamnexters.mosaic.ui.common.theme.ThemeAdapter
 import com.teamnexters.mosaic.ui.common.theme.ThemeViewHolder
 
-/**
- * Created by daesoon.choi on 2018. 8. 22..
- */
 internal class WriteThemeAction : CompatibleThemeAction {
     override fun onClickTheme(themeAdapter: ThemeAdapter, viewHolder: ThemeViewHolder, items: List<CategoryResponse>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
+        var preSelectedPosition = -1
+        val curSelectedPosition = viewHolder.adapterPosition
+
+        items.forEachIndexed { index, categoryResponse ->
+            if (categoryResponse.selected) {
+                preSelectedPosition = index
+            }
+            categoryResponse.selected = false
+        }
+
+        val selectedOtherPosition = preSelectedPosition != curSelectedPosition
+        if (preSelectedPosition != -1 && selectedOtherPosition) {
+            themeAdapter.notifyItemChanged(preSelectedPosition)
+        }
+
+        val selectedItem = items[curSelectedPosition]
+        selectedItem.selected = selectedOtherPosition
+
+        viewHolder.bind(selectedItem)
+    }
     override fun bindSelector(binding: ViewThemeBinding) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        binding.backgroundSelectorRes = R.drawable.selector_theme_write_bg
+        binding.highlightSelectorRes = R.drawable.selector_theme_write_text_highlight
+        binding.textSelectorRes = R.drawable.selector_theme_text
     }
 }

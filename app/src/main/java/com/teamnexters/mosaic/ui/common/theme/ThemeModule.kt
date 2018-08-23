@@ -42,8 +42,4 @@ internal interface ThemeModule {
             return factory.newInstance(Screen.Write)
         }
     }
-
-
-
-
 }
