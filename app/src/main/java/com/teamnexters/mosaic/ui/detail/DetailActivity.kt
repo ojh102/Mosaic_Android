@@ -18,8 +18,6 @@ import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.data.local.MosaicSharedPreferenceManager
 import com.teamnexters.mosaic.data.remote.model.ReplyResponse
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
-import com.teamnexters.mosaic.data.remote.model.UniversityResponse
-import com.teamnexters.mosaic.data.remote.model.WriterResponse
 import com.teamnexters.mosaic.databinding.ActivityDetailBinding
 import com.teamnexters.mosaic.utils.extension.subscribeOf
 import com.teamnexters.mosaic.utils.extension.toPx
@@ -106,7 +104,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         }
 
         universityName.text = cardData.writer.university.name
-        userId.text = cardData.writer.username
+        userId.text = cardData.writer.nick
         contentCategory.text = "${cardData.category.name}${cardData.category.emoji}"
         content.text = cardData.content
         replyCount.text = cardData.replies.toString()

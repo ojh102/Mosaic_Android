@@ -6,8 +6,9 @@ import android.support.v7.widget.AppCompatImageView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.teamnexters.mosaic.R
 import com.bumptech.glide.Glide
+import com.teamnexters.mosaic.R
+
 
 class DetailImagePagerAdapter(val context : Context) : PagerAdapter() {
     val mInflater = LayoutInflater.from(context)

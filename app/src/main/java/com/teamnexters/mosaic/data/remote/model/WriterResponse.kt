@@ -8,16 +8,15 @@ internal data class WriterResponse(
         val uuid: String = "",
         val nick: String = "",
         val university: UniversityResponse,
-        val username: String? = "",
         val email: String? = "",
         val myScriptCnt: Int = 0,
         val myScrapCnt: Int = 0
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
             parcel.readParcelable(UniversityResponse::class.java.classLoader),
-            parcel.readString(),
             parcel.readString(),
             parcel.readInt(),
             parcel.readInt())
@@ -26,7 +25,6 @@ internal data class WriterResponse(
         parcel.writeString(uuid)
         parcel.writeString(nick)
         parcel.writeParcelable(university,flags)
-        parcel.writeString(username)
         parcel.writeString(email)
         parcel.writeInt(myScriptCnt)
         parcel.writeInt(myScrapCnt)
