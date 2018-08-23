@@ -18,6 +18,7 @@ import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
 import com.teamnexters.mosaic.di.qualifier.RxMainScheduler
 import com.teamnexters.mosaic.ui.detail.DetailViewModel
 import com.teamnexters.mosaic.ui.login.LoginViewModel
+import com.teamnexters.mosaic.ui.splash.SplashViewModel
 import com.teamnexters.mosaic.ui.widget.LoadingDialogFragment
 import com.teamnexters.mosaic.ui.write.WriteViewModel
 import dagger.android.AndroidInjection
@@ -90,8 +91,8 @@ internal abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : App
         when (viewModel) {
             is DetailViewModel -> initializeDetailWindow()
             is WriteViewModel -> initializeWriteWindow()
-            is LoginViewModel -> {
-            }
+            is SplashViewModel -> initializeSplashWindow()
+            is LoginViewModel -> { }
             else -> initializeCommonWindow()
         }
 
@@ -143,6 +144,12 @@ internal abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : App
 
     protected fun bind(vararg disposables: Disposable) {
         compositeDisposable.addAll(*disposables)
+    }
+
+    private fun initializeSplashWindow() {
+        setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
+        window.statusBarColor = Color.TRANSPARENT
+        window.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.img_splash_back))
     }
 
     private fun initializeCommonWindow() {

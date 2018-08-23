@@ -1,6 +1,7 @@
 package com.teamnexters.mosaic.ui.login
 
 import android.animation.Animator
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -8,6 +9,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.WindowManager

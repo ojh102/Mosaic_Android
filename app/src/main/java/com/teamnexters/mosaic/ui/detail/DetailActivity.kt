@@ -44,6 +44,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     var upperReplyUuid = ""
     var isScraped = false
 
+    val contentScrollview by lazy { binding.contentScrollview }
     val closeButton by lazy { binding.closeBtn }
     val scrapButton by lazy { binding.scrapBtn }
     val universityName by lazy { binding.universityName }
@@ -201,6 +202,24 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
                     .subscribeOf(
                             onNext = {
                                 (replyRecyclerview.adapter as DetailReplyAdapter).addReply(it)
+                                writeReplyEditText.setText("")
+                                contentScrollview.fullScroll(View.FOCUS_DOWN)
+                            },
+                            onError = {
+                                this.toast(resources.getString(R.string.add_reply_response_error))
+                            }
+                    )
+        }
+
+        deleteCardLayout.setOnClickListener {
+            viewModel.addReplies(writeReplyEditText.text.toString(), null ,scriptUuid, upperReplyUuid)
+                    .subscribeOn(ioScheduler)
+                    .observeOn(mainScheduler)
+                    .subscribeOf(
+                            onNext = {
+                                (replyRecyclerview.adapter as DetailReplyAdapter).addReply(it)
+                                writeReplyEditText.setText("")
+                                contentScrollview.fullScroll(View.FOCUS_DOWN)
                             },
                             onError = {
                                 this.toast(resources.getString(R.string.add_reply_response_error))
