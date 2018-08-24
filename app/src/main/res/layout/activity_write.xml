@@ -75,13 +75,14 @@
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/btn_save"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="22dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="9dp"
                     android:text="@string/write_content_save"
                     android:textAppearance="@style/EB14"
                     android:textColor="@drawable/write_content_save_color"
+                    android:gravity="center"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     />
@@ -168,6 +169,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="36dp"
+            android:background="@drawable/ic_writing_category_background"
             android:visibility="gone"
             />
     </android.support.constraint.ConstraintLayout>

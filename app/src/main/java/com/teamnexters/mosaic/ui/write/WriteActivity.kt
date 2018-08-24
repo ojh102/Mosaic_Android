@@ -128,9 +128,17 @@ internal class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel
         finish()
     }
 
-    private fun saveError(err: Throwable) {
-        err.printStackTrace()
-        toast(err.message?:"")
+    private fun saveError(err: String) {
+        toast(err)
+    }
+
+    override fun onBackPressed() {
+        if(recycler_category.visibility == View.VISIBLE) {
+            recycler_category.visibility = View.GONE
+        } else {
+            super.onBackPressed()
+        }
+
     }
 
 

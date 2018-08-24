@@ -25,12 +25,12 @@ internal interface MosaicApi {
     @GET("/apis/replies")
     fun fetchRelpies(@Query("scriptUuid") scriptUuid: String): Single<ResponseEnvelope<List<ReplyResponse>>>
 
-    @FormUrlEncoded
+    @Multipart
     @POST("/apis/reply")
-    fun fetchAddRelpies(@Field("content") content: String,
-                        @Field("imgFile") imgFile: File?,
-                        @Field("scriptUuid") scriptUuid: String,
-                        @Field("upperReplyUuid") upperReplyUuid: String?): Single<ResponseEnvelope<ReplyResponse>>
+    fun fetchAddRelpies(@Part("content") content: RequestBody,
+                        @Part imgFile: MultipartBody.Part?,
+                        @Part("scriptUuid") scriptUuid: RequestBody,
+                        @Part("upperReplyUuid") upperReplyUuid: RequestBody?): Single<ResponseEnvelope<ReplyResponse>>
 
     @GET("/apis/scripts/mine")
     fun fetchMyScripts(): Single<ResponseEnvelope<List<ScriptResponse>>>

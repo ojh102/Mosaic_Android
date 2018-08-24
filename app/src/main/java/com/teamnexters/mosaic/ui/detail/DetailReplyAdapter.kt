@@ -164,7 +164,7 @@ class DetailReplyAdapter internal constructor(val activity : Activity, val myUui
             userId.setText(replyDetailData.writer.nick)
             if(replyDetailData.writer.uuid.equals(myUuid)) myBadge.visibility = VISIBLE else myBadge.visibility = GONE
             if(TextUtils.isEmpty(replyDetailData.imgUrl) == false) Glide.with(context).load(replyDetailData.imgUrl).into(rereplyImage) else rereplyImage.visibility = GONE
-            rereplyContent.setText(Html.fromHtml("<font color=#ff573d>${replyDetailData.upperReplyUuid}</font>  ${replyDetailData.content}"))
+            rereplyContent.setText(Html.fromHtml("<font color=#ff573d>${replyDetailData.upperReplyNick}</font>  ${replyDetailData.content}"))
             rereplyWriteTime.setText(replyDetailData.getDate())
         }
     }

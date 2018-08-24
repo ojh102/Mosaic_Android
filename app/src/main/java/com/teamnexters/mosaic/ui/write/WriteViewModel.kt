@@ -56,8 +56,8 @@ internal class WriteViewModel @Inject constructor(
         Log.d("daesoon","onClickSave $content")
 
         when {
-            dataSelectedCategory.value == null -> stateSave.value = SaveState.Error(Throwable("카테고리를 선택해 주세요."))
-            content.isEmpty() -> stateSave.value = SaveState.Error(Throwable("내용을 작성해주세요."))
+            dataSelectedCategory.value == null -> stateSave.value = SaveState.Error("카테고리를 선택해 주세요.")
+            content.isEmpty() -> stateSave.value = SaveState.Error("내용을 작성해주세요.")
             else -> saveScript(dataSelectedCategory.value!!.uuid, content, dataImages.value ?: listOf())
         }
     }
@@ -122,7 +122,7 @@ internal class WriteViewModel @Inject constructor(
             .observeOn(schedulers.ui())
             .subscribeOf(
                 onNext = { stateSave.value = SaveState.Success() },
-                onError = { stateSave.value = SaveState.Error(it) }
+                onError = { stateSave.value = SaveState.Error("알수없는 오류가 발생했습니다. 다시 시도해주세요.") }
             )
     }
 
@@ -140,7 +140,7 @@ sealed class Write {
     }
 
     sealed class SaveState {
-        class Error(val err: Throwable): SaveState()
+        class Error(val err: String): SaveState()
         class Success: SaveState()
     }
 }

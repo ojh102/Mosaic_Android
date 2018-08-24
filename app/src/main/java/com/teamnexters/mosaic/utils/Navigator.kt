@@ -52,7 +52,9 @@ internal class Navigator {
 
         @JvmStatic
         fun navigateToWrite(context: Context) {
-            context.startActivity(Intent(context, WriteActivity::class.java))
+            if (context is Activity) {
+                context.startActivityForResult(Intent(context, WriteActivity::class.java),10000)
+            }
         }
 
         @JvmStatic

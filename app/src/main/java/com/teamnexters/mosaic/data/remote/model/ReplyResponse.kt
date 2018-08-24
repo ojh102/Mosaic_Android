@@ -7,7 +7,7 @@ internal data class ReplyResponse(
         val idx : Int = -0,
         val uuid: String = "",
         val upperReplyUuid: String = "",
-       /* val upperReplyNick : String = "",*/
+        val upperReplyNick : String = "",
         val createdAt : Long = 0,
         val content: String = "",
         val depth : Int = 0,

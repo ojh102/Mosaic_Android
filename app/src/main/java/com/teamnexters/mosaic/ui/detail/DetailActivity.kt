@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
@@ -26,6 +27,7 @@ import com.teamnexters.mosaic.utils.extension.showKeyboard
 import com.teamnexters.mosaic.utils.extension.subscribeOf
 import com.teamnexters.mosaic.utils.extension.toPx
 import com.teamnexters.mosaic.utils.extension.toast
+import com.teamnexters.mosaic.utils.saveBitmaptoFileCache
 import com.theartofdev.edmodo.cropper.CropImage
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -193,6 +195,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
                                     writeReplyEditText.setText("")
                                     writeReplyEditText.setRereplyMode(null)
                                     writeReplyImageLayout.visibility = GONE
+                                    imageFile = null
                                 },
                                 onError = {
                                     it.printStackTrace()
@@ -280,7 +283,8 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     CropImage.getActivityResult(data)?.apply {
                         writeReplyImage.setImageURI(uri)
-                        imageFile = File(URI(uri.toString()))
+                        val bm = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                        imageFile = saveBitmaptoFileCache(this@DetailActivity,bm)
                     }
                     writeReplyImageLayout.visibility = VISIBLE
                 }

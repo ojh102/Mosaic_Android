@@ -60,7 +60,11 @@ internal class RemoteRepository @Inject constructor(
     }
 
     override fun fetchAddReply(content: String, imgFile: File?, scriptUuid: String, upperReplyUuid : String?): Observable<ReplyResponse> {
-        return mosaicApi.fetchAddRelpies(content,imgFile,scriptUuid, upperReplyUuid)
+
+        val multipartFile = imgFile?.let { fileToMultipartBody(imgFile,"imgFile") }
+
+
+        return mosaicApi.fetchAddRelpies(valueToRequestBody(content),multipartFile,valueToRequestBody(scriptUuid), upperReplyUuid?.let { valueToRequestBody(upperReplyUuid)})
                 .map { validate(it) }
                 .toObservable()
     }
