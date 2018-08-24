@@ -74,11 +74,11 @@
                 </android.support.constraint.ConstraintLayout>
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/btn_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="22dp"
                     android:layout_marginTop="16dp"
-                    android:enabled="false"
                     android:text="@string/write_content_save"
                     android:textAppearance="@style/EB14"
                     android:textColor="@drawable/write_content_save_color"
@@ -98,7 +98,7 @@
                     android:layout_marginTop="48dp"/>
 
                 <android.support.text.emoji.widget.EmojiAppCompatEditText
-                    android:id="@+id/cotent_edittext"
+                    android:id="@+id/input_content"
                     android:layout_width="0dp"
                     android:layout_height="408dp"
                     android:layout_marginTop="8dp"
@@ -169,6 +169,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:background="@drawable/ic_writing_category_background"
             android:layout_marginTop="36dp"
+            android:visibility="gone"
             />
 
         

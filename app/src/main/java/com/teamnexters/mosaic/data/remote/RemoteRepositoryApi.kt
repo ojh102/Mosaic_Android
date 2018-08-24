@@ -1,5 +1,6 @@
 package com.teamnexters.mosaic.data.remote
 
+import android.net.Uri
 import com.teamnexters.mosaic.data.remote.model.*
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -17,4 +18,5 @@ internal interface RemoteRepositoryApi {
     fun fetchResultListFromScrap(): Observable<List<ScriptResponse>>
     fun fetchMyPage(): Observable<WriterResponse>
     fun scrap(scriptUuid: String): Observable<ScriptResponse>
+    fun saveScript(categoryUuid: String, content: String, imgFile: List<File> = listOf()): Observable<ScriptResponse>
 }

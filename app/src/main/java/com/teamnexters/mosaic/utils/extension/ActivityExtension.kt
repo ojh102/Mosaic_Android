@@ -9,6 +9,7 @@ import android.util.Pair
 import android.view.View
 import android.app.Activity
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 
 
 fun AppCompatActivity.addFragment(@IdRes containerViewId: Int, fragment: Fragment, tag: String) {
@@ -49,4 +50,8 @@ fun AppCompatActivity.hideKeyboard() {
         view = View(this)
     }
     imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun AppCompatActivity.toast(msg: String) {
+    Toast.makeText(this,msg, Toast.LENGTH_SHORT).show()
 }
