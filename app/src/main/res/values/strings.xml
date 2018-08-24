@@ -54,6 +54,9 @@
     <string name="no_reply">아직 댓글이 없습니다. 또르르 :(</string>
     <string name="get_reply_response_error">댓글을 불러오는데 실패하였습니다.</string>
     <string name="add_reply_response_error">댓글을 작성하는데 실패하였습니다.</string>
+    <string name="delete_script_response_error">글을 삭제하는데 실패하였습니다.</string>
+
+    <string name="empty_reply">댓글을 작성해주세요.</string>
 
     <string name="delete_card">삭제하기</string>
     <string name="my_badge">MY</string>

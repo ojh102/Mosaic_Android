@@ -17,6 +17,9 @@ internal interface MosaicApi {
     @GET("/apis/scripts")
     fun fetchScripts(@Query("categories") vararg categories: String): Single<ResponseEnvelope<List<ScriptResponse>>>
 
+    @DELETE("/apis/script")
+    fun fetchDeleteScripts(@Query("scriptUuid") scriptUuid: String): Single<ResponseEnvelope<DeleteResponse>>
+
     @GET("/apis/replies")
     fun fetchRelpies(@Query("scriptUuid") scriptUuid: String): Single<ResponseEnvelope<List<ReplyResponse>>>
 
@@ -24,17 +27,14 @@ internal interface MosaicApi {
     @POST("/apis/reply")
     fun fetchAddRelpies(@Field("content") content: String,
                         @Field("imgFile") imgFile: File?,
-                        @Field("scriptUuid") scriptUuid: String): Single<ResponseEnvelope<ReplyResponse>>
+                        @Field("scriptUuid") scriptUuid: String,
+                        @Field("upperReplyUuid") upperReplyUuid: String?): Single<ResponseEnvelope<ReplyResponse>>
 
     @GET("/apis/scripts/mine")
     fun fetchMyScripts(): Single<ResponseEnvelope<List<ScriptResponse>>>
 
     @GET("/apis/scraps")
     fun fetchScrapesScripts(): Single<ResponseEnvelope<List<ScriptResponse>>>
-
-    @FormUrlEncoded
-    @POST("/apis/scrap")
-    fun fetchAddScrape(@Field("scriptUuid") scriptUuid: String): Single<ResponseEnvelope<ScriptResponse>>
 
     @GET("/apis/scripts/search")
     fun fetchSearchedScripts(@Query("keyword") keyword: String): Single<ResponseEnvelope<List<ScriptResponse>>>

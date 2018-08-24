@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
+import com.teamnexters.mosaic.data.local.MosaicSharedPreferenceManager
 import com.teamnexters.mosaic.data.local.model.Keyword
 import com.teamnexters.mosaic.databinding.ActivityMyPageBinding
 import com.teamnexters.mosaic.ui.Screen
@@ -18,6 +19,10 @@ internal class MyPageActivity : BaseActivity<ActivityMyPageBinding, MyPageViewMo
 
     @Inject
     lateinit var myPageAdapter: MyPageAdapter
+
+    @Inject
+    lateinit var sharedPreferenceManager: MosaicSharedPreferenceManager
+
 
     override fun getLayoutRes() = R.layout.activity_my_page
 
@@ -66,7 +71,11 @@ internal class MyPageActivity : BaseActivity<ActivityMyPageBinding, MyPageViewMo
                     }
 
                     is MyPageRowData.Reset -> {
-                        toast("리셋하자")
+                        sharedPreferenceManager.setString(MosaicSharedPreferenceManager.AUTH_KEY,"")
+                        sharedPreferenceManager.setString(MosaicSharedPreferenceManager.TOKEN,"")
+                        sharedPreferenceManager.setString(MosaicSharedPreferenceManager.EMAIL_ADDRESS,"")
+                        sharedPreferenceManager.setString(MosaicSharedPreferenceManager.UUID,"")
+                        Navigator.navigateToLogin(this@MyPageActivity)
                     }
                 }
             }

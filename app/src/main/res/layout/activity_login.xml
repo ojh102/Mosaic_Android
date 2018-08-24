@@ -12,15 +12,15 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.login.LoginActivity"
-        android:fitsSystemWindows="true">
+        tools:context=".ui.login.LoginActivity">
 
         <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/login_backgroud_image"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="-20dp"
+            android:layout_marginLeft="-30dp"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/img_back_ewhauniv"/>
+            app:srcCompat="@drawable/img_yonseiuniv"/>
 
         <View
             android:layout_width="match_parent"
@@ -30,6 +30,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
             android:fillViewport="true">
 
             <android.support.constraint.ConstraintLayout

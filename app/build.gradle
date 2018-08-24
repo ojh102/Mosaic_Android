@@ -9,10 +9,8 @@ apply from: '../versioning.gradle'
 def rawBuildNumber = System.getenv("BITRISE_BUILD_NUMBER") ?: "0"
 def buildNumber = Integer.parseInt(rawBuildNumber)
 
-def baseUrl = "http://13.209.57.250:8080"
-/*
 def baseUrl = System.getenv("MOSAIC_BASE_URL")
-*/
+
 
 android {
     compileSdkVersion 27

@@ -10,11 +10,12 @@ internal interface RemoteRepositoryApi {
     fun fetchTokenInfo(authKey: String, uuid: String): Observable<TokenInfoResponse>
     fun fetchScriptList(vararg categories: String): Observable<List<ScriptResponse>>
     fun fetchRelpies(scriptUuid: String): Observable<List<ReplyResponse>>
-    fun fetchAddReply(content: String, imgFile: File?, scriptUuid: String) :Observable<ReplyResponse>
+    fun fetchAddReply(content: String, imgFile: File?, scriptUuid: String, upperReplyUuid : String?) :Observable<ReplyResponse>
     fun fetchFilterList(): Observable<List<CategoryResponse>>
     fun fetchResultListFromSearch(keyword: String): Observable<List<ScriptResponse>>
     fun fetchResultListFromWritten(): Observable<List<ScriptResponse>>
     fun fetchResultListFromScrap(): Observable<List<ScriptResponse>>
     fun fetchMyPage(): Observable<WriterResponse>
     fun scrap(scriptUuid: String): Observable<ScriptResponse>
+    fun fetchDeleteScripts(scriptUuid: String) : Observable<DeleteResponse>
 }

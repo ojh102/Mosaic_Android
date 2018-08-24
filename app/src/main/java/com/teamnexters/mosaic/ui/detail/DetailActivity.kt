@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import android.view.View.GONE
@@ -19,6 +20,8 @@ import com.teamnexters.mosaic.data.local.MosaicSharedPreferenceManager
 import com.teamnexters.mosaic.data.remote.model.ReplyResponse
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
 import com.teamnexters.mosaic.databinding.ActivityDetailBinding
+import com.teamnexters.mosaic.ui.widget.DetailWriteEditText
+import com.teamnexters.mosaic.utils.extension.showKeyboard
 import com.teamnexters.mosaic.utils.extension.subscribeOf
 import com.teamnexters.mosaic.utils.extension.toPx
 import com.teamnexters.mosaic.utils.extension.toast
@@ -29,18 +32,11 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     companion object {
         const val DETAIL_INTENT_KEY = "detailIntentKey"
     }
-    @Inject
-    lateinit var sharedPreferenceManager: MosaicSharedPreferenceManager
-
-    val myUuid by lazy { sharedPreferenceManager.getString(MosaicSharedPreferenceManager.UUID,"") }
 
     val REQUEST_TAKE_ALBUM = 0
-    val REQUEST_IMAGE_CROP = 1
 
-    var scriptUuid = ""
-    var scriptWriterUuid = ""
-    var upperReplyUuid = ""
-    var isScraped = false
+    @Inject
+    lateinit var sharedPreferenceManager: MosaicSharedPreferenceManager
 
     val contentScrollview by lazy { binding.contentScrollview }
     val closeButton by lazy { binding.closeBtn }
@@ -54,7 +50,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     val replyCount by lazy { binding.replyCount }
     val replyRecyclerview by lazy { binding.replyRecyclerview }
     val addReplyImage by lazy { binding.addReplyImage }
-    val writeReplyEditText by lazy { binding.writeReplyEdittext }
+    val writeReplyEditText : DetailWriteEditText by lazy { binding.writeReplyEdittext }
     val sendReply by lazy { binding.sendReply }
     val indicatorLayout by lazy { binding.indicatorLayout }
     val writeReplyImageLayout by lazy { binding.writeReplyImageLayout }
@@ -65,7 +61,13 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     val noReplyBottomLine by lazy { binding.noReplyBottomLine }
     val noReply by lazy { binding.noReply }
 
-    var replyCroppedBitmap: Bitmap? = null
+    val myUuid by lazy { sharedPreferenceManager.getString(MosaicSharedPreferenceManager.UUID,"") }
+
+    var scriptUuid = ""
+    var scriptWriterUuid = ""
+    var isScraped = false
+
+    lateinit var recyclerViewAdapter : DetailReplyAdapter
 
     override fun getLayoutRes() = R.layout.activity_detail
 
@@ -76,18 +78,9 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
 
         //intent로 받은 값 초기화
         initIntentData()
-
         initListener()
         initLayout()
     }
-
-    private fun initRecylerView() {
-        replyRecyclerview.layoutManager = LinearLayoutManager(this)
-        replyRecyclerview.adapter = DetailReplyAdapter(this, scriptUuid)
-        replyRecyclerview.isNestedScrollingEnabled = false
-    }
-
-    private fun initViewPager() { imageViewPager.adapter = DetailImagePagerAdapter(this) }
 
     private fun initIntentData() {
         //intent로 받은 정보 view에 할당
@@ -99,9 +92,8 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         initRecylerView()
         initViewPager()
 
-        if(cardData.imgUrls.size != 0){
-            loadViewPager(cardData.imgUrls)
-        }
+        if(cardData.imgUrls.size != 0) loadViewPager(cardData.imgUrls)
+
 
         universityName.text = cardData.writer.university.name
         userId.text = cardData.writer.nick
@@ -109,36 +101,29 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         content.text = cardData.content
         replyCount.text = cardData.replies.toString()
         writeTime.text = cardData.getDate()
-        initScripContent(cardData.scrap)
+        setScripContent(cardData.scrap)
 
         //intent로 전달 받은 uuid로 서버에 쏜다.
         initData(scriptUuid)
     }
 
-    fun initScripContent(scraped : Boolean) {
-        isScraped = scraped
-
-        if (scraped) {
-            scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_pr, null))
-        } else {
-            scrapButton.setImageDrawable(scrapButton.resources.getDrawable(R.drawable.ic_scrap_nol, null))
-        }
+    private fun initRecylerView() {
+        replyRecyclerview.layoutManager = LinearLayoutManager(this)
+        recyclerViewAdapter = DetailReplyAdapter(this, myUuid)
+        replyRecyclerview.adapter = recyclerViewAdapter
+        replyRecyclerview.isNestedScrollingEnabled = false
     }
 
-    fun initLayout() {
-        if(myUuid.equals(scriptWriterUuid)) deleteCardLayout.visibility = VISIBLE else deleteCardLayout.visibility = GONE
-
-        sendReply.isEnabled = false
-    }
+    private fun initViewPager() { imageViewPager.adapter = DetailImagePagerAdapter(this) }
 
     private fun loadViewPager(imageList: List<String>){
-        (imageViewPager.adapter as DetailImagePagerAdapter).imageList = imageList as ArrayList<String>
+        when(imageViewPager.adapter){is DetailImagePagerAdapter -> (imageViewPager.adapter as DetailImagePagerAdapter).addImageList(imageList as ArrayList<String>) }
+
         initIndicator(imageList.size, 6.toPx)
 
         imageViewPager.visibility = View.VISIBLE
         indicatorLayout.visibility = View.VISIBLE
     }
-
 
     private fun initIndicator(num: Int, spacing: Int) {
         indicatorLayout.removeAllIndicator()
@@ -160,6 +145,22 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         return view
     }
 
+    fun setScripContent(scraped : Boolean) {
+        isScraped = scraped
+
+        if (scraped) {
+            scrapButton.setImageResource(R.drawable.ic_scrap_pr)
+        } else {
+            scrapButton.setImageResource(R.drawable.ic_scrap_nol)
+        }
+    }
+
+    fun initLayout() {
+        deleteCardLayout.visibility = if(myUuid.equals(scriptWriterUuid)) VISIBLE else GONE
+
+        sendReply.isEnabled = false
+    }
+
     fun initListener() {
         closeButton.setOnClickListener { finish() }
         scrapButton.setOnClickListener {
@@ -171,7 +172,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
                                     onNext = {
                                         isScraped = it.scrap
 
-                                        initScripContent(isScraped)
+                                        setScripContent(isScraped)
 
                                         globalChannelApi.scrapCard(scriptUuid, isScraped)
                                     }
@@ -194,41 +195,87 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         addReplyImage.setOnClickListener { getAlbum() }
 
         sendReply.setOnClickListener { it ->
-            viewModel.addReplies(writeReplyEditText.text.toString(), null ,scriptUuid, upperReplyUuid)
-                    .subscribeOn(ioScheduler)
-                    .observeOn(mainScheduler)
-                    .subscribeOf(
-                            onNext = {
-                                (replyRecyclerview.adapter as DetailReplyAdapter).addReply(it)
-                                writeReplyEditText.setText("")
-                                contentScrollview.fullScroll(View.FOCUS_DOWN)
-                            },
-                            onError = {
-                                this.toast(resources.getString(R.string.add_reply_response_error))
-                            }
-                    )
+            if(writeReplyEditText.isRereplyEmpty()){
+                this.toast(resources.getString(R.string.empty_reply))
+            }else{
+                val text = writeReplyEditText.getTextRereply()
+
+                viewModel.addReplies(text.toString(), null ,scriptUuid, writeReplyEditText.rereplyDetailData?.uuid)
+                        .subscribeOn(ioScheduler)
+                        .observeOn(mainScheduler)
+                        .subscribeOf(
+                                onNext = {
+                                    if(writeReplyEditText.isRereplyMode){
+                                        var sameReplyFound = false
+                                        var addPosition = 0;
+                                        for(position in recyclerViewAdapter.replyList.indices){
+                                            if(sameReplyFound){
+                                                if(recyclerViewAdapter.replyList.get(position).depth == 0){
+                                                    addPosition = position
+                                                    break;
+                                                }
+                                            }
+
+                                            if(recyclerViewAdapter.replyList.get(position).uuid.equals(writeReplyEditText.rereplyDetailData?.uuid)){
+                                                sameReplyFound = true
+                                            }
+                                        }
+
+                                        if(addPosition == 0){
+                                            addPosition = recyclerViewAdapter.replyList.size
+                                        }
+
+                                        (replyRecyclerview.adapter as DetailReplyAdapter).addReply(addPosition, it)
+                                        //replyRecyclerview.findViewHolderForAdapterPosition(addPosition).layoutPosition
+
+                                        //contentScrollview.smoothScrollTo(0,replyRecyclerview.findViewHolderForAdapterPosition(addPosition).layoutPosition)
+                                    }else{
+                                        (replyRecyclerview.adapter as DetailReplyAdapter).addReply(it)
+                                        contentScrollview.fullScroll(View.FOCUS_DOWN)
+                                    }
+
+                                    writeReplyEditText.setText("")
+                                    writeReplyEditText.setRereplyMode(null)
+                                    replyCount.text = (replyCount.text.toString().toInt() + 1).toString();
+                                    setReplyContentVisible(true)
+                                },
+                                onError = {
+                                    it.printStackTrace()
+                                    this.toast(resources.getString(R.string.add_reply_response_error))
+                                }
+                        )
+            }
         }
 
-        deleteCardLayout.setOnClickListener {
-            viewModel.addReplies(writeReplyEditText.text.toString(), null ,scriptUuid, upperReplyUuid)
+        deleteCardLayout.setOnClickListener { it ->
+            viewModel.deleteScript(scriptUuid)
                     .subscribeOn(ioScheduler)
                     .observeOn(mainScheduler)
                     .subscribeOf(
                             onNext = {
-                                (replyRecyclerview.adapter as DetailReplyAdapter).addReply(it)
-                                writeReplyEditText.setText("")
-                                contentScrollview.fullScroll(View.FOCUS_DOWN)
+                                globalChannelApi.deleteCard(scriptUuid)
+                                finish()
                             },
                             onError = {
-                                this.toast(resources.getString(R.string.add_reply_response_error))
-                            }
-                    )
+                                this.toast(resources.getString(R.string.delete_script_response_error))
+                            })
         }
 
         writeReplyImageCancel.setOnClickListener {
             writeReplyImageLayout.visibility = GONE
-            replyCroppedBitmap = null
         }
+
+        replyRecyclerview.addOnLayoutChangeListener(object : View.OnLayoutChangeListener{
+            override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
+                replyRecyclerview.postDelayed(Runnable { replyRecyclerview.scrollToPosition(bottom) }, 100)
+            }
+        })
+    }
+
+    fun setEditTextRereply(rereplyDetailData: ReplyResponse?){
+        writeReplyEditText.setRereplyMode(rereplyDetailData)
+        writeReplyEditText.requestFocus()
+        writeReplyEditText.showKeyboard(0)
     }
 
     private fun getAlbum() {
@@ -238,30 +285,19 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         startActivityForResult(intent, REQUEST_TAKE_ALBUM)
     }
 
-    private fun cropImage(photoUri: Uri?) {
-        if (photoUri != null) {
-            val cropIntent = Intent("com.android.camera.action.CROP")
-
-            cropIntent.setDataAndType(photoUri, "image/*")
-            cropIntent.putExtra("aspectX", 1)
-            cropIntent.putExtra("aspectY", 1)
-            cropIntent.putExtra("crop", true)
-            cropIntent.putExtra("return-data", true)
-            startActivityForResult(cropIntent, REQUEST_IMAGE_CROP)
-        }
-    }
-
     fun initData(scriptUuid: String) {
         viewModel.getReplies(scriptUuid)
                 .subscribeOn(ioScheduler)
                 .observeOn(mainScheduler)
                 .subscribeOf(
                         onNext = {
+                            replyCount.setText(it.size.toString())
+
                             if(it.size == 0){
                                 setReplyContentVisible(false)
                             }else{
                                 setReplyContentVisible(true)
-                                (replyRecyclerview.adapter as DetailReplyAdapter).replyList = it as ArrayList<ReplyResponse>
+                                (replyRecyclerview.adapter as DetailReplyAdapter).addReplyList(it as ArrayList<ReplyResponse>)
                             }
                         },
                         onError = {
@@ -288,15 +324,8 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
             when (requestCode) {
                 REQUEST_TAKE_ALBUM ->
                     if (data?.data != null) {
-                        cropImage(data.data)
+                        val uri = data.data
                     }
-                REQUEST_IMAGE_CROP -> {
-                    if(data?.extras != null){
-                        replyCroppedBitmap = data.extras.getParcelable("data")
-                        writeReplyImage.setImageBitmap(replyCroppedBitmap)
-                        writeReplyImageLayout.visibility = View.VISIBLE
-                    }
-                }
             }
         }
     }

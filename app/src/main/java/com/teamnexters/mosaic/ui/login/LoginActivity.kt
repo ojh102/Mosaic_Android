@@ -1,18 +1,13 @@
 package com.teamnexters.mosaic.ui.login
 
 import android.animation.Animator
-import android.content.pm.ActivityInfo
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
@@ -20,16 +15,22 @@ import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
 import com.teamnexters.mosaic.data.local.MosaicSharedPreferenceManager
 import com.teamnexters.mosaic.databinding.ActivityLoginBinding
-import com.teamnexters.mosaic.ui.mypage.MyPageRowData
 import com.teamnexters.mosaic.utils.Navigator
-import com.teamnexters.mosaic.utils.extension.hideSoftKeyboard
-import com.teamnexters.mosaic.utils.extension.isEmailAddress
-import com.teamnexters.mosaic.utils.extension.subscribeOf
-import com.teamnexters.mosaic.utils.extension.toast
+import com.teamnexters.mosaic.utils.extension.*
+import java.util.*
 import javax.inject.Inject
 
 
 internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
+    enum class LoginBackground(val resourceId : Int){
+        EWHA(R.drawable.img_back_ewhauniv),
+        KYUNGHEE(R.drawable.img_back_kyungheeuniv),
+        KOREA(R.drawable.img_back_koreauniv),
+        KOREA2(R.drawable.img_back_koreauniv_2),
+        YONSEI(R.drawable.img_yonseiuniv),
+    }
+
+    val loginBackgroudImage by lazy { binding.loginBackgroudImage}
     val useAgreementLayout by lazy { binding.useAgreementLayout }
     val useAgreementText by lazy { binding.useAgreementText }
     val useAgreementAgree by lazy { binding.useAgreementAgree }
@@ -66,13 +67,33 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
                 it.visibility = GONE
             }
         }
+
+        //백그라운드 이미지 설정
+        initBackgroundImage()
     }
+
+    fun initBackgroundImage(){
+        val imageResource = when(Random().nextInt(5)) {
+            LoginBackground.EWHA.ordinal -> LoginBackground.EWHA.resourceId
+            LoginBackground.KYUNGHEE.ordinal -> LoginBackground.KYUNGHEE.resourceId
+            LoginBackground.KOREA.ordinal -> LoginBackground.KOREA.resourceId
+            LoginBackground.KOREA2.ordinal -> LoginBackground.KOREA2.resourceId
+            else -> LoginBackground.YONSEI.resourceId
+        }
+
+        loginBackgroudImage.setImageResource(imageResource)
+
+        loginBackgroudImage.animate()
+                .translationX(30.toPx.toFloat())
+                .setDuration(3000)
+                .start()
+    }
+
 
     fun checkEmailSent() {
         sharedPreferenceManager.getString(MosaicSharedPreferenceManager.EMAIL_ADDRESS).let {
             if ("".equals(it)) {
-                val screenWidth = applicationContext.getResources().getDisplayMetrics().widthPixels
-                emailCheckLayout.translationX = screenWidth.toFloat()
+                emailCheckLayout.translationX = applicationContext.getResources().getDisplayMetrics().widthPixels.toFloat()
 
                 isEmailCheckLayoutVisible = false
             } else {

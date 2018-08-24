@@ -10,13 +10,6 @@ class MosaicSharedPreferenceManager @Inject constructor(private val sharedPrefer
         val AUTH_KEY = "authKey"
         val UUID = "uuid"
     }
-    fun setBoolean(key: String, value: Boolean) {
-        sharedPreferences.edit().putBoolean(key, value).apply()
-    }
-
-    fun getBoolean(key: String, defaultValue: Boolean = false): Boolean {
-        return sharedPreferences.getBoolean(key, defaultValue)
-    }
 
     fun setString(key: String, value: String) {
         sharedPreferences.edit().putString(key, value).apply()

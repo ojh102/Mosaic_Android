@@ -14,13 +14,14 @@ class DetailImagePagerAdapter(val context : Context) : PagerAdapter() {
     val mInflater = LayoutInflater.from(context)
 
     var imageList = ArrayList<String>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view === `object` as View
+    }
+
+    fun addImageList(imageList : ArrayList<String>){
+        this.imageList.addAll(imageList)
+        notifyDataSetChanged()
     }
 
     override fun getCount(): Int {

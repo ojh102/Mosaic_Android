@@ -106,7 +106,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_search" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_search"
+            android:overScrollMode="never"/>
 
     </android.support.constraint.ConstraintLayout>
 

@@ -72,7 +72,10 @@ internal class Navigator {
 
         @JvmStatic
         fun navigateToLogin(context: Context) {
-            context.startActivity(Intent(context, LoginActivity::class.java))
+            val intent = Intent(context, LoginActivity::class.java)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+            context.startActivity(intent)
         }
 
         @JvmStatic

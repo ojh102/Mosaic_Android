@@ -36,7 +36,7 @@
 
         <activity
             android:name=".ui.write.WriteActivity"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:screenOrientation="portrait" />
 
         <activity
