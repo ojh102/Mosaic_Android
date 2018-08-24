@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Pair
 import android.view.View
+import android.app.Activity
+import android.view.inputmethod.InputMethodManager
+
 
 fun AppCompatActivity.addFragment(@IdRes containerViewId: Int, fragment: Fragment, tag: String) {
     supportFragmentManager.beginTransaction()
@@ -37,4 +40,13 @@ fun AppCompatActivity.startActivityWithTransition(intent: Intent, vararg views: 
 
     val options = ActivityOptions.makeSceneTransitionAnimation(this, *pairs)
     startActivity(intent, options.toBundle())
+}
+
+fun AppCompatActivity.hideKeyboard() {
+    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    var view = currentFocus
+    if (view == null) {
+        view = View(this)
+    }
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
