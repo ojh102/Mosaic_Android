@@ -12,7 +12,6 @@ internal class FilterThemeAction : CompatibleThemeAction {
     override fun onClickTheme(themeAdapter: ThemeAdapter, viewHolder: ThemeViewHolder, items: List<CategoryResponse>) {
         val selectedItem = items[viewHolder.adapterPosition]
         selectedItem.selected = selectedItem.selected.not()
-
         viewHolder.bind(selectedItem)
     }
 
