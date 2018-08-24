@@ -1,6 +1,7 @@
 package com.teamnexters.mosaic.data.remote
 
 import android.content.res.Resources
+import android.net.Uri
 import com.teamnexters.mosaic.data.remote.model.*
 import com.teamnexters.mosaic.data.remote.model.CategoryResponse
 import com.teamnexters.mosaic.data.remote.model.ScriptResponse
@@ -8,8 +9,14 @@ import com.teamnexters.mosaic.data.remote.model.WriterResponse
 import com.teamnexters.mosaic.utils.extension.validate
 import io.reactivex.Observable
 import io.reactivex.Single
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.File
 import javax.inject.Inject
+import android.provider.MediaStore
+
+
 
 internal class RemoteRepository @Inject constructor(
         private val mosaicApi: MosaicApi
@@ -87,4 +94,28 @@ internal class RemoteRepository @Inject constructor(
                 .map { validate(it) }
                 .toObservable()
     }
+
+    override fun saveScript(categoryUuid: String, content: String, imgFile: List<File>): Observable<ScriptResponse> {
+
+        val multipartFiles = imgFile.takeIf { it.isNotEmpty() }?.let {
+            it.map {
+                fileToMultipartBody(it,"imgUrls")
+            }
+        }
+
+        return mosaicApi.saveScript(valueToRequestBody(categoryUuid), valueToRequestBody(content), multipartFiles)
+                .map { validate(it) }
+                .toObservable()
+    }
+
+    private fun fileToMultipartBody(file: File, partName: String): MultipartBody.Part {
+        return RequestBody.create(MediaType.parse("multipart/form-data"), file).let {
+            MultipartBody.Part.createFormData(partName, file.name, it)
+        }
+    }
+
+    private fun valueToRequestBody(value: String) = RequestBody.create(MediaType.parse("multipart/form-data"), value)
+
+
+
 }

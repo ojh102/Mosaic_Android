@@ -2,8 +2,12 @@ package com.teamnexters.mosaic.ui.write
 
 import android.app.Activity
 import android.arch.lifecycle.MutableLiveData
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
+import android.provider.MediaStore
+import android.util.Log
 import com.teamnexters.mosaic.base.BaseViewModel
 import com.teamnexters.mosaic.data.remote.RemoteRepositoryApi
 import com.teamnexters.mosaic.data.remote.model.CategoryResponse
@@ -12,9 +16,12 @@ import com.teamnexters.mosaic.utils.extension.subscribeOf
 import com.teamnexters.mosaic.utils.livedata.ListLiveData
 import com.theartofdev.edmodo.cropper.CropImage
 import com.teamnexters.mosaic.ui.write.Write.*
+import com.teamnexters.mosaic.utils.saveBitmaptoFileCache
+import java.io.File
 import javax.inject.Inject
 
 internal class WriteViewModel @Inject constructor(
+    private val context: Context,
     private val schedulers: RxSchedulersFacade,
     private val remoteRepository: RemoteRepositoryApi
 ) : BaseViewModel() {
@@ -23,9 +30,12 @@ internal class WriteViewModel @Inject constructor(
         it.value = ViewState.Write()
     }
 
+    val stateSave = MutableLiveData<SaveState>()
+
     val dataSelectedCategory = MutableLiveData<CategoryResponse>()
 
-    val dataImages = ListLiveData<Uri>()
+    val dataImages = ListLiveData<File>()
+
 
     init {
         activityResult()
@@ -42,8 +52,14 @@ internal class WriteViewModel @Inject constructor(
             .also { bind(it) }
     }
 
-    fun onClickSave() {
+    fun onClickSave(content: String) {
+        Log.d("daesoon","onClickSave $content")
 
+        when {
+            dataSelectedCategory.value == null -> stateSave.value = SaveState.Error(Throwable("카테고리를 선택해 주세요."))
+            content.isEmpty() -> stateSave.value = SaveState.Error(Throwable("내용을 작성해주세요."))
+            else -> saveScript(dataSelectedCategory.value!!.uuid, content, dataImages.value ?: listOf())
+        }
     }
 
     fun onClickAddImage() {
@@ -91,9 +107,27 @@ internal class WriteViewModel @Inject constructor(
 
     private fun onResultFromCropImage(resultCode: Int, data: Intent?) {
         when(resultCode) {
-            Activity.RESULT_OK -> CropImage.getActivityResult(data)?.apply { dataImages.add(uri) }
+            Activity.RESULT_OK -> CropImage.getActivityResult(data)?.apply {
+                val bm = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                val file = saveBitmaptoFileCache(context,bm)
+                dataImages.add(file)
+            }
         }
     }
+
+
+    private fun saveScript(categoryUuid: String, content: String, imgs: List<File>) {
+        remoteRepository.saveScript(categoryUuid, content,imgs)
+            .subscribeOn(schedulers.io())
+            .observeOn(schedulers.ui())
+            .subscribeOf(
+                onNext = { stateSave.value = SaveState.Success() },
+                onError = { stateSave.value = SaveState.Error(it) }
+            )
+    }
+
+
+
 }
 sealed class Write {
     sealed class ViewState {
@@ -103,6 +137,11 @@ sealed class Write {
         class Write : ViewState()
         class Finish : ViewState()
 
+    }
+
+    sealed class SaveState {
+        class Error(val err: Throwable): SaveState()
+        class Success: SaveState()
     }
 }
 

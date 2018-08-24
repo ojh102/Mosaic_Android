@@ -2,6 +2,8 @@ package com.teamnexters.mosaic.data.remote
 
 import com.teamnexters.mosaic.data.remote.model.*
 import io.reactivex.Single
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 import java.io.File
 
@@ -48,4 +50,10 @@ internal interface MosaicApi {
     @FormUrlEncoded
     @POST("/apis/scrap")
     fun scarp(@Field("scriptUuid") scriptUuid: String): Single<ResponseEnvelope<ScriptResponse>>
+
+    @Multipart
+    @POST("/apis/script")
+    fun saveScript(@Part("categoryUuid") categoryUuid: RequestBody,
+                   @Part("content") content: RequestBody,
+                   @Part imgFile: List<MultipartBody.Part>?): Single<ResponseEnvelope<ScriptResponse>>
 }

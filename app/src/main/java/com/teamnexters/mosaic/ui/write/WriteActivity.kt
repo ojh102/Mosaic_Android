@@ -3,8 +3,10 @@ package com.teamnexters.mosaic.ui.write
 
 import android.arch.lifecycle.Observer
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 import android.util.Log
 import android.view.View
@@ -18,7 +20,10 @@ import com.teamnexters.mosaic.utils.extension.hideKeyboard
 import com.teamnexters.mosaic.utils.extension.startActivityForResult
 import com.theartofdev.edmodo.cropper.CropImage
 import com.teamnexters.mosaic.ui.write.Write.*
+import com.teamnexters.mosaic.utils.extension.toast
 import kotlinx.android.synthetic.main.activity_write.*
+import java.io.File
+import java.io.FileOutputStream
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -43,6 +48,11 @@ internal class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel
         //Initialize UI
         btn_album.setOnClickListener { viewModel.onClickAddImage() }
         selector_category.setOnClickListener { viewModel.onClickCategorySelect() }
+        btn_save.setOnClickListener {
+            Log.d("daesoon","select btn save")
+            viewModel.onClickSave(input_content.text.toString())
+        }
+
 
         recycler_category.apply {
             layoutManager = SpanningGridLayoutManager(this@WriteActivity, 2)
@@ -52,6 +62,8 @@ internal class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel
         themeAdapter.onClickItem = viewModel::onCategoryItemClick
 
         viewModel.fetchCategoryData(this::initCategoryList)
+
+
 
         //Initialize Observer
         viewModel.stateView.observe(this, Observer {
@@ -70,6 +82,13 @@ internal class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel
         viewModel.dataSelectedCategory.observe(this, Observer {
             bindSelectCategoryOnView(it)
         })
+
+        viewModel.stateSave.observe(this, Observer {
+            when(it) {
+                is SaveState.Success -> saveSuccess()
+                is SaveState.Error -> saveError(it.err)
+            }
+        })
     }
 
     private fun showImageSelectActivity() = Intent(Intent.ACTION_PICK, EXTERNAL_CONTENT_URI).apply {
@@ -80,16 +99,20 @@ internal class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel
 
     private fun showCategorySelectView() {
         hideKeyboard()
-        recycler_category.visibility = View.VISIBLE
+
+        recycler_category.postDelayed({
+            recycler_category.visibility = View.VISIBLE
+        },200)
+
     }
 
     private fun showWriteView() {
         recycler_category.visibility = View.GONE
     }
 
-    private fun updateAddImages(item: List<Uri>) {
+    private fun updateAddImages(item: List<File>) {
         holder_images.removeAllViews()
-        item.forEach { holder_images.addImage(it) }
+        item.forEach { holder_images.addImage(Uri.fromFile(it)) }
     }
 
     private fun bindSelectCategoryOnView(category: CategoryResponse?) {
@@ -100,6 +123,15 @@ internal class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel
         themeAdapter.setItems(item)
     }
 
+    private fun saveSuccess() {
+        toast("글을 등록하였습니다.")
+        finish()
+    }
+
+    private fun saveError(err: Throwable) {
+        err.printStackTrace()
+        toast(err.message?:"")
+    }
 
 
 
