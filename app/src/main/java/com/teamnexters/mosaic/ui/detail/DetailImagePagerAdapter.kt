@@ -20,6 +20,7 @@ class DetailImagePagerAdapter(val context : Context) : PagerAdapter() {
     }
 
     fun addImageList(imageList : ArrayList<String>){
+        this.imageList.clear()
         this.imageList.addAll(imageList)
         notifyDataSetChanged()
     }

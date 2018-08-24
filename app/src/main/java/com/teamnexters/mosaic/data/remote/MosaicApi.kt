@@ -18,7 +18,7 @@ internal interface MosaicApi {
     fun fetchScripts(@Query("categories") vararg categories: String): Single<ResponseEnvelope<List<ScriptResponse>>>
 
     @DELETE("/apis/script")
-    fun fetchDeleteScripts(@Query("scriptUuid") scriptUuid: String): Single<ResponseEnvelope<DeleteResponse>>
+    fun fetchDeleteScripts(@Query("scriptUuid") scriptUuid: String): Single<ResponseEnvelope<ScriptResponse>>
 
     @GET("/apis/replies")
     fun fetchRelpies(@Query("scriptUuid") scriptUuid: String): Single<ResponseEnvelope<List<ReplyResponse>>>

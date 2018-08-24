@@ -58,7 +58,7 @@ internal class RemoteRepository @Inject constructor(
                 .toObservable()
     }
 
-    override fun fetchDeleteScripts(scriptUuid: String) : Observable<DeleteResponse>{
+    override fun fetchDeleteScripts(scriptUuid: String) : Observable<ScriptResponse>{
         return mosaicApi.fetchDeleteScripts(scriptUuid)
                 .map { validate(it) }
                 .toObservable()

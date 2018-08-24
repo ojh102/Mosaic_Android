@@ -1,7 +1,11 @@
 package com.teamnexters.mosaic.ui.login
 
+import android.Manifest
 import android.animation.Animator
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -30,6 +34,10 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
         YONSEI(R.drawable.img_yonseiuniv),
     }
 
+    companion object {
+        const val PERMISSIONS_REQUEST_CODE = 0
+    }
+
     val loginBackgroudImage by lazy { binding.loginBackgroudImage}
     val useAgreementLayout by lazy { binding.useAgreementLayout }
     val useAgreementText by lazy { binding.useAgreementText }
@@ -44,6 +52,8 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
     var isAgreementLayoutVisible = false
     var isEmailCheckLayoutVisible = false
 
+    var isFirstAccess = false
+
     @Inject
     lateinit var sharedPreferenceManager: MosaicSharedPreferenceManager
 
@@ -57,6 +67,13 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
         initLayout()
         checkEmailSent()
         initListener()
+        requestPermission()
+    }
+
+    fun requestPermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), PERMISSIONS_REQUEST_CODE);
+        }
     }
 
     fun initLayout() {
@@ -290,5 +307,14 @@ internal class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel
         else if (isEmailCheckLayoutVisible)
             hideEmailCheckLayout()
         else super.onBackPressed()
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSIONS_REQUEST_CODE -> {
+                if (grantResults.size < 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) finish()
+            }
+        }
     }
 }

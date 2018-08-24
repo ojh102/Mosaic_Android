@@ -3,6 +3,7 @@ package com.teamnexters.mosaic.ui.detail
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.view.ViewPager
@@ -25,6 +26,12 @@ import com.teamnexters.mosaic.utils.extension.showKeyboard
 import com.teamnexters.mosaic.utils.extension.subscribeOf
 import com.teamnexters.mosaic.utils.extension.toPx
 import com.teamnexters.mosaic.utils.extension.toast
+import com.theartofdev.edmodo.cropper.CropImage
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
+import java.net.URI
 import javax.inject.Inject
 
 
@@ -32,6 +39,9 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
     companion object {
         const val DETAIL_INTENT_KEY = "detailIntentKey"
         const val REQUEST_TAKE_ALBUM = 0
+        private const val TYPE_IMAGE_DATA = "image/*"
+        private const val FILE_NAME = "mosaic"
+
     }
 
     @Inject
@@ -55,6 +65,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
 
     var scriptUuid = ""
     var scriptWriterUuid = ""
+    var imageFile : File? = null
     var isScraped = false
 
     val linearLayoutManager = LinearLayoutManager(this)
@@ -146,7 +157,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
             }else{
                 val text = writeReplyEditText.getTextRereply()
 
-                viewModel.addReplies(text.toString(), null ,scriptUuid, writeReplyEditText.rereplyDetailData?.uuid)
+                viewModel.addReplies(text.toString(), imageFile ,scriptUuid, writeReplyEditText.rereplyDetailData?.uuid)
                         .subscribeOn(ioScheduler)
                         .observeOn(mainScheduler)
                         .subscribeOf(
@@ -181,6 +192,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
 
                                     writeReplyEditText.setText("")
                                     writeReplyEditText.setRereplyMode(null)
+                                    writeReplyImageLayout.visibility = GONE
                                 },
                                 onError = {
                                     it.printStackTrace()
@@ -206,6 +218,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
 
         writeReplyImageCancel.setOnClickListener {
             writeReplyImageLayout.visibility = GONE
+            imageFile = null
         }
 
         /*replyRecyclerview.addOnLayoutChangeListener(object : View.OnLayoutChangeListener{
@@ -215,6 +228,19 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
         })*/
     }
 
+    fun createImageFile(bitmap : Bitmap) : File{
+        val file = File(this.getCacheDir(), FILE_NAME)
+        file.createNewFile();
+        val bos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos)
+        val bitmapdata = bos.toByteArray()
+        val fos = FileOutputStream(file)
+        fos.write(bitmapdata)
+        fos.flush()
+        fos.close()
+
+        return file
+    }
     fun setEditTextRereply(rereplyDetailData: ReplyResponse?){
         writeReplyEditText.setRereplyMode(rereplyDetailData)
         writeReplyEditText.requestFocus()
@@ -223,7 +249,7 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
 
     private fun getAlbum() {
         val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intent.type = "image/*"
+        intent.type = TYPE_IMAGE_DATA
 
         startActivityForResult(intent, REQUEST_TAKE_ALBUM)
     }
@@ -235,8 +261,8 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
                 .subscribeOf(
                         onNext = {
                             if(it.size != 0){
-                                recyclerViewAdapter.addReplyList(it as ArrayList<ReplyResponse>)
-                            }
+                            recyclerViewAdapter.addReplyList(it as ArrayList<ReplyResponse>)
+                        }
                         },
                         onError = {
                             this.toast(resources.getString(R.string.get_reply_response_error))
@@ -249,8 +275,15 @@ internal class DetailActivity : BaseActivity<ActivityDetailBinding, DetailViewMo
             when (requestCode) {
                 REQUEST_TAKE_ALBUM ->
                     if (data?.data != null) {
-                        val uri = data.data
+                        CropImage.activity(data.data).setAspectRatio(1,1).start(this)
                     }
+                CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                    CropImage.getActivityResult(data)?.apply {
+                        writeReplyImage.setImageURI(uri)
+                        imageFile = File(URI(uri.toString()))
+                    }
+                    writeReplyImageLayout.visibility = VISIBLE
+                }
             }
         }
     }
