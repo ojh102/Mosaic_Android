@@ -8,7 +8,9 @@ import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 import android.view.View
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
+import com.teamnexters.mosaic.data.remote.model.CategoryResponse
 import com.teamnexters.mosaic.databinding.ActivityWriteBinding
+import com.teamnexters.mosaic.ui.common.theme.SpanningGridLayoutManager
 import com.teamnexters.mosaic.ui.common.theme.ThemeAdapter
 import com.teamnexters.mosaic.utils.extension.startActivityForResult
 import com.theartofdev.edmodo.cropper.CropImage
@@ -34,18 +36,35 @@ internal class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //Initialize UI
         btn_album.setOnClickListener { viewModel.onClickAddImage() }
+        selector_category.setOnClickListener { viewModel.onClickCategorySelect() }
 
+        recycler_category.apply {
+            layoutManager = SpanningGridLayoutManager(this@WriteActivity, 2)
+            adapter = themeAdapter
+        }
+
+        themeAdapter.onClickItem = viewModel::onCategoryItemClick
+
+
+
+        //Initialize Observer
         viewModel.stateView.observe(this, Observer {
             when(it) {
                 is ViewState.TakeAlbum -> showImageSelectActivity()
                 is ViewState.Crop -> showImageCropActivity(it.imgUri)
                 is ViewState.CategorySelect -> showCategorySelectView()
+                is ViewState.Write -> showWriteView()
             }
         })
 
         viewModel.dataImages.observe(this, Observer {
             updateAddImages(it ?: listOf())
+        })
+
+        viewModel.dataSelectedCategory.observe(this, Observer {
+            bindSelectCategoryOnView(it)
         })
     }
 
@@ -59,10 +78,19 @@ internal class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel
         container_category.visibility = View.VISIBLE
     }
 
+    private fun showWriteView() {
+        container_category.visibility = View.GONE
+    }
+
     private fun updateAddImages(item: List<Uri>) {
         holder_images.removeAllViews()
         item.forEach { holder_images.addImage(it) }
     }
+
+    private fun bindSelectCategoryOnView(category: CategoryResponse?) {
+        text_selected_category.text = if (category == null) getString(R.string.select_category) else category.name + category.emoji
+    }
+
 
 
 

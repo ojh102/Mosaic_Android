@@ -7,6 +7,7 @@ import android.net.Uri
 import android.util.Log
 import com.teamnexters.mosaic.base.BaseViewModel
 import com.teamnexters.mosaic.data.remote.RemoteRepositoryApi
+import com.teamnexters.mosaic.data.remote.model.CategoryResponse
 import com.teamnexters.mosaic.utils.livedata.ListLiveData
 import com.theartofdev.edmodo.cropper.CropImage
 import javax.inject.Inject
@@ -19,6 +20,8 @@ internal class WriteViewModel @Inject constructor(
     val stateView = MutableLiveData<ViewState>().also {
         it.value = ViewState.Write()
     }
+
+    val dataSelectedCategory = MutableLiveData<CategoryResponse>()
 
     val dataImages = ListLiveData<Uri>()
 
@@ -44,8 +47,20 @@ internal class WriteViewModel @Inject constructor(
         stateView.value = ViewState.CategorySelect()
     }
 
+    fun onCategoryItemClick(item: List<CategoryResponse>) {
+        dataSelectedCategory.value = item.firstOrNull()
+        stateView.value = ViewState.Write()
+    }
+
     fun onClickExit() {
         stateView.value = ViewState.Finish()
+    }
+
+    fun onClickDeviceBack() {
+        stateView.value = when(stateView.value) {
+            is ViewState.Write -> ViewState.Finish()
+            else -> ViewState.Write()
+        }
     }
 
     private fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){

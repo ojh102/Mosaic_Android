@@ -7,6 +7,7 @@ import com.teamnexters.mosaic.ui.common.theme.ThemeAdapter
 import com.teamnexters.mosaic.ui.common.theme.ThemeViewHolder
 
 internal class WriteThemeAction : CompatibleThemeAction {
+
     override fun onClickTheme(themeAdapter: ThemeAdapter, viewHolder: ThemeViewHolder, items: List<CategoryResponse>) {
 
         var preSelectedPosition = -1
@@ -29,9 +30,11 @@ internal class WriteThemeAction : CompatibleThemeAction {
 
         viewHolder.bind(selectedItem)
     }
+
     override fun bindSelector(binding: ViewThemeBinding) {
         binding.backgroundSelectorRes = R.drawable.selector_theme_write_bg
         binding.highlightSelectorRes = R.drawable.selector_theme_write_text_highlight
         binding.textSelectorRes = R.drawable.selector_theme_text
     }
+
 }

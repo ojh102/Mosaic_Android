@@ -20,6 +20,8 @@ internal class ThemeAdapter (
         fun onClickFilter()
     }
 
+    var onClickItem: (item: List<CategoryResponse>) -> Unit = {}
+
     private val items = mutableListOf<CategoryResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThemeViewHolder {
@@ -31,6 +33,7 @@ internal class ThemeAdapter (
         binding.clickListener = object : ThemeClickListener {
             override fun onClickFilter() {
                 compatibleThemeAction.onClickTheme(this@ThemeAdapter, viewHolder, items)
+                onClickItem(getSelectedItems())
             }
         }
 
