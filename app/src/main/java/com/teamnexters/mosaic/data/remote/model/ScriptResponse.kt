@@ -15,7 +15,7 @@ internal data class ScriptResponse(
         val thumbnailUrls: List<String> = listOf(),
         val createdAt: Long = 0L,
         val category: CategoryResponse,
-        val replies: Int,
+        var replies: Int,
         var scrap: Boolean = false
 ) : Parcelable {
 
