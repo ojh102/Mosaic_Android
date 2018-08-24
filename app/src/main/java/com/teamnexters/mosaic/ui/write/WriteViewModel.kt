@@ -4,19 +4,21 @@ import android.app.Activity
 import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import com.teamnexters.mosaic.base.BaseViewModel
 import com.teamnexters.mosaic.data.remote.RemoteRepositoryApi
 import com.teamnexters.mosaic.data.remote.model.CategoryResponse
+import com.teamnexters.mosaic.utils.RxSchedulersFacade
+import com.teamnexters.mosaic.utils.extension.subscribeOf
 import com.teamnexters.mosaic.utils.livedata.ListLiveData
 import com.theartofdev.edmodo.cropper.CropImage
+import com.teamnexters.mosaic.ui.write.Write.*
 import javax.inject.Inject
 
 internal class WriteViewModel @Inject constructor(
-        private val remoteRepository: RemoteRepositoryApi
+    private val schedulers: RxSchedulersFacade,
+    private val remoteRepository: RemoteRepositoryApi
 ) : BaseViewModel() {
 
-    val stateNetworkResponse = MutableLiveData<WriteResponse>()
     val stateView = MutableLiveData<ViewState>().also {
         it.value = ViewState.Write()
     }
@@ -26,13 +28,18 @@ internal class WriteViewModel @Inject constructor(
     val dataImages = ListLiveData<Uri>()
 
     init {
-        bind(
-            activityResult()
-                .subscribe {
-                    onActivityResult(it.first, it.second, it.third)
-                }
+        activityResult()
+            .subscribe {
+                onActivityResult(it.first, it.second, it.third)
+            }.also { bind(it) }
+    }
 
-        )
+    fun fetchCategoryData(onSuccess: (List<CategoryResponse>) -> Unit) {
+        remoteRepository.fetchFilterList()
+            .subscribeOn(schedulers.io())
+            .observeOn(schedulers.ui())
+            .subscribeOf(onSuccess)
+            .also { bind(it) }
     }
 
     fun onClickSave() {
@@ -63,6 +70,7 @@ internal class WriteViewModel @Inject constructor(
         }
     }
 
+
     private fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
         when(requestCode) {
             WriteActivity.REQUEST_TAKE_ALBUM -> onResultFromTakeAlbum(resultCode, data)
@@ -87,17 +95,15 @@ internal class WriteViewModel @Inject constructor(
         }
     }
 }
+sealed class Write {
+    sealed class ViewState {
+        class CategorySelect : ViewState()
+        class TakeAlbum : ViewState()
+        class Crop(val imgUri: Uri) : ViewState()
+        class Write : ViewState()
+        class Finish : ViewState()
 
-sealed class WriteResponse {
-    class Success : WriteResponse()
-    class Failure : WriteResponse()
+    }
 }
 
-sealed class ViewState {
-    class CategorySelect : ViewState()
-    class TakeAlbum : ViewState()
-    class Crop(val imgUri: Uri) : ViewState()
-    class Write : ViewState()
-    class Finish : ViewState()
 
-}

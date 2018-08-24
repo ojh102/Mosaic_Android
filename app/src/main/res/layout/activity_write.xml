@@ -11,6 +11,7 @@
     </data>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/root_write"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#66e3ff">
@@ -22,11 +23,13 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:fillViewport="true"
+            >
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/close_btn"
@@ -109,7 +112,9 @@
                     android:lineSpacingExtra="8sp"
                     android:background="@color/white"
                     android:gravity="center"/>
+
             </android.support.constraint.ConstraintLayout>
+
 
         </ScrollView>
         
@@ -154,27 +159,18 @@
 
         </android.support.constraint.ConstraintLayout>
 
-        <FrameLayout
-            android:id="@+id/container_category"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_category"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="36dp"
             android:background="@drawable/ic_writing_category_background"
-            android:visibility="gone"
-            tools:visibility="visible"
-            >
+            android:layout_marginTop="36dp"
+            />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_category"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-
-        </FrameLayout>
         
     </android.support.constraint.ConstraintLayout>
 </layout>

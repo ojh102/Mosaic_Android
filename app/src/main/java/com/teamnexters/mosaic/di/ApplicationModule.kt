@@ -11,6 +11,7 @@ import com.teamnexters.mosaic.base.GlobalChannelApi
 import com.teamnexters.mosaic.base.ViewModelFactory
 import com.teamnexters.mosaic.di.qualifier.RxIOScheduler
 import com.teamnexters.mosaic.di.qualifier.RxMainScheduler
+import com.teamnexters.mosaic.utils.RxSchedulersFacade
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -53,6 +54,12 @@ internal interface ApplicationModule {
         @RxMainScheduler
         fun provideRxMainScheduler(): Scheduler {
             return AndroidSchedulers.mainThread()
+        }
+
+        @Provides
+        @Singleton
+        fun provideRxSchedulerFacade(): RxSchedulersFacade {
+            return RxSchedulersFacade()
         }
 
         @Provides

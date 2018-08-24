@@ -1,10 +1,12 @@
 package com.teamnexters.mosaic.ui.write
 
+
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+import android.util.Log
 import android.view.View
 import com.teamnexters.mosaic.R
 import com.teamnexters.mosaic.base.BaseActivity
@@ -12,8 +14,10 @@ import com.teamnexters.mosaic.data.remote.model.CategoryResponse
 import com.teamnexters.mosaic.databinding.ActivityWriteBinding
 import com.teamnexters.mosaic.ui.common.theme.SpanningGridLayoutManager
 import com.teamnexters.mosaic.ui.common.theme.ThemeAdapter
+import com.teamnexters.mosaic.utils.extension.hideKeyboard
 import com.teamnexters.mosaic.utils.extension.startActivityForResult
 import com.theartofdev.edmodo.cropper.CropImage
+import com.teamnexters.mosaic.ui.write.Write.*
 import kotlinx.android.synthetic.main.activity_write.*
 import javax.inject.Inject
 import javax.inject.Named
@@ -47,7 +51,7 @@ internal class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel
 
         themeAdapter.onClickItem = viewModel::onCategoryItemClick
 
-
+        viewModel.fetchCategoryData(this::initCategoryList)
 
         //Initialize Observer
         viewModel.stateView.observe(this, Observer {
@@ -75,11 +79,12 @@ internal class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel
     private fun showImageCropActivity(imgUri: Uri) = CropImage.activity(imgUri).setAspectRatio(1,1).start(this)
 
     private fun showCategorySelectView() {
-        container_category.visibility = View.VISIBLE
+        hideKeyboard()
+        recycler_category.visibility = View.VISIBLE
     }
 
     private fun showWriteView() {
-        container_category.visibility = View.GONE
+        recycler_category.visibility = View.GONE
     }
 
     private fun updateAddImages(item: List<Uri>) {
@@ -89,6 +94,10 @@ internal class WriteActivity : BaseActivity<ActivityWriteBinding, WriteViewModel
 
     private fun bindSelectCategoryOnView(category: CategoryResponse?) {
         text_selected_category.text = if (category == null) getString(R.string.select_category) else category.name + category.emoji
+    }
+
+    private fun initCategoryList( item: List<CategoryResponse>) {
+        themeAdapter.setItems(item)
     }
 
 

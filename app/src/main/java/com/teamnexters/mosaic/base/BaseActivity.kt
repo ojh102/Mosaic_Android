@@ -60,6 +60,7 @@ internal abstract class BaseActivity<VB : ViewDataBinding, VM : ViewModel> : App
     lateinit var globalChannelApi: GlobalChannelApi
 
     lateinit var binding: VB
+
     lateinit var viewModel: VM
 
     @LayoutRes
