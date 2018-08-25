@@ -3,6 +3,7 @@ package com.teamnexters.mosaic.ui.widget
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import android.util.Log
 import android.view.ViewGroup
@@ -43,7 +44,7 @@ class ImageHolderLayout : LinearLayout {
         }
     }
 
-    class SquareImageView(viewContext: Context?) : ImageView(viewContext) {
+    class SquareImageView(viewContext: Context?) : AppCompatImageView(viewContext) {
 
         init {
             layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.MATCH_PARENT)
