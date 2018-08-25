@@ -1,1 +1,1 @@
--keep class com.teamnexters.mosaic.model** { *; }
+-keep class com.teamnexters.mosaic.data.local.model** { *; }
